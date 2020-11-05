@@ -16,7 +16,7 @@ test:
   dependencies:
     - compile
   script:
-    - apt-get update -qy
+    - cd /var/opt/gitlab/gitlab-rails/
     - bundle install
     - make check
   when: on_success
