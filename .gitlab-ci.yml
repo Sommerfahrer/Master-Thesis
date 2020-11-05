@@ -10,14 +10,12 @@ compile:
     expire_in: 1 week
   when: on_success
 
-before_script:
-  - bundle install
 test:
   image: ruby:2.7.1
   stage: test
   dependencies:
     - compile
   script:
-    # - bundle install
+    - bundle install
     - make check
   when: on_success
