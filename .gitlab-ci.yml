@@ -3,7 +3,7 @@ compile:
   image: registry.fa-wi.de/punicawaikiki/latex:latest
   stage: build
   script:
-    - bash compile_document.sh "$CI_PROJECT_PATH"
+    - bash compile_document.sh "$CI_PROJECT_ROOT_NAMESPACE"
   artifacts:
     untracked: true
     expire_in: 1 week
