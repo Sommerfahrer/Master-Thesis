@@ -1,0 +1,10 @@
+image: registry.fa-wi.de/punicawaikiki/latex:latest
+compile:
+  image: registry.fa-wi.de/punicawaikiki/latex:latest
+  stage: build
+  script:
+    - bash compile_document.sh
+  artifacts:
+    untracked: true
+    expire_in: 1 week
+  when: on_success
