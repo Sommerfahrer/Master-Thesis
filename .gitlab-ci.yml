@@ -1,4 +1,3 @@
-image: registry.fa-wi.de/punicawaikiki/latex:latest
 compile:
   image: registry.fa-wi.de/punicawaikiki/latex:latest
   stage: build
