@@ -9,3 +9,13 @@ compile:
       - $CI_PROJECT_TITLE.pdf
     expire_in: 1 week
   when: on_success
+
+test:
+  image: ruby:2.7.1
+  stage: test
+  dependencies:
+    - compile
+  script:
+    - bundle install
+    - make check
+  when: on_success
