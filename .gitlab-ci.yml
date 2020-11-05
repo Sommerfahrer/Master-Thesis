@@ -16,6 +16,7 @@ test:
   dependencies:
     - compile
   script:
-    - bundle install --path /cache
+    - apt-get update -qy
+    - bundle install
     - make check
   when: on_success
