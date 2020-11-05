@@ -6,6 +6,6 @@ compile:
     - bash compile_document.sh "$CI_PROJECT_TITLE"
   artifacts:
     paths:
-      - mycv.pdf
+      - $CI_PROJECT_TITLE.pdf
     expire_in: 1 week
   when: on_success
