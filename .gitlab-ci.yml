@@ -16,7 +16,7 @@ test:
   dependencies:
     - compile
   script:
-    - cd /var/opt/gitlab/gitlab-rails/
+    - cd /builds/punicawaikiki/edf-master-thesis/
     - bundle install
     - make check
   when: on_success
