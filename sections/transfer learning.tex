@@ -1,0 +1,9 @@
+\documentclass[../ImageClassifier.tex]{subfiles}
+
+\begin{document}
+    Transfer learning is a method where a pre-trained network is reused for another task.
+    Therefore you need to import the pre-trained network, freeze all layers and replace the output layer, which is only trainable now. 
+    So most of the trainable weights are non-trainable except the weights of the output layer, for example in this project the model has only 4,098 of 23,591,810 trainable parameters.
+    Now we can start with the training for maximum 100 epochs, but early stopper was implemented to avoid unnecessary training time.
+    There is also a model checker, which only save the solution of each epoch if the validation loss is smaller than the saved model.
+\end{document}

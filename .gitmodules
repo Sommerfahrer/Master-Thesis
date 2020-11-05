@@ -1,0 +1,3 @@
+[submodule "image-classifier"]
+	path = image-classifier
+	url = ssh://git@gitlab.fa-wi.de:2222/punicawaikiki/image-classifier.git

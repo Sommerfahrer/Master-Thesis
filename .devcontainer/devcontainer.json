@@ -1,0 +1,35 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.112.0/containers/python-3
+{
+	"name": "Latex",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"context": "..",
+	},
+	// "image": "Dockerfile", // Or "dockerFile"
+	// "workspaceMount": "source=c.\\globalwarmingdoku,target=/home/fabi/dev,type=bind,consistency=cached",
+	// "workspaceFolder": "/home/fabi/dev",
+	// "workspaceMount": "source=remote-workspace,target=/workspace,type=volume"
+	// "workspaceFolder": "/workspace",	
+
+	// Set *default* container specific settings.json values on container create.
+	"settings": { 
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"james-yu.latex-workshop",
+		"streetsidesoftware.code-spell-checker",
+		"streetsidesoftware.code-spell-checker-german"
+	],
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "pip3 install --user -r requirements.txt",
+
+	// Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+	// "remoteUser": "vscode"
+}

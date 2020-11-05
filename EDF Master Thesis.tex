@@ -1,0 +1,211 @@
+\documentclass{scrartcl}
+\usepackage[ngerman]{babel}
+\usepackage{rwukoma}
+\usepackage[hidelinks]{hyperref}
+\usepackage{lipsum,caption}
+\usepackage{graphicx}
+% \usepackage[nohyperlinks, printonlyused, withpage, smaller]{acronym}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{caption}
+\usepackage{xparse}
+\usepackage{quoting}
+\usepackage{csquotes}
+\usepackage{acronym}
+\usepackage{hyperref}
+\usepackage{lmodern}
+\usepackage{array}
+\usepackage{subfiles}
+\usepackage{amssymb}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage[utf8]{inputenc}
+\usepackage[backend=biber,
+style=apa,
+]{biblatex}
+\addbibresource{literatur.bib}
+
+\renewcaptionname{ngerman}{\tablename}{Table}
+\renewcaptionname{ngerman}{\figurename}{Figure}
+\renewcaptionname{ngerman}{\listtablename}{Tables}
+\renewcaptionname{ngerman}{\listfigurename}{Figures}
+
+\DeclareCaptionType{equ}[][List of equations]
+\captionsetup[equ]{labelformat=empty}
+
+\NewDocumentCommand{\code}{v}{%
+\textcolor{codegray}{#1}%d
+}
+
+\definecolor{code_green}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{code_green},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+
+\begin{document}
+	\begin{titlepage}
+		\centering
+		{\scshape\LARGE Ravensburg-Weingarten University\par}
+		\vspace{1.5cm}
+		\begin{figure}[hb]
+			\centering
+			\rwulogo[width=0.4\columnwidth]
+		\end{figure}
+
+		\vspace{5cm}
+		{\scshape\Large Computer Vision\par}
+		\vspace{0.25cm}
+		{\huge\bfseries Image Classifier\par}
+		\vspace{6cm}
+		{\Large\itshape Fabian Wicker 32235\par}
+		\vfill
+		{\large \today\par}
+	\end{titlepage}
+	\clearpage
+	\pagenumbering{Roman}
+	\section{Abstract}
+	\subfile{sections/abstract}
+	\clearpage
+	\cleardoubleoddpage
+	\pagenumbering{arabic}
+	\tableofcontents
+	\clearpage
+	\section*{List of abbreviations}
+	\begin{acronym}[abbreviations]
+	\acro{grad-cam}[Grad-CAM]{Gradient-weighted Class Activation Mapping}
+	\acro{resnet50}[ResNet50]{Residual Networks 50}
+	\acro{resnet}[ResNet]{Residual Networks}
+	\acro{api}[API]{application programming interface}
+	\acro{relu}[ReLU]{Rectified Linear Unit}
+	\acro{html}[HTML]{Hypertext Markup Language}
+	\acro{jpeg}[JPEG]{Joint Photographic Experts Group}
+	\acro{rgb}[RGB]{red, green, and blue color space}
+	\acro{rgba}[RGBA]{red, green, blue and alpha color space}
+	\acro{png}[PNG]{Portable Network Graphics}
+	\acro{ram}[RAM]{Random-Access Memory}
+	\end{acronym}
+	\clearpage
+
+	\section{Introduction}
+	\subfile{sections/introduction}
+
+		\subsection{Google Images}
+		\label{chap:google-images}
+		\subfile{sections/google_images}
+
+		\subsection{Bing}
+		\label{chap:bing}
+		\subfile{sections/bing}
+
+		\subsection{ImageNet}
+		\label{chap:imagenet}
+		\subfile{sections/imagenet}
+
+		\subsection{Keras}
+		\label{chap:keras}
+		\subfile{sections/keras}
+
+		\subsection{Tensorflow}
+		\label{chap:tensorflow}
+		\subfile{sections/tensorflow}
+	
+		\subsection{\ac{resnet}}
+		\label{chap:resnet}
+		\subfile{sections/resnet}
+
+	\newpage
+	\section{Methods}
+	\label{chap:methods}
+
+		\subsection{Starting Point}
+		\label{chap:starting-point}
+		\subfile{sections/starting_point}
+
+		\subsection{Downloading Images}
+		\label{chap:downloading-images}
+		\subfile{sections/downloading_images}
+
+		\clearpage
+		\subsection{Remove of small images}
+		\label{chap:remove-of-small-images}
+		\subfile{sections/remove_of_small_images}
+
+		\subsection{Convert Compression}
+		\label{chap:convert-compression}
+		\subfile{sections/convert_compression}
+
+		\subsection{Resize Images}
+		\label{chap:resize-images}
+		\subfile{sections/resize images}
+
+		\subsection{Remove Duplicates}
+		\label{chap:remove-duplicates}
+		\subfile{sections/remove duplicates}
+
+		\subsection{Equal distribution of images}
+		\label{chap:equal-distribution}
+		\subfile{sections/equal distribution}
+
+		\subsection{Create Dataset}
+		\label{chap:create-dataset}
+		\subfile{sections/create dataset}
+
+		\clearpage
+		\subsection{Transfer Learning}
+		\label{chap:transfer-learning}
+		\subfile{sections/transfer learning}
+
+		\subsection{Fine Tuning}
+		\label{chap:fine-tuning}
+		\subfile{sections/fine tuning}
+
+		\clearpage
+		\subsection{\ac{grad-cam}}
+		\label{chap:grad-cam}
+		\subfile{sections/gradCam}
+	\clearpage
+	\section{Results}
+	\label{chap:results}
+	\subfile{sections/results}
+	\clearpage
+	\section{Conclusion}
+	\label{chap:conclusion}
+	\subfile{sections/conclusion}	
+
+	\clearpage
+	\listoffigures
+
+
+	\clearpage
+	\listoftables
+	\clearpage
+	\printbibliography
+	\clearpage
+	\section{Appendix}
+	\label{chap:appendix}
+	\subfile{sections/appendix}	
+\end{document}

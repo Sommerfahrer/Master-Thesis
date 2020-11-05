@@ -1,0 +1,14 @@
+\documentclass[../ImageClassifier.tex]{subfiles}
+
+\begin{document}
+    At the beginning the user must start the programm with the terminal.
+    The programm itself takes two mandatory arguments \flqq\textit{\texttt{-{}-}classes \textless keyword\_1,keyword\_2\textgreater\frqq}\,(in short: \textit{\flqq -c \textless keyword\_1,keyword\_2 \textgreater \frqq}) for the detecting classes and \flqq\textit{\texttt{-{}-}prediction\_path\\ \textless path\_to\_predicting\_images\textgreater \frqq}\,(in short: \textit{\flqq -p \textless path\_to\_predicting\_images\textgreater \frqq}) with the path to predicting images.
+    Another optional argument is the threshold for the predicted images, which is very important for the accuracy of the results.
+    The threshold has the default value 0.99, which means only results with 99\% certainty are saved in results, images below the threshold would be skipped.
+    In order to the default value of the threshold you must use the argument \flqq \texttt{-{}-}threshold \textless threshold\_value\textgreater\frqq (in short: \flqq -t \textless threshold\_value\textgreater\frqq).
+    In order to start the program with all arguments, the command must look like this:
+    \begin{lstlisting}[language=python, title={Launch of the toolchain}]
+        python classifier_training.py -c "cat,dog" -p "~/eiwomisau/test/mixed" -t 0.98\end{lstlisting}
+    Now the toolchain is looking for an already trained network, if a suitable network is available, the network will be loaded and starts predicting the user given images.
+    If there is no suitable network, the toolchain starts to download images with the desired keywords.
+\end{document}

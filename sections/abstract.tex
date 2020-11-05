@@ -1,0 +1,14 @@
+\documentclass[../ImageClassifier.tex]{subfiles}
+
+\begin{document}
+    Without any or enough training data there is no way for deep learning to make a robust classification.
+    In this report, google images are used for training and validated with several datasets and classes.
+    In addition, there is a \ac{grad-cam} (section \ref{chap:grad-cam}) implemented for localization of the predicted classes.
+    The main goal of the project was to find out whether sufficient accuracy for image classification can be achieved with image search engines like google and bing images.
+    Images from search engines can also contain other classes, therefore a threshold was used to get only the most reliable predictions of the network.
+    For easier usability, a complete toolchain is implemented, the user only needs to type in the required classes, the path to the images to be predicted and optional the desired threshold value.
+    The program automatically searches locally for pre-trained networks, if this is not the case the program loads about 600 pictures for every class and starts to learn the new class with transfer learning.
+    After transfer learning, the network will be fine tuned for a few epochs.
+    Finally the newly trained network will start to predict all images in the given path.
+    The results can be used for pre-labelling as well as a more precisely dataset for a different network training.
+\end{document}
