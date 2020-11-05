@@ -16,6 +16,6 @@ test:
   dependencies:
     - compile
   script:
-    - bundle install
+    - bundle install --path /cache
     - make check
   when: on_success
