@@ -1,0 +1,1 @@
+[![Pipeline Status](https://gitlab.fa-wi.de/%{project_path}/badges/%{default_branch}/pipeline.svg)](https://gitlab.fa-wi.de/%{project_path}/-/commits/%{default_branch})
