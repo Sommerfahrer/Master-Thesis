@@ -1,0 +1,1 @@
+Latest PDF Version: [![Download PDF](https://img.shields.io/badge/Download-PDF-green)](https://gitlab.fa-wi.de/punicawaikiki/edf-master-thesis/-/jobs/artifacts/master/raw/EDF%20Master%20Thesis.pdf?job=compile)

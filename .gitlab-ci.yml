@@ -1,0 +1,10 @@
+compile:
+  image: registry.fa-wi.de/punicawaikiki/latex:latest
+  stage: build
+  script:
+    - bash compile_document.sh "$CI_PROJECT_TITLE"
+  artifacts:
+    paths:
+      - $CI_PROJECT_TITLE.pdf
+    expire_in: 1 week
+  when: on_success
