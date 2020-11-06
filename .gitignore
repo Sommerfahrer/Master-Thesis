@@ -26,5 +26,6 @@
 *.fdb_latexmk
 *.fls
 *.xdv
+*.pdf
 .DS_Store
 __pycache__
