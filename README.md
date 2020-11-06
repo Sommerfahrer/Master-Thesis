@@ -1,1 +1,1 @@
-[![Pipeline Status](https://gitlab.fa-wi.de/%{project_path}/badges/%{default_branch}/pipeline.svg)](https://gitlab.fa-wi.de/%{project_path}/-/commits/%{default_branch})
+[![Download PDF](https://img.shields.io/badge/Download-PDF-green)](https://gitlab.fa-wi.de/punicawaikiki/edf-master-thesis/-/jobs/artifacts/master/raw/EDF%20Master%20Thesis.pdf?job=compile)
