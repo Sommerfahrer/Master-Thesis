@@ -27,47 +27,33 @@ style=apa,
 ]{biblatex}
 \addbibresource{literatur.bib}
 
-\renewcaptionname{ngerman}{\tablename}{Table}
-\renewcaptionname{ngerman}{\figurename}{Figure}
-\renewcaptionname{ngerman}{\listtablename}{Tables}
-\renewcaptionname{ngerman}{\listfigurename}{Figures}
-
-\DeclareCaptionType{equ}[][List of equations]
-
-
 \begin{document}
 	\begin{titlepage}
-		\centering
-		{\scshape\LARGE Ravensburg-Weingarten University\par}
-		\vspace{1.5cm}
-		\begin{figure}[hb]
-			\centering
-			\rwulogo[width=0.4\columnwidth]
-		\end{figure}
-
-		\vspace{5cm}
-		{\scshape\Large Computer Vision\par}
-		\vspace{0.25cm}
-		{\huge\bfseries Image Classifier\par}
-		\vspace{6cm}
-		{\Large Fabian Wicker 32235\par}
-		\vfill
-		{\large \today\par}
+		\subfile{sections/Titelseite.tex}
 	\end{titlepage}
 	\clearpage 
 	\pagenumbering{Roman}
-	\section{Eidesstattliche Erklärung}
+	\section*{Eidesstattliche Erklärung}
 		\subfile{sections/Eidesstattliche_Erklaerung.tex}
-	\clearpage
-	\section{Aufgabenbeschreibung}
+		\clearpage
+	\section*{Aufgabenbeschreibung}
 		\subfile{sections/Aufgabenbeschreibung.tex}
-	\clearpage
+		\clearpage
+	\pagenumbering{arabic}
 	\tableofcontents
-	\clearpage
+		\clearpage
+	\section*{Abkürzungen}
+		\subfile{sections/Abkuerzungen.tex}
+		\clearpage
+	\section{Einführung}
+		\subfile{sections/Einfuehrung.tex}
+		\clearpage
+		\subsection{Echtzeitsysteme}
+			\subfile{sections/Echtzeitsysteme.tex}
+			\clearpage
 	\listoffigures
-	\clearpage
+		\clearpage
 	\listoftables
-	\clearpage
-	% \printbibliography{}
-	\clearpage
+		% \printbibliography{}
+		\clearpage
 \end{document}
