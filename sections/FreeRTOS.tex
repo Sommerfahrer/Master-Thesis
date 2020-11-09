@@ -2,6 +2,10 @@
 
 \begin{document}
     \ac{freertos} ist ein Echtzeitbetriebssystem für eingebettete Systeme, welches unter der freizügigen Open-Source Lizenz \href{https://de.wikipedia.org/wiki/MIT-Lizenz}{MIT} steht.
-    \ac{freertos} wurde weitestgehend in C entwickelt, der Scheduler ist zwischen präemptiver und kooperativer Betrieb konfigurierbar und wurde auf verschiedene Mikrocontroller portiert.
-    präimptiver und kooperativer betrieb beschreiben
+    Für eine leichte Wartbarkeit wurde \ac{freertos} weitestgehend in C entwickelt, außerdem ist der Scheduler des Betriebsystems zwischen präemptiver und kooperativer Betrieb konfigurierbar um verschiedene Einsatzzwecke abzudecken \parencite{wiki:002}.
+    Des Weiteren wurde \ac{freertos} auf über 40 Mikrocontroller-Architekturen portiert \parencite{freertos}, um eine größere Bandbreite zu erreichen.
+    Als Scheduler (zu Deutsch Steuerprogramm) wird eine Logik bezeichnet, welche die zeitliche Ausführung von mehreren Prozessen steuert und wird als präemptiver oder kooperativer Scheduler in Betriebssystemen eingesetzt.
+    Bei einem kooperativen Scheduling wird einem Prozess die benötigten Ressourcen übergeben und wartet, bis der Prozess vollständig abgearbeitet wurde.
+    Im Gegensatz zu einem kooperativen Scheduler kann ein präemptiven Scheduler ein Prozess die Ressourcen vor der Fertigstellung entziehen, um zwischenzeitlich diese anderen Prozessen zuzuweisen \parencite{wiki:003}.
+    \ac{freertos} hat wenig Overhead und der Kernel unterstützt Multithreading, Warteschlangen, Semaphore, Software-Timer, Mutexes und Eventgruppen \parencite{freertos-features}.
 \end{document}
