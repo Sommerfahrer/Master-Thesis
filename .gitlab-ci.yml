@@ -7,4 +7,5 @@ compile:
     paths:
       - $CI_PROJECT_TITLE.pdf
     expire_in: 1 week
+    keep_last: 1
   when: on_success
