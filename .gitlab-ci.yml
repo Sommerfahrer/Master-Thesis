@@ -6,5 +6,5 @@ compile:
   artifacts:
     paths:
       - $CI_PROJECT_TITLE.pdf
-    expire_in: 1 week
+    expire_in: 1d
   when: on_success
