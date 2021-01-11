@@ -1,6 +1,18 @@
 \documentclass[../EDF Master Thesis.tex]{subfiles}
 
 \begin{document}
-Ein Scheduler regelt die zeitliche Ausführung 
+Ein Scheduler regelt die zeitliche Ausführung von Prozessen des Betriebsystems als auch von Anwendungen.
+Dabei sortiert der der Scheduler die einzelnen Prozesse nach einem bestimmten Verfahren, wobei alle Verfahren in zwei Rubriken unterteilt werden können.
+\begin{itemize}
+    \item Kooperatives Scheduling: Übergibt den Prozess der CPU und wartet bis der Prozess abgeschlossen.
+    \item Präemptives Scheduling: Kann dem Prozess die CPU vor fertigstellung wieder entziehen, falls ein höher priorisierte Prozess zwischenzeitlich bearbeitet werden sollte.
+\end{itemize}
+Allgemein lassen sich die unterschiedliche Scheduler-Systeme in drei Rubriken unterteilen:
+\begin{itemize}
+    \item Stapelverarbeitungssysteme: Ankommende Prozesse werden nach Eingangszeit in eine Reihe (Queue) angeordnet, die dann nacheinander abgearbeitet wird.
+    \item Interaktive Systeme: Eingaben von Benutzen sollten schnellstmöglich abgearbeitet werden, weniger wichtige Aufgaben wie \ac[zb] die Aktualisierung der Uhrzeit werden unterbrochen oder erst im Nachhinein abgearbeitet.
+    \item Echtzeitsysteme: 
+\end{itemize}
+Für die Anordnung selbst, wann welcher Prozess ausgeführt wird, gibt es verschiedene Methoden.
 
 \end{document}
