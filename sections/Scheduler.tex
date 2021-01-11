@@ -7,33 +7,12 @@ Im Gegensatz zu einem kooperativen Scheduler kann ein präemptiven Scheduler ein
 
 Allgemein lassen sich die unterschiedliche Scheduler-Systeme in drei Rubriken unterteilen \parencite{wiki:007}:
 \begin{itemize}
-<<<<<<< HEAD
     \item \textbf{Stapelverarbeitungssysteme}: Ankommende Prozesse werden nach Eingangszeit in eine Reihe (Queue) angeordnet, die dann nacheinander abgearbeitet wird.
     \item \textbf{Interaktive Systeme}: Eingaben von Benutzen sollten schnellstmöglich abgearbeitet werden, weniger wichtige Aufgaben wie \ac{zb} die Aktualisierung der Uhrzeit werden unterbrochen oder erst im Nachhinein abgearbeitet.
     \item \textbf{Echtzeitsysteme}: Das Echtzeitsystem garantiert die Fertigstellung des Prozesses innerhalb einer definierten Zeitspanne, sofern die \ac{cpu} Auslastung nicht über 100\% beträgt.
 \end{itemize}
 Für die Anordnung selbst, wann welcher Prozess ausgeführt wird, gibt es verschiedene Arten von Scheduler.
 
-=======
-    \item Stapelverarbeitungssysteme: Ankommende Prozesse werden nach Eingangszeit in eine Reihe (Queue) angeordnet, die dann nacheinander abgearbeitet wird.
-    \item Interaktive Systeme: Eingaben von Benutzen sollten schnellstmöglich abgearbeitet werden, weniger wichtige Aufgaben wie \ac{zb} die Aktualisierung der Uhrzeit werden unterbrochen oder erst im Nachhinein abgearbeitet.
-    \item Echtzeitsysteme: Das Echtzeitsystem garantiert die Fertigstellung des Prozesses innerhalb einer definierten Zeitspanne, sofern die CPU Auslastung nicht über 100\% beträgt.
-\end{itemize}
-Für die Anordnung selbst, wann welcher Prozess ausgeführt wird, gibt es verschiedene Arten von Scheduler.
-
-
-\subsubsection{\ac{rms}}
-    RMS ist ein Scheduling-Verfahren, welches die Prioritäten einzelner Prozesse nach der Periodendauer statisch anordnet.
-    Je niedriger die Periode eines Prozesses ist, je höher ist dessen Priorität. \parencite{wiki:004}
-    % \begin{equ}[ht!]
-    %     \begin{equation}
-    %         \sum\limits_{i=1}^{n}{\frac{C_i}{T_i}} \le n \cdot \left(\sqrt[n]{2} -1\right)
-    %         \label{form: \ac{rms} Scheduling Grenzen}
-    %         % \caption{\parencite{wiki:004}}
-    %     \end{equation}
-    % \end{equ}
-
->>>>>>> 888ce562f1bc26616a5d7f8e067058a0790860f6
 
 \subsubsection{\ac{rms}}
     \ac{rms} ist ein präemptives Scheduling-Verfahren, welches die Prioritäten einzelner Prozesse nach deren Periodenlänge statisch anordnet.
