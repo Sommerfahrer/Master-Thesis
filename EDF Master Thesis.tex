@@ -22,13 +22,20 @@
 \usepackage{amsmath}
 \usepackage{tikz}
 \usepackage{float}
+\usepackage{scrhack}
+
 \usepackage[backend=biber,
 style=apa,
 ]{biblatex}
 \addbibresource{literatur.bib}
 
+\renewcaptionname{ngerman}{\tablename}{Table}
+\renewcaptionname{ngerman}{\figurename}{Figure}
+\renewcaptionname{ngerman}{\listtablename}{Tables}
+\renewcaptionname{ngerman}{\listfigurename}{Figures}
 
-\DeclareCaptionType{equ}[][List of equations]
+
+\DeclareCaptionType{equ}[Formel][Formelverzeichnis]
 
 % Codestyle preferences
 
@@ -74,12 +81,14 @@ style=apa,
 	\section*{Abstract}
 		\subfile{sections/Abstract.tex}
 		\clearpage
-	\pagenumbering{arabic}
 	\tableofcontents
 		\clearpage
+	\pagenumbering{arabic}
 	\section*{Abkürzungen}
 		\subfile{sections/Abkuerzungen.tex}
 		\clearpage
+	\listof{equ}{Formelverzeichnis}
+	\clearpage
 	\section{Grundlagen}
 		\subfile{sections/Einfuehrung.tex}
 		\subsection{Echtzeitsysteme}
