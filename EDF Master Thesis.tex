@@ -27,6 +27,38 @@ style=apa,
 ]{biblatex}
 \addbibresource{literatur.bib}
 
+
+\DeclareCaptionType{equ}[][List of equations]
+
+% Codestyle preferences
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+
 \begin{document}
 	\begin{titlepage}
 		\subfile{sections/Titelseite.tex}
@@ -48,19 +80,20 @@ style=apa,
 	\section*{Abkürzungen}
 		\subfile{sections/Abkuerzungen.tex}
 		\clearpage
-	\section{Einführung}
+	\section{Grundlagen}
 		\subfile{sections/Einfuehrung.tex}
-		\clearpage
 		\subsection{Echtzeitsysteme}
 			\subfile{sections/Echtzeitsysteme.tex}
 		\subsection{Scheduler}
 			\subfile{sections/Scheduler.tex}
 		\subsection{FreeRTOS}
 			\subfile{sections/FreeRTOS.tex}
+		\subsection{Periodische Tasks}
+			\subfile{sections/periodischeTasks.tex}
 		\clearpage
 	\listoffigures
 		\clearpage
 	\listoftables
-		% \printbibliography{}
+		\printbibliography{}
 		\clearpage
 \end{document}

@@ -1,0 +1,26 @@
+\documentclass[../EDF Master Thesis.tex]{subfiles}
+
+\begin{document}
+ Anwendungen auch Prozesse oder Tasks genannt, werden in Echtzeitsystemen oft periodisch, \ac{zb} das Abrufen eines Sensorwertes, ausgeführt.
+ Periodische Tasks setzen sich aus folgenden Parametern zusammen:
+ \begin{equ}[ht!]
+    \begin{equation}
+        T_i(\Phi_i, P_i, e_i, D_i)
+    \end{equation}
+    \begin{center}
+        \begin{tabular}{lcr}
+            $T_i$ & Task Nummer \\
+            $\Phi_i$ & Phase \\
+            $e_i$ & Ausführzeit (\ac{wcet}) \\
+            $D_i$ & Deadline \\
+        \end{tabular}
+    \end{center}
+    \caption{Parameter von periodischen Tasks}
+    \label{form:parameter_of_periodic_tasks}
+\end{equ}
+
+Mit diesen vier Parameter jeder einzelnen periodischen Tasks können die verschiedenen Scheduler-Verfahren die Ausführung der einzelnen Tasks planen und umsetzen.
+Im Zuge der Aufgabenstellung bei dieser Masterarbeit wurden keine Tasks mit einer Phasenverschiebung verlangt, daher kann der Parameter $\Phi_i = 0$ angesehen werden.
+\end{document}
+
+

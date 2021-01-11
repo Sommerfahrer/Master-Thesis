@@ -28,7 +28,7 @@
         \item \textbf{Synchrone Abarbeitung:} Im Gegensatz zur festen periodischen Abarbeitung können bei diesem Ansatz mehrere Aufgaben, wie \ac{zb} das Abfragen mehrere Sensoren und einer unterschiedlichen Reaktion darauf, erfüllt werden.
             Allerdings muss dabei die kleinste geforderte Reaktionszeit unter den Aufgaben die hälfte der maximalen Laufzeit für den Gesamtdurchlauf aller Aufgaben betragen.
             Dieser Ansatz wird vor allem für weiche Echtzeitsysteme verwendet, weil je nach Komplexität des Systems, das Vorhandensein mehrere Codepfade oder das Warten auf Ein- oder Ausgangssignalen mit unterschiedlicher Ausführungszeit ein Nichtdeterminismus besteht.
-        \item \textbf{Prozessbasierte Abarbeitung:} Bei diesem Ansatz können, wie auch bei der Synchronen Abarbeitung mehrere Aufgaben Aufgaben erledigt werden, jedoch mit viel höheren Komplexität.
+        \item \textbf{Prozessbasierte Abarbeitung:} Bei diesem Ansatz können, wie auch bei der Synchronen Abarbeitung mehrere Aufgaben erledigt werden, jedoch mit viel höheren Komplexität.
             Dabei laufen in der Regel verschieden Prozesse gleichzeitig und mit unterschiedlicher Priorität ab, geregelt durch das Echtzeitbetriebssystem.
             Die minimale Reaktionszeit definiert sich durch die Zeitdauer für einen Wechsel von einem Prozess niederer Priorität zu einem Prozess höherer Priorität, anschließend beginnt erst die Abarbeitung des Prozesses mit der höheren Priorität.
             Durch die Unterbrechung eines Prozesses niedriger Priorität zu einem Prozess höherer Priorität wird für diesen die Erfüllung einer harten Echtzeitanforderung erzwungen, dies wird auch als Präemptives Multitasking bezeichnet.
