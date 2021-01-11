@@ -5,6 +5,20 @@
 Für eine leichte Wartbarkeit wurde \ac{freertos} weitestgehend in C entwickelt, außerdem ist der Scheduler des Betriebsystems zwischen präemptiver und kooperativer Betrieb konfigurierbar um verschiedene Einsatzzwecke abzudecken \parencite{wiki:002}.
 Des Weiteren wurde \ac{freertos} auf über 40 Mikrocontroller-Architekturen portiert \parencite{freertos}, um eine größere Bandbreite zu erreichen.
 \ac{freertos} hat wenig Overhead und der Kernel unterstützt Multithreading, Warteschlangen, Semaphore, Software-Timer, Mutexes und Eventgruppen \parencite{freertos-features}.
+Des Weiteren stellt \ac{freertos} unter der Bezeichnung "FreeRTOS Plus" verschiedene Erweiterungen zur Verfügung, welche erweiterte Funktionen bereitstellen \parencite{freertos-extensions}.
+\begin{itemize}
+    \item \textbf{FreeRTOS + TCP}: Socketbasiertes \acs{tcp}/\acs{udp}/\acs{ip} Interface.
+    \item \textbf{Application Protocols}: \acs{mqtt} und \acs{http} Anwendungsprotokolle für \acs{iot}.
+    \item \textbf{coreJson}: Parser für \acs{json}
+    \item \textbf{corePKCS \#11}: Verschlüsselungs \acs{api}-Layer
+    \item \textbf{FreeRTOS + IO}: Erweiterung für Peripheriegeräte
+    \item \textbf{FreeRTOS + CLI}: Effiziente \acs{cli}-Eingaben
+\end{itemize}
+
+
+
+\subsubsection{Task States}
+
 
 
 

@@ -7,6 +7,7 @@
     "cSpell.language": "de,en",
     "cSpell.words": [
         "Multithreading",
+        "PKCS",
         "Raspbian",
         "Siemers",
         "WCET",
@@ -19,6 +20,7 @@
         "hostapd",
         "keepspaces",
         "keywordstyle",
+        "mqtt",
         "numbersep",
         "numberstyle",
         "showspaces",
