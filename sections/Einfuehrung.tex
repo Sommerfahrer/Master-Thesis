@@ -2,4 +2,15 @@
 
 \begin{document}
     Lückenfüller
+
+\begin{lstlisting}[language=C, caption=FreeRTOS Task creation and deletion]
+    createEDFTask(              // Task Creation
+        testFunc,               // Pointer to task entry function
+        "Test Function",        // A descriptive name for the task
+        300,                    // The number of words to allocate
+        NULL,                   // A value that will be passed into the task 
+        1,                      // WCET in ms
+        5,                      // Period of Task in ms
+        4 );                    // Deadline of Task in ms
+\end{lstlisting}
 \end{document}

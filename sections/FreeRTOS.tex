@@ -9,29 +9,46 @@ Des Weiteren stellt \ac{freertos} unter der Bezeichnung "FreeRTOS Plus" verschie
 \begin{itemize}
     \item \textbf{FreeRTOS + TCP}: Socketbasiertes \acs{tcp}/\acs{udp}/\acs{ip} Interface.
     \item \textbf{Application Protocols}: \acs{mqtt} und \acs{http} Anwendungsprotokolle für \acs{iot}.
-    \item \textbf{coreJson}: Parser für \acs{json}
-    \item \textbf{corePKCS \#11}: Verschlüsselungs \acs{api}-Layer
+    \item \textbf{coreJson}: Effizienter Parser für \acs{json}
+    \item \textbf{corePKCS\#11}: Verschlüsselungs \acs{api}-Layer
     \item \textbf{FreeRTOS + IO}: Erweiterung für Peripheriegeräte
     \item \textbf{FreeRTOS + CLI}: Effiziente \acs{cli}-Eingaben
 \end{itemize}
 
+Im Zuge dieser Masterarbeit wurde als einziges der Stack '\ac{freertos} + \ac{tcp}' für die Verbindung zwischen Computer und Mikrocontroller.
+
 \subsubsection{Overhead und Footprint}
+Die Dauer eines Context Switches, auch Taskwechsel genannt, zwischen zwei tasks ist abhängig von dem Port, dem Compiler und der Konfiguration von FreeRTOS.
+FreeRTOS selbst gibt ein Beispiel anhand einer Cortex-M3 CPU eine Taskwechsel Zeit von 84 \ac{cpu} Zyklen an \parencite{freertos-overhead}.
+Der minimale \ac{ram}- und \ac{rom}-Footprint wird zwischen 6kByte und 12kByte angegeben \parencite{freertos-footprint}.
 
 \subsubsection{Task States}
+In FreeRTOS erzeugte Tasks können vier verschiedene Zustände haben \parencite{freertos-task-states}:
+
+\begin{itemize}
+    \item \textbf{Running}: Wird gerade ausgeführt.
+    \item \textbf{Ready}: Ist bereit zur Ausführung.
+    \item \textbf{Blocked}: Wartet auf ein Event, kann nicht ausgeführt werden.
+    \item \textbf{Suspended}: Wurde temporär deaktiviert.
+\end{itemize}
+
+Ein Ablaufdiagramm der einzelnen Zustände und deren Wechsel mit Hilfe von \ac{freertos} Funktionen wird in \autoref{fig:FreeRTOS_Task_States} dargestellt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=12cm, width=12cm]{./attachments/FreeRTOS Task States.pdf}
+    \caption{FreeRTOS Task States Quelle: \parencite{freertos-task-states}}
+    \label{fig:FreeRTOS_Task_States}
+\end{figure}
+
+\subsubsection{Interrupts}
+Interrupts werden durch ein Ereignis ausgelöst, \ac{zb} von einem bestimmten Wert eines Timers und führt zur einer Unterbrechung der aktuellen Programmausführung, um in der Regel kurzen, aber zeitlich kritischen, Vorgang abzuarbeiten.
+Nach der Unterbrechungsanforderung (\ac{irq}) führt der Prozessor eine Unterbrechungsroutine (\ac{isr}) mit erweiterten Privilegien ausgeführt.
+Im Anschluss wird der vorherige Zustand des Prozessors wiederhergestellt und die vorherige Ausführung an der unterbrochenen Stelle fortgesetzt \parencite{wiki:008}.
 
 
-
-
-
-\begin{lstlisting}[language=C, caption=FreeRTOS Task creation and deletion]
-    createEDFTask(              // Task Creation
-        testFunc,               // Pointer to task entry function
-        "Test Function",        // A descriptive name for the task
-        300,                    // The number of words to allocate
-        NULL,                   // A value that will be passed into the task 
-        1,                      // WCET in ms
-        5,                      // Period of Task in ms
-        4 );                    // Deadline of Task in ms
-    \end{lstlisting}
-
+\subsubsection{\ac{freertos} Sys-Tick}
+Der \ac{freertos} Sys-Tick, auch System Tick genannt, ist fundemental für die Taskwechsel in \ac{freertos}, dieser Interrupt wird standartmäßig jede Millisekunde aufgerufen.
+Dieser Wert bietet eine gute Balance zwischen Taskgeschwindigkeit und Overhead von Taskwechsel.
+Bei jedem Sys-Tick wird die \ac{freertos} Funktion 'vTaskSwitchContext()' aufgerufen, diese überprüft ob eine höher priorisierte Task unblocked, also ausführbar geworden ist und falls dies zutrifft wird ein Taskwechsel auf die höher priorisierte Task durchgeführt.
 \end{document}
