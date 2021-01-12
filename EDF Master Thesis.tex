@@ -84,6 +84,22 @@ style=apa,
 	\tableofcontents
 		\clearpage
 	\pagenumbering{arabic}
+	\listof{equ}{Formelverzeichnis}
+	\clearpage
+	\section{Grundlagen}
+		\subfile{sections/Einfuehrung.tex}
+		\subsection{Echtzeitsysteme}
+			\subfile{sections/Echtzeitsysteme.tex}
+		\subsection{Scheduler}
+			\subfile{sections/Scheduler.tex}
+		\subsection{FreeRTOS}
+			\subfile{sections/FreeRTOS.tex}
+		\subsection{Periodische Tasks}
+			\subfile{sections/periodischeTasks.tex}
+		\clearpage
+	\section{Plattform}
+		\subfile{sections/Plattform.tex}
+		\clearpage
 	% Abkürzungen
 	\section*{Abkürzungsverzeichnis}
 	\begin{acronym}[abkuerzungen]
@@ -113,22 +129,6 @@ style=apa,
 		\acro{isr}[ISR]{Interrupt Service Routine}
 	\end{acronym}
 	\clearpage
-	\listof{equ}{Formelverzeichnis}
-	\clearpage
-	\section{Grundlagen}
-		\subfile{sections/Einfuehrung.tex}
-		\subsection{Echtzeitsysteme}
-			\subfile{sections/Echtzeitsysteme.tex}
-		\subsection{Scheduler}
-			\subfile{sections/Scheduler.tex}
-		\subsection{FreeRTOS}
-			\subfile{sections/FreeRTOS.tex}
-		\subsection{Periodische Tasks}
-			\subfile{sections/periodischeTasks.tex}
-		\clearpage
-	\section{Plattform}
-		\subfile{sections/Plattform.tex}
-		\clearpage
 	\listoffigures
 		\clearpage
 	\listoftables
