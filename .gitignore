@@ -26,6 +26,5 @@
 *.fdb_latexmk
 *.fls
 *.xdv
-*EDF Master Thesis.pdf
 .DS_Store
 __pycache__
