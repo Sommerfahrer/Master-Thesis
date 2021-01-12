@@ -17,6 +17,21 @@ Des Weiteren stellt \ac{freertos} unter der Bezeichnung "FreeRTOS Plus" verschie
 
 Im Zuge dieser Masterarbeit wurde als einziges der Stack '\ac{freertos} + \acs{tcp}' für die Verbindung zwischen Computer und Mikrocontroller.
 
+\subsubsection{\ac{freertos} Scheduling Richtlinie}
+Der \ac{freertos} Scheduler arbeitet prioritätsbasiert und beinhaltet standartmäßig hauptsächlich zwei Eigenschaften:
+\begin{itemize}
+    \item \textbf{Time Slicing Scheduling Policy}: Gleich priorisierte Tasks erhalten die gleiche Anteile an \ac{cpu}-Zeit, dieses Verfahren ist auch als 'Round-Robin Algorithmus' bekannt.
+    \item \textbf{Fixed Priority Preemptive Scheduling}: Es wird immer die Task ausgeführt, mit der höchsten Priorität.
+                                                         Das bedeutet eine niedriger priorisierte Task bekommt nur \ac{cpu}-Zeit, wenn die höher priorisierten Tasks nicht den 'ready'-Status besitzen.
+                                                         Teilen sich zwei Tasks gleichzeitig die höchste Priorität, tritt die Time Slicing Scheduling Policy in Kraft.
+\end{itemize}
+Um einen oder beide dieser Eigenschaften abzuschalten, kann dies unter der Datei 'FreeRTOSConfig.h', wie in \autoref{code:freertos_scheduling_policies} dargestellt, abgeändert werden \parencite{freertos-scheduling-policy}.
+\begin{lstlisting}[language=C, caption=FreeRTOS Scheduling Policy Properties, label=code:freertos_scheduling_policies]
+    #define configUSE_PREEMPTION                    ( 1 )
+    #define configUSE_TIME_SLICING                  ( 1 )
+\end{lstlisting}
+
+
 \subsubsection{Overhead und Footprint}
 Die Dauer eines Context Switches, auch Taskwechsel genannt, zwischen zwei tasks ist abhängig von dem Port, dem Compiler und der Konfiguration von FreeRTOS.
 FreeRTOS selbst gibt ein Beispiel anhand einer Cortex-M3 CPU eine Taskwechsel Zeit von 84 \ac{cpu} Zyklen an \parencite{freertos-overhead}.
@@ -36,8 +51,8 @@ Ein Ablaufdiagramm der einzelnen Zustände und deren Wechsel mit Hilfe von \ac{f
 
 \begin{figure}[H]
     \centering
-    \includegraphics[height=12cm, width=12cm]{./attachments/FreeRTOS_Task_States.pdf}
-    \caption{FreeRTOS Task States Quelle: \parencite{freertos-task-states}}
+    \includegraphics[height=10cm, width=10cm]{./attachments/FreeRTOS_Task_States.pdf}
+    \caption{FreeRTOS Task States \ac{iaa}: \parencite{freertos-task-states}}
     \label{fig:FreeRTOS_Task_States}
 \end{figure}
 
@@ -51,4 +66,9 @@ Im Anschluss wird der vorherige Zustand des Prozessors wiederhergestellt und die
 Der \ac{freertos} Sys-Tick, auch System Tick genannt, ist fundemental für die Taskwechsel in \ac{freertos}, dieser Interrupt wird standartmäßig jede Millisekunde aufgerufen.
 Dieser Wert bietet eine gute Balance zwischen Taskgeschwindigkeit und Overhead von Taskwechsel.
 Bei jedem Sys-Tick wird die \ac{freertos} Funktion 'vTaskSwitchContext()' aufgerufen, diese überprüft ob eine höher priorisierte Task unblocked, also ausführbar geworden ist und falls dies zutrifft wird ein Taskwechsel auf die höher priorisierte Task durchgeführt.
+
+\subsubsection{\ac{freertos} Queues}
+Queues, zu Deutsch Warteschlange, werden oft, auch außerhalb von \ac{freertos} für die sichere Kommunikation zwischen verschiedenen Tasks und/oder Interrupts verwendet.
+Diese Implementierung von \ac{freertos} vermeidet Fehler wie ein Deadlock, \ac{zb} eine höher priorisierte Task wartet auf einen Wert einer niederen priorisierten Task, wobei die niedere priorisierte Task nie ausgeführt wird.
+Dabei wird oft das Prinzip \ac{fifo} verwendet, um eine zeitliche Abarbeitung der Daten abzuarbeiten.
 \end{document}

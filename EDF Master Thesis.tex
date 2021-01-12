@@ -33,9 +33,11 @@ style=apa,
 \renewcaptionname{ngerman}{\figurename}{Figure}
 \renewcaptionname{ngerman}{\listtablename}{Tables}
 \renewcaptionname{ngerman}{\listfigurename}{Figures}
+\renewcommand{\lstlistingname}{Programmcode}
 
 
 \DeclareCaptionType{equ}[Formel][Formelverzeichnis]
+\DeclareCaptionType{code}[Code][Codeverzeichnis]
 
 % Codestyle preferences
 
@@ -99,6 +101,8 @@ style=apa,
 			\subfile{sections/FreeRTOS.tex}
 		\subsection{Periodische Tasks}
 			\subfile{sections/periodischeTasks.tex}
+		\subsection{\ac{udp}}
+			\subfile{sections/udp.tex}
 		\clearpage
 	\section{Plattform}
 		\subfile{sections/Plattform.tex}

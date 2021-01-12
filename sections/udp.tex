@@ -1,0 +1,14 @@
+\documentclass[../EDF Master Thesis.tex]{subfiles}
+
+\begin{document}
+    Für die Erfüllung der Aufgabe dieser Masterarbeit musste ein Kommunikationsmittel zwischen Computer und Mikrocontroller ausgesucht werden, welches verschiedene Eigenschaften erfüllt:
+    \begin{itemize}
+        \item \textbf{verbindungslos}: Der Sender sendet Daten ohne eine Bestätigung des Eingangs der Daten zu bekommen.
+                                       Dies hat den Vorteil einer latenzärmeren Datenübertragung.
+        \item \textbf{wenig Overhead}: Das Empfangen und Senden sollte so wenig wie möglich Ressourcen, wie \ac{cpu}-Zeit, blockieren.
+        \item \textbf{hohe Übertragungsrate}: Es sollten so viele Daten wie möglich, innerhalb einer bestimmten Zeit übertragen.
+    \end{itemize}
+
+    Aus diesen Gründen wurde das Netzwerkprotokoll \ac{udp}, welches heutzutage in vielen Anwendungen, wie \ac{zb} \ac{IP}-Telefonie und Videostreams, verwendet.
+    Für den Verbindungsaufbau verwendet \ac{udp} Ports, welche Teil einer Netzwerk-Adresse darstellen, um versendete Daten dem gewünschten Programm an der Gegenstelle zukommen zu lassen \parencite{wiki:009}.
+\end{document}
