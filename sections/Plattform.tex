@@ -1,5 +1,19 @@
 \documentclass[../EDF Master Thesis.tex]{subfiles}
 
 \begin{document}
-...
+
+Als Platform für dieses Projekt dient ein STM32F769I-Disc0 board der Firma ST.
+Dieses beinhaltet einen ARM®Cortex®-M7 Prozessor und hat für die verwendete Arbeit mehr als ausreichende Rechenleistung.
+Für die Kommunikation zwischen Host-Computer und Mikrocontroller wurde die Ethernet Schnittstelle verwendet, des Weiteren wurde eine 'Debug-Flag' integriert, welche über den integrierten \ac{usart} Debug Informationen sendet.
+Dieses Flag sollte allerdings nicht im produktivbetrieb benutzt werden, da dies zu unvorhersehbaren Verzögerungen der Tasks und im Scheduling kommen kann.
+Für die visuelle Demo-Applikation wurden außerdem die drei, auf dem Board integrierten, LEDs benutzt.
+
+\begin{figure}[ht!]
+    \begin{center}
+        \includegraphics[width=0.6\textwidth]{attachments/stm32f769i-disc0.pdf}
+    \end{center}
+    \caption{STM32F769I-Disc0 Board, Quelle: \autocite{stm:001}}
+    \label{fig:STM32F769I-Disc0_board}
+\end{figure}
+
 \end{document}
