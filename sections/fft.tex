@@ -2,7 +2,7 @@
 
 \begin{document}
 
-Die \ac{dft} kann ein zeitdiskretes Signal in dessen Frequenzteile (Spektrum) aufspalten, wie in \autoref{fig:aufspaltung_eines_Signals_in_dessen_Frequenzteile}, dies ist sehr nützlich für viele Bereiche der Signalverarbeitung \ac{zb} für das Komprimieren von Musikaufnahmen, wo nicht hörbare Frequenzen rausgefiltert werden.
+Die \ac{dft} kann ein zeitdiskretes Signal in dessen Frequenzteile (Spektrum) aufspalten, wie in \autoref{fig:aufspaltung_eines_Signals_in_dessen_Frequenzteile} dargestellt. Dies ist sehr nützlich für viele Bereiche der Signalverarbeitung \ac{zb} für das Komprimieren von Musikaufnahmen, wo nicht hörbare Frequenzen rausgefiltert werden.
 
 \begin{figure}[ht!]
     \includegraphics[width=1\textwidth]{attachments/fft_example.pdf}
@@ -10,10 +10,20 @@ Die \ac{dft} kann ein zeitdiskretes Signal in dessen Frequenzteile (Spektrum) au
     \label{fig:aufspaltung_eines_Signals_in_dessen_Frequenzteile}
 \end{figure}
 
-Jedoch steigt bei der Berechnung der \ac{dft} die Komplexität $O$ der Berechnung mit $O(N) = (N^2)$, wobei $n$ für die Anzahl von Abtastpunkten darstellt.
+Bei der Berechnung einer \ac{dft} steigt dessen Komplexität $O$ mit der Anzahl der Abtastpunkte $N$ quadratisch an, wie in der \autoref{form:berechnung_der_dft_komplexitaet} dargestellt.
 Dies führt dazu, dass eine reine Berechnung mit Hilfe der \ac{dft} auf kleinen Mikrocontrollern häufig nicht praktikabel ist.
-Die \ac{fft} stellt ein Algorithmus dar, mit der der Rechenaufwand deutlich reduziert wird.
-Aus diesem Grund wird häufig die \ac{fft} benutzt, die nach dem 'Teile und Herrsche'-Verfahren funktioniert und nur noch einen Aufwand von $O(N) = (N * log(N))$ besitzt \autocite{fft:001}.
+
+\begin{equ}[ht!]
+    \begin{equation}
+        O(N) = (N^2)
+    \end{equation}
+    \caption{Berechnung der \ac{dft} Komplexität}
+    \label{form:berechnung_der_dft_komplexitaet}
+\end{equ}
+
+
+Im Gegensatz zur \ac{dft} stellt die \ac{fft} ein Algorithmus dar, mit der der Rechenaufwand deutlich reduziert wird.
+Aus diesem Grund wird häufig die \ac{fft} benutzt, die nach dem 'Teile und Herrsche'-Verfahren funktioniert und nur noch eine Komplexität von $O(N) = (N * log(N))$ besitzt \autocite{fft:001}.
 Durch diese enorme Zeit- und Rechenersparnis fand die \ac{fft} in vielen Bereichen, wie \ac{zb} in Ingenieurswissenschaften, Musik, Wissenschaft und der Mathematik Verwendung \autocite{wiki:010}.
 Für die Berechnung der \ac{fft} sind mehrere Algorithmen verfügbar, wobei in dieser Masterarbeit der Radix-2 Algorithmus von der \ac{cmsis}-\ac{dsp} Bibliothek verwendet wurde.
 Als Vorraussetzung des Algorithmus der \ac{fft} muss die Anzahl der Messwerte $N$, auch Samples genannt, einer Zweierpotenz entsprechen.
