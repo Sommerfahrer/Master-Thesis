@@ -2,7 +2,14 @@
 
 \begin{document}
 
-Die \ac{dft} kann ein zeitdiskretes Signal in dessen Frequenzteile (Spektrum) aufspalten, dies ist sehr nützlich für viele Bereiche der Signalverarbeitung \ac{zb} für das Komprimieren von Musikaufnahmen, wo nicht hörbare Frequenzen rausgefiltert werden.
+Die \ac{dft} kann ein zeitdiskretes Signal in dessen Frequenzteile (Spektrum) aufspalten, wie in \autoref{fig:aufspaltung_eines_Signals_in_dessen_Frequenzteile}, dies ist sehr nützlich für viele Bereiche der Signalverarbeitung \ac{zb} für das Komprimieren von Musikaufnahmen, wo nicht hörbare Frequenzen rausgefiltert werden.
+
+\begin{figure}[ht!]
+    \includegraphics[width=1\textwidth]{attachments/fft_example.pdf}
+    \caption{Aufspaltung eines Signals in dessen Frequenzteile}
+    \label{fig:aufspaltung_eines_Signals_in_dessen_Frequenzteile}
+\end{figure}
+
 Jedoch steigt bei der Berechnung der \ac{dft} die Komplexität $O$ der Berechnung mit $O(N) = (N^2)$, wobei $n$ für die Anzahl von Abtastpunkten darstellt.
 Dies führt dazu, dass eine reine Berechnung mit Hilfe der \ac{dft} auf kleinen Mikrocontrollern häufig nicht praktikabel ist.
 Die \ac{fft} stellt ein Algorithmus dar, mit der der Rechenaufwand deutlich reduziert wird.
