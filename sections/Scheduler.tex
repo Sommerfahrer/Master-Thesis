@@ -14,7 +14,7 @@ Allgemein lassen sich die unterschiedliche Scheduler-Systeme in drei Rubriken un
 Für die Anordnung selbst, wann welcher Prozess ausgeführt wird, gibt es verschiedene Arten von Scheduler.
 
 
-\subsubsection{\ac{rms}}
+\subsubsection{\ac{rms}} \label{section:rms}
     \ac{rms} ist ein präemptives Scheduling-Verfahren, welches die Prioritäten einzelner Prozesse nach deren Periodenlänge statisch anordnet.
     Je niedriger die Periode eines Prozesses ist, je höher ist dessen Priorität.
     Mit Hilfe der Gleichung \ref{form:rms_CPU_utilization} kann die maximale Menge an Jobs, die mit \ac{rms} verarbeitet werden können, berechnet werden.
@@ -37,11 +37,11 @@ Für die Anordnung selbst, wann welcher Prozess ausgeführt wird, gibt es versch
         \caption{\ac{rms} Berechnung der \ac{cpu}-Auslastung \parencite{wiki:004}}
         \label{form:rms_CPU_utilization}
     \end{equ}
-\subsubsection{\ac{dms}}
+\subsubsection{\ac{dms}} \label{section:dms}
     Analog zu \ac{rms} arbeitet \ac{dms} präemptiv prioritätsbasiert, wobei bei \ac{dms} der Prozess mit der kürzesten Deadline die höchste Priorität bekommt. 
     Falls bei der Abarbeitung des aktuellen Prozesses ein neuer Prozess mit einer höheren Priorität eintrifft, wird der aktuelle Prozess unterbrochen und der Prozess mit der höheren Priorität bekommt die Rechenzeit.
     Die Berechnung der maximalen Auslastung erfolgt mit der gleichen Formel \ref{form:rms_CPU_utilization}, dies führt zur gleichen maximalen Auslastung von 69,3\%, bei der keine Deadline überschritten werden \parencite{wiki:006}.
-\subsubsection{\ac{edf}}
+\subsubsection{\ac{edf}} \label{section:edf}
     Im Unterschied zu \ac{dms} wird bei \ac{edf} beim Eintreffen eines Prozesses mit höherer Priorität der aktuelle Prozess mit niedriger Priorität nicht unterbrochen, auch sind die Prioritäten nicht statisch, sondern werden bei jedem Scheduling-Vorgang neu vergeben.
     Ein Context Switch, das heißt ein Wechsel zwischen den Prozessen, findet nur vor Beginn eines Prozesses oder am Ende eines Prozesses statt.
     In Zuge dieser Masterarbeit wird ein Context Switch nur nach Beendigung eines Prozesses ausgelöst, sofern ein anderer Prozess eine höhere Priorität erhalten hat.

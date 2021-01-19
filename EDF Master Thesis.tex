@@ -91,23 +91,25 @@ style=apa,
 		\clearpage
 	\listof{equ}{Formelverzeichnis}
 	\clearpage
-	\section{Grundlagen}
+	\section{Grundlagen} \label{section:grundlagen}
 		\subfile{sections/Einfuehrung.tex}
-		\subsection{Echtzeitsysteme}
+		\subsection{Echtzeitsysteme} \label{section:echtzeitsysteme}
 			\subfile{sections/Echtzeitsysteme.tex}
-		\subsection{Scheduler}
+		\subsection{Scheduler} \label{section:scheduler}
 			\subfile{sections/Scheduler.tex}
-		\subsection{FreeRTOS}
+		\subsection{FreeRTOS} \label{section:freertos}
 			\subfile{sections/FreeRTOS.tex}
-		\subsection{Periodische Tasks}
+		\subsection{Periodische Tasks} \label{section:periodische_tasks}
 			\subfile{sections/periodischeTasks.tex}
-		\subsection{\ac{udp}}
+		\subsection{\ac{udp}} \label{section:udp}
 			\subfile{sections/udp.tex}
-		\subsection{\ac{fft}}
+		\subsection{\ac{fft}} \label{section:fft}
 			\subfile{sections/fft.tex}
-		\clearpage
-	\section{Plattform}
-		\subfile{sections/Plattform.tex}
+		\subsection{Plattform} \label{section:plattform}
+			\subfile{sections/Plattform.tex}
+	\clearpage
+	\section{Der EDF Scheduler} \label{section:der_edf_scheduler}
+		\subfile{sections/Der_EDF_Scheduler.tex}
 		\clearpage
 	\listoffigures
 		\clearpage

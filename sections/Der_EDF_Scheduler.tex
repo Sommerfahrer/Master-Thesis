@@ -1,0 +1,25 @@
+\documentclass[../EDF Master Thesis.tex]{subfiles}
+
+\begin{document}
+
+Der \ac{edf} Scheduler lässt sich mit einer einzelnen C-Datei, sowie einer Header-Datei in \ac{freertos} implementieren.
+Dies vereinfacht die Implementierung auf andere \ac{freertos} Versionen, sowie auch das portieren auf andere Plattformen.
+Um die Portabilität weiter zu ermöglichen, wurde der \ac{freertos} SystemTick (SysTick) mit der standartmäßigen Genauigkeit von einer Millisekunde und nicht einen weiteren benutzerdefinierten Timer, wie es die Cortex-M Serie ermöglicht, benutzt.
+Daher resultiert auch die Genauigkeit des Schedulers von einer Millisekunde, wobei auftauchende Interrupts vernachlässigt werden.
+Die Periode des SysTick lässt sich unter der Datei 'FreeRTOSConfig.h' einstellen, jedoch ändert sich somit auch die Genauigkeit des \ac{edf} Schedulers.
+Als Standart ist bei einer \ac{freertos} Installation eine Millisekunde definiert, welche für den \ac{edf} Scheduler einen guten Kompromiss zwischen Applikationslaufzeit und Genauigkeit bietet.
+
+\subsection{Implementierung} \label{section:implementierung}
+    Um eine einfache und zugleich sehr schnelle Implementierung eines \ac{edf} Schedulers in \ac{freertos} zu gewährleisten, wurde in dieser Arbeit der \ac{freertos} Scheduler weiterverwendet.
+    Der \ac{freertos} Scheduler arbeitet, wie in \autoref{section:freertos_scheduling_richtlinie} bereits behandelt, prioritätsbasiert.
+    Durch den aufruf einer in dieser Masterarbeit entworfene Funktion am Ende jeder \ac{edf} Task, wird zwischen allen erstellten \ac{edf} Tasks, die Priorität der nächsten Task nachdem \c{edf} Prinzip auf die höchste Priorität gesetzt und die aktive Task auf eine niedere Priorität als die \ac{freertos} Idle Task gesetzt.
+    
+
+
+Ein weiteres Feature des \ac{edf} Schedulers ist, dass durch die weiterverwendung des standart Scheduler von \ac{freertos}, dieser parallel verwendet werden kann, allerdings ist zu beachten, dass eine höhere priorisierte Task, als die des \ac{edf} Schedulers definierte höchste Task, die Deadlines der \ac{edf} Tasks zu überziehen.
+Auf der anderen Seite wird eine niedrigere priorisierte Task, wie von dem \ac{edf} Scheduler ausgewählte Task, niemals ausgeführt wird.
+
+Für die Implementierung des \ac{edf} Scheduler in \ac{freertos} wurde darauf geachtet, dass keine Programmabschnitte von \ac{freertos} selbst modifiziert wurden.
+Dadurch ist es möglich, 
+
+\end{document}
