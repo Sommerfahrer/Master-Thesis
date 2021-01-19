@@ -4,22 +4,61 @@
 
 Der \ac{edf} Scheduler lässt sich mit einer einzelnen C-Datei, sowie einer Header-Datei in \ac{freertos} implementieren.
 Dies vereinfacht die Implementierung auf andere \ac{freertos} Versionen, sowie auch das portieren auf andere Plattformen.
-Um die Portabilität weiter zu ermöglichen, wurde der \ac{freertos} SystemTick (SysTick) mit der standartmäßigen Genauigkeit von einer Millisekunde und nicht einen weiteren benutzerdefinierten Timer, wie es die Cortex-M Serie ermöglicht, benutzt.
-Daher resultiert auch die Genauigkeit des Schedulers von einer Millisekunde, wobei auftauchende Interrupts vernachlässigt werden.
-Die Periode des SysTick lässt sich unter der Datei 'FreeRTOSConfig.h' einstellen, jedoch ändert sich somit auch die Genauigkeit des \ac{edf} Schedulers.
+Um die Portabilität weiter zu vereinfachen, wurde der \ac{freertos} SystemTick (SysTick) mit der standartmäßigen Genauigkeit von einer Millisekunde und nicht ein weiterer benutzerdefinierter Timer, wie es die Cortex-M Serie ermöglicht, benutzt.
+Aus dieser Entscheidungen resultiert auch die Genauigkeit des Schedulers von einer Millisekunde, wobei auftauchende Interrupts, wie die \ac{cpu} Zeit des SysTick, in dieser Arbeit vernachlässigt werden.
+Die Periode des SysTick lässt sich unter der Datei 'FreeRTOSConfig.h' , wie in der \autoref{section:freertos_sys_tick} einstellen, jedoch ändert sich dabei auch die Genauigkeit des \ac{edf} Schedulers.
 Als Standart ist bei einer \ac{freertos} Installation eine Millisekunde definiert, welche für den \ac{edf} Scheduler einen guten Kompromiss zwischen Applikationslaufzeit und Genauigkeit bietet.
 
+\begin{lstlisting}[language=C, caption=FreeRTOS Idle Task Hook, label=code:freertos_idle_task_hook]
+    #define configTICK_RATE_HZ						( 1000 ) // 1ms SysTick
+\end{lstlisting}
+
 \subsection{Implementierung} \label{section:implementierung}
-    Um eine einfache und zugleich sehr schnelle Implementierung eines \ac{edf} Schedulers in \ac{freertos} zu gewährleisten, wurde in dieser Arbeit der \ac{freertos} Scheduler weiterverwendet.
+    Um eine einfache und zugleich sehr performante Implementierung eines \ac{edf} Schedulers in \ac{freertos} zu gewährleisten, wurde in dieser Arbeit der \ac{freertos} Scheduler weiterverwendet.
     Der \ac{freertos} Scheduler arbeitet, wie in \autoref{section:freertos_scheduling_richtlinie} bereits behandelt, prioritätsbasiert.
-    Durch den aufruf einer in dieser Masterarbeit entworfene Funktion am Ende jeder \ac{edf} Task, wird zwischen allen erstellten \ac{edf} Tasks, die Priorität der nächsten Task nachdem \c{edf} Prinzip auf die höchste Priorität gesetzt und die aktive Task auf eine niedere Priorität als die \ac{freertos} Idle Task gesetzt.
+    Mit dem Aufruf der Funktion 'rescheduleEDF' am Ende jeder \ac{edf} Task, wird zwischen allen erstellten \ac{edf} Tasks, die Priorität der nächsten Task nachdem \ac{edf}-Prinzip auf die höchste Priorität gesetzt und die aktive Task auf eine niedere Priorität als die \ac{freertos} Idle Task gesetzt.
+    Anschließend wird ein Context Switch ausgelöst und die nach dem \ac{edf}-Prinzip nächste Task wird mit \ac{freertos} Scheduler aufgerufen und ausgeführt.
+    Falls alle \ac{edf} Tasks bereits in Ihrer Periode ausgeführt wurden und alle Deadlines der Tasks weiter als ihre Periode in der Zukunft liegen, wird die \ac{freertos} Idle Task aufgerufen.
+
+    \begin{center}
+        \begin{table}[ht!]
+            \begin{tabular}{l|c}
+                Tasks & Priorität \\
+                \hline
+                Deaktivierte \ac{edf} Task(s) & 0\\
+                \ac{freertos} Idle Task & 1\\
+                Auführende \ac{edf} Task & 2\\
+                'rescheduleEDF' ausführende Task & 3
+            \end{tabular}
+            \caption{\ac{edf}-Prioritäten der Tasks}
+            \label{table:edf_prioritaeten_der_tasks}
+        \end{table}
+    \end{center}
+
+    Der \ac{edf} Scheduler arbeitet mit vier unterschiedlichen Prioritäten, wie in \autoref{table:edf_prioritaeten_der_tasks} dargestellt und inkrementiert bei der Implementierung die Idle Task von der niedrigsten Priorität '0' auf die zweit niedrigste Priorität '1' in der \ac{freertos} Umgebung.
+    Alle \ac{edf} Tasks die nicht ausgeführt werden sollen, erhalten die Priorität 0, das führt dazu, dass die Idle Task immer ausgeführt wird und verhindert die nicht gewollte Ausführung einer \ac{edf} Task.
+    Um ein \ac{edf} Scheduling in der Idle Task zu ermöglichen, wird die 'rescheduleEDF'-Funktion mit Hilfe des Idle Task Hook, wie in \autoref{code:freertos_idle_task_hook} beschrieben, aufgerufen.
+    Die Task, welche aktuell ausgeführt wurde und nun am Ende die 'rescheduleEDF'-Funktion ausführt, erhält während der Funktionsausführung die höchste \ac{edf}-Priorität mit dem Wert '3', um einen vorzeitigen Context Switch zur nächsten, nach dem \ac{edf}-Prinzip ausgewählte Task, zu unterbinden.
+    Nachdem alle \ac{edf}-Parameter von allen \ac{edf} Tasks neu gesetzt wurden, gibt die aktuelle Task die höchste Priorität mit dem '3' ab und erzwingt einen Context Switch zu der nächsten zu ausführenden \ac{edf} Task mit der Priorität '2'.
     
 
 
-Ein weiteres Feature des \ac{edf} Schedulers ist, dass durch die weiterverwendung des standart Scheduler von \ac{freertos}, dieser parallel verwendet werden kann, allerdings ist zu beachten, dass eine höhere priorisierte Task, als die des \ac{edf} Schedulers definierte höchste Task, die Deadlines der \ac{edf} Tasks zu überziehen.
-Auf der anderen Seite wird eine niedrigere priorisierte Task, wie von dem \ac{edf} Scheduler ausgewählte Task, niemals ausgeführt wird.
+\subsection{Rescheduling Ablauf} \label{section:rescheduling_ablauf}
 
-Für die Implementierung des \ac{edf} Scheduler in \ac{freertos} wurde darauf geachtet, dass keine Programmabschnitte von \ac{freertos} selbst modifiziert wurden.
-Dadurch ist es möglich, 
+    Wie in \autoref{section:implementierung} erwähnt, wird mit Hilfe der Funktion 'rescheduleEDF' und dem unveränderten \ac{freertos} Scheduler der \ac{edf} Scheduler implementiert.
+
+
+\subsection{Fehlerbehandlung} \label{section:Fehlerbehandlung}
+
+    Sollten zwei \ac{edf} Tasks die gleichen Deadline besitzen, wird die Task, die bisher weniger Ausführungen vorweist, als nächste zu ausführende Task ausgesucht.
+    Falls eine Task ihre Deadline überschritten hat oder die Zeit für die Ausführung nicht mehr reicht, werden die \ac{edf} Parameter angepasst.
+    Dadurch wird keine Task bei der Fehlerbehandlung bevorzugt oder benachteiligt, wobei natürlich die Task mit der kürzesten Deadline und der kleinsten Periode eine höhere Wahrscheinlichkeit besitzt, ausgeführt zu werden. 
+
+\subsection{Debug Mode} \label{section:debug_mode}
+
+    
+    
+
+
 
 \end{document}

@@ -59,10 +59,13 @@ Ein Ablaufdiagramm der einzelnen Zustände und deren Wechsel mit Hilfe von \ac{f
 \subsection{Idle Task} \label{section:idle_task}
 Die \ac{freertos} Idle Task wird immer dann aufgerufen, wenn keine Task ausgeführt werden kann.
 Dabei wird die \ac{freertos} Idle Task automatisch beim Start des \ac{freertos} Schedulers mit der niedrigsten verfügbaren Priorität erstellt, um keine Tasks im 'ready' Status zu blockieren.
+Das heißt die Idle Task wird nur ausgeführt, wenn keine Task eine höhere Priorität als die Idle Task Priorität hat oder keine Task die eine höhere Priorität hat sich im 'ready' Status befindet.
+Sollte eine Task die gleiche Priorität mit der Idle Task teilen, wird die \ac{cpu} Zeit, bei Standartkonfiguration, zwischen den zwei Tasks aufgeteilt.
+Des Weiteren wird die Idle Task in \ac{freertos} Standartkonfiguration mit der Priorität 0, also der niedrigsten Priorität gestartet.
 Beim Ausführen der \ac{freertos} Idle Task wird der zugewiesener Speicher von gelöschten Tasks endgültig gelöscht und sollte somit regelmäßig \ac{cpu} Zeit bekommen, da ansonsten der Arbeitsspeicher überlaufen kann.
 Des Weiteren kann mit der Flag, wie in \autoref{code:freertos_idle_task_hook} zu sehen, der Idle Task Hook aktiviert werden.
-Der Idle Task Hook wird bei jedem Aufruf der Idle Task ausgeführt und ermöglicht dem Benutzer dabei einen Code ausführen zu können.
-Dies kann für verschiedene Zwecke benutzt werden, \ac{zb} den Mikrocontroller in den Energiesparmodus zu setzen.
+Der Idle Task Hook wird bei jedem Aufruf der Idle Task ausgeführt und ermöglicht dem Benutzer dabei einen zusätzlichen Code auszuführen.
+Dies kann für verschiedene Einsatzbereiche benutzt werden, \ac{zb} den Mikrocontroller in den Energiesparmodus zu setzen.
 
 \begin{lstlisting}[language=C, caption=FreeRTOS Idle Task Hook, label=code:freertos_idle_task_hook]
     #define configUSE_IDLE_HOOK                     ( 1 )
@@ -75,7 +78,7 @@ Nach der Unterbrechungsanforderung (\ac{irq}) führt der Prozessor eine Unterbre
 Im Anschluss wird der vorherige Zustand des Prozessors wiederhergestellt und die vorherige Ausführung an der unterbrochenen Stelle fortgesetzt \parencite{wiki:008}.
 
 
-\subsubsection{\ac{freertos} Sys-Tick} \label{section:freertos_sys-tick}
+\subsubsection{\ac{freertos} Sys-Tick} \label{section:freertos_sys_tick}
 Der \ac{freertos} Sys-Tick, auch System Tick genannt, ist fundemental für die Taskwechsel in \ac{freertos}, dieser Interrupt wird standartmäßig jede Millisekunde aufgerufen.
 Dieser Wert bietet eine gute Balance zwischen Taskgeschwindigkeit und Overhead von Taskwechsel.
 Bei jedem Sys-Tick wird die \ac{freertos} Funktion 'vTaskSwitchContext()' aufgerufen, diese überprüft ob eine höher priorisierte Task unblocked, also ausführbar geworden ist und falls dies zutrifft wird ein Taskwechsel auf die höher priorisierte Task durchgeführt.
