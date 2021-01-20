@@ -24,16 +24,22 @@
 \usepackage{scrhack}
 \usepackage{microtype}
 \usepackage{svg}
+\usepackage{pgfgantt}
+\usepackage{pgfplots}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning,arrows.meta}
 \usepackage[backend=biber,
 style=apa,
 ]{biblatex}
 \addbibresource{literatur.bib}
 
-\renewcaptionname{ngerman}{\tablename}{Table}
-\renewcaptionname{ngerman}{\figurename}{Figure}
-\renewcaptionname{ngerman}{\listtablename}{Tables}
-\renewcaptionname{ngerman}{\listfigurename}{Figures}
+\renewcaptionname{ngerman}{\tablename}{Tabelle}
+\renewcaptionname{ngerman}{\figurename}{Abbildung}
+\renewcaptionname{ngerman}{\listtablename}{Tabellen}
+\renewcaptionname{ngerman}{\listfigurename}{Abbildungen}
 \renewcommand{\lstlistingname}{Programmcode}
+
+
 
 
 \DeclareCaptionType{equ}[Formel][Formelverzeichnis]
@@ -46,6 +52,7 @@ style=apa,
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
+% Codestyle
 \lstdefinestyle{mystyle}{
     backgroundcolor=\color{backcolour},   
     commentstyle=\color{codegreen},
@@ -63,6 +70,37 @@ style=apa,
     showstringspaces=false,
     showtabs=false,                  
     tabsize=2
+}
+
+
+% Define block styles
+\tikzset{
+	pap/.style={
+		draw,
+		minimum height=7mm,
+		font=\ttfamily\footnotesize,
+		align=flush center,
+		on grid
+	},
+	paprectangle/.style={
+		pap,
+		text width=3cm-2*\pgfkeysvalueof{/pgf/inner xsep},
+		inner sep=4pt
+	},
+	papStart/.style = {
+			paprectangle,
+			rounded corners=10pt,
+	},
+	papEnd/.style = {papStart},
+	papProcess/.style = {paprectangle},
+	papLine/.style = {
+			draw,
+			-{Stealth[length=9pt,width=6pt]},
+		},
+	papLabel/.style={
+		label distance=.5cm,
+		font=\footnotesize\itshape
+	}
 }
 
 \lstset{style=mystyle}
