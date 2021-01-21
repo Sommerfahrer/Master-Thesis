@@ -248,11 +248,11 @@ Als Standart ist bei einer \ac{freertos} Installation eine Millisekunde definier
         \ganttbar[bar/.append style={fill=blue!70}]{}{5}{5}
         \ganttbar[bar/.append style={fill=blue!70}]{}{8}{8}
         \ganttbar[bar/.append style={fill=blue!90}]{}{11}{11}\\
-        \ganttvrule[vrule/.append style={red}]{}{1}
-        \ganttvrule[vrule/.append style={red}]{}{3}
-        \ganttvrule[vrule/.append style={red}]{}{5}
-        \ganttvrule[vrule/.append style={red}]{}{7}
-        \ganttvrule[vrule/.append style={red}]{}{9}
+        \ganttvrule[vrule/.append style={red}]{P1}{1}
+        \ganttvrule[vrule/.append style={red}]{P2}{3}
+        \ganttvrule[vrule/.append style={red}]{P3}{5}
+        \ganttvrule[vrule/.append style={red}]{P4}{7}
+        \ganttvrule[vrule/.append style={red}]{P5}{9}
         \gantttitlelist[title label node/.append style={alias=n\x,opacity=0}]{0,...,11}{1}
         \end{ganttchart}
         \draw [-latex] (n0.north west) -- ([xshift=7pt]n11.north east) node[right] {$t$};
