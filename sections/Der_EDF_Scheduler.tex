@@ -40,26 +40,33 @@ Als Standart ist bei einer \ac{freertos} Installation eine Millisekunde definier
     Die Task, welche aktuell ausgeführt wurde und nun am Ende die 'rescheduleEDF'-Funktion ausführt, erhält während der Funktionsausführung die höchste \ac{edf}-Priorität mit dem Wert '3', um einen vorzeitigen Context Switch zur nächsten, nach dem \ac{edf}-Prinzip ausgewählte Task, zu unterbinden.
     Nachdem alle \ac{edf}-Parameter von allen \ac{edf} Tasks neu gesetzt wurden, gibt die aktuelle Task die höchste Priorität mit dem '3' ab und erzwingt einen Context Switch zu der nächsten zu ausführenden \ac{edf} Task mit der Priorität '2'.
     Für einen reibungslosen Start des \ac{edf} Schedulers, werden die Prioritäten aller \ac{edf} Tasks nachdem Erstellen automatisch auf die Priorität mit dem Wert '0' gesetzt, damit die Idle Task die allerste Ausführung übernimmt und somit die 'rescheduleEDF'-Funktion durch den Idle Task Hook ausgeführt wird.
+    In \autoref{fig:edf_task_ausfuehrungsablauf} werden die verschiedenen Prioritäten je nach Status der Task innerhalb einer Periode angezeigt.
     
-    \begin{center}
-        \begin{tikzpicture}[node distance = 2cm, auto]
-            % \draw[very thin,lightgray](-2,-9)grid[step=.5cm]+(6,10);
-        
-            % Place nodes
-            \node [papStart] (Start1){Start};
-            \node [papProcess, below = of Start1,label={[papLabel]right:label 1}](pro1){Prozess};
-            \node [papProcess, below = of pro1,label={[papLabel]right:label 2}](pro2){Prozess};
-            \node [papEnd, below = of pro2, yshift= -20mm] (End) {Ende};
-        
-            % Draw edges
-            \path [papLine] (Start1) -- (pro1);
-            \path [papLine] (pro1) -- (pro2);
-            \path [papLine] (pro2) -- (End);
-        \end{tikzpicture}  
-    \end{center}
+    \begin{figure}[ht!]
+        \begin{center}
+            \begin{tikzpicture}[node distance = 2cm, auto]
+                % \draw[very thin,lightgray](-2,-9)grid[step=.5cm]+(6,10);
+            
+                % Place nodes
+                \node [papStart] (Start1){Start};
+                \node [papProcess, below = of Start1,label={[papLabel]right:Priorität: 2}](pro1){Task Code Ausführen};
+                \node [papProcess, below = of pro1,label={[papLabel]right:Priorität: 3}](pro2){rescheduleEDF};
+                \node [papProcess, below = of pro2,label={[papLabel]right:Priorität: 0}](pro3){Task Deaktiviert};
+                \node [papEnd, below = of pro3] (End) {Ende};
+            
+                % Draw edges
+                \path [papLine] (Start1) -- (pro1);
+                \path [papLine] (pro1) -- (pro2);
+                \path [papLine] (pro2) -- (pro3);
+                \path [papLine] (pro3) -- (End);
+            \end{tikzpicture}  
+        \end{center}
+        \caption{\ac{edf} Task Ausführungsablauf}
+        \label{fig:edf_task_ausfuehrungsablauf}
+    \end{figure}
     
     Bei der Berechnung der Prioritäten in der 'rescheduleEDF'-Funktion wird dabei die Deadline abzüglich der \ac{wcet} berücksichtigt, um nicht einer Task \ac{cpu}-Zeit zu geben, welche sowieso Ihre Deadline überschreiten würde.
-    Um einen Einblick in das Scheduling-Verfahren, mit der in dieser Arbeit implementierten \ac{edf} Schedulers, zu bekommen, wurde der Ablauf, in \autoref{fig:demonstrationsablauf_des_edf_schedulers} dargestellt, von drei Tasks mit den Eigenschaften wie in \autoref{table:demonstrationsablauf_task_eigenschaften} beschrieben, erstellt.
+    Um einen Einblick in das Scheduling-Verfahren, mit der in dieser Arbeit implementierten \ac{edf} Schedulers, zu bekommen, ist in \autoref{fig:demonstrationsablauf_des_edf_schedulers} der Ablauf von drei Tasks mit den Eigenschaften aus \autoref{table:demonstrationsablauf_task_eigenschaften} dargestellt.
 
     \begin{table}[ht!]
         \centering
@@ -130,15 +137,64 @@ Als Standart ist bei einer \ac{freertos} Installation eine Millisekunde definier
         \label{fig:demonstrationsablauf_des_edf_schedulers}
     \end{figure}
 
-    Bei der Darstellung in \autoref{fig:demonstrationsablauf_des_edf_schedulers} wurde die Anfangsphase so wie der erste Aufruf der Idle Task vernachlässigt, des Weiteren wurde als Vereinfachung der Darstellung der Starttick der ersten Task als null angenommen.
-    Als erstes bekommt die Task 1 \ac{cpu}-Zeit zugeteilt, da diese die kürzeste Deadline besitzt.
+    Bei der Darstellung in \autoref{fig:demonstrationsablauf_des_edf_schedulers} wurde die Anfangsphase, so wie der erste Aufruf der Idle Task vernachlässigt.
+    Des Weiteren wurde als Vereinfachung der Darstellung der Starttick der ersten Task als null angenommen.
+    Als erstes bekommt Task 1 \ac{cpu}-Zeit zugeteilt, da diese die kürzeste Deadline besitzt.
     Anschließend wird Task 2 ausgeführt, welche die nächst kürzeste Deadline besitzt und als letztes wird Task 3 ausgeführt.
     Nachdem nun alle drei Tasks innerhalb Ihrer Periode unter Einhaltung der Deadlines ausgeführt wurden, wird die Idle Task solange ausgeführt, bis die nächste Periode einer Task beginnt.
 
 
-\subsection{Erstellung einer \c{edf} Task} \label{section:erstellung_einer_edf_task}
+\subsection{Erstellung einer \ac{edf} Task} \label{section:erstellung_einer_edf_task}
 
-    Für die 
+    Für die Erstellung einer \ac{edf} Task muss die 'createEDFTask'-Funktion , mit allen Parametern die in \autoref{table:task_parameter_von_der_funktion_createEDFTask} aufgelistet sind, aufgerufen werden.
+
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{l|l|l}
+            Parameter & Datentyp & Beschreibung \\
+            \hline
+            taskCode & TaskFunction\_t & Funktionname der Task \\
+            TaskName & const char\( ^* \) & Name der Task  \\
+            stackDepth & configSTACK\_DEPTH\_TYPE & Größe des Taskstacks \\
+            pvParameters & void\( ^* \) & Task Parameter \\
+            wcet & TickType\_t & maximale Ausführzeit \\ 
+            period & TickType\_t & Periode der Task \\
+            deadline & TickType\_t & Deadline der Task \\
+        \end{tabular}
+        \caption{Task Parameter von der Funktion 'createEDFTask'}
+        \label{table:task_parameter_von_der_funktion_createEDFTask}
+    \end{table}
+
+    Der Beispielaufruf der 'createEDFTask' ist in \autoref{code:create_edf_task_example} dargestellt, diese beinhaltet eine Test-Funktion, so wie auch der Aufruf der createEDFTask.
+
+    \begin{figure}[ht!]
+        \begin{lstlisting}[language=C, caption=FreeRTOS Task creation and deletion, label=code:freertos_task_creation]
+        /* Task to be created. */
+        void vTestFunction( void * pvParameters )
+        {
+            for( ;; )
+            {
+                /* Task example code goes here. */
+                int i = 1 + 2
+
+                /* At the end of every EDF Task, the rescheduleED
+                Function must be called */
+                rescheduleEDF();
+            }
+        }
+
+        createEDFTask(              // Task Creation
+            vTestFunction,          // Pointer to task entry function
+            "Test Function",        // A descriptive name for the task
+            300,                    // The number of words to allocate
+            NULL,                   // Task parameters 
+            1,                      // WCET in ms
+            5,                      // Period of Task in ms
+            4 );                    // Deadline of Task in ms
+        \end{lstlisting}
+        \caption{createEDFTask Beispiel}
+        \label{code:create_edf_task_example}
+    \end{figure}
 
 \subsection{Kompatibilität}
 
@@ -149,9 +205,81 @@ Als Standart ist bei einer \ac{freertos} Installation eine Millisekunde definier
 
 \subsection{Fehlerbehandlung} \label{section:Fehlerbehandlung}
 
-    Sollten zwei \ac{edf} Tasks die gleichen Deadline besitzen, wird die Task, die bisher weniger Ausführungen vorweist, als nächste zu ausführende Task ausgesucht.
     Falls eine Task ihre Deadline überschritten hat oder die Zeit für die Ausführung nicht mehr reicht, werden die \ac{edf} Parameter angepasst.
     Dadurch wird keine Task bei der Fehlerbehandlung bevorzugt oder benachteiligt, wobei natürlich die Task mit der kürzesten Deadline und der kleinsten Periode eine höhere Wahrscheinlichkeit besitzt, ausgeführt zu werden. 
+
+    \begin{table}[ht!]
+        \centering
+        \begin{tabular}{l|c|c|c}
+            Taskname & Periode & Deadline & \ac{wcet} \\
+            \hline
+            Task 1 & 2 & 2 & 1 \\
+            Task 2 & 2 & 2 & 1 \\
+            Task 3 & 2 & 2 & 1 
+        \end{tabular}
+        \caption{Beispiel Deadline Errors Task Parameter}
+        \label{table:beispiel_deadline_erros_task_parameter}
+    \end{table}
+
+    \begin{figure}[ht!]
+        \centering
+        \sffamily
+        \begin{tikzpicture}
+        \begin{ganttchart}[%
+            hgrid,
+            inline, 
+            y unit title=1.1cm,
+            canvas/.style={draw=none},
+            title/.style={draw=none},
+            bar inline label anchor=west,
+            bar inline label node/.append style={anchor=west, text=white},
+            bar/.append style={fill=cyan!90!black,}, 
+            bar height=1,
+            bar top shift = 0]{0}{11}
+        \ganttbar[inline=false, bar/.append style={fill=blue!50}, bar label font=\color{blue!50}]{Task 1}{0}{0}
+        \ganttbar[bar/.append style={fill=blue!50}]{}{3}{3}
+        \ganttbar[bar/.append style={fill=blue!50}]{}{6}{6}
+        \ganttbar[bar/.append style={fill=blue!50}]{}{9}{9}\\
+        \ganttbar[inline=false, bar/.append style={fill=blue!70}, bar label font=\color{blue!70}]{Task 2}{1}{1}
+        \ganttbar[bar/.append style={fill=blue!70}]{}{4}{4}
+        \ganttbar[bar/.append style={fill=blue!70}]{}{7}{7}
+        \ganttbar[bar/.append style={fill=blue!70}]{}{10}{10}\\
+        \ganttbar[inline=false, bar/.append style={fill=blue!90}, bar label font=\color{blue!90}]{Task 3}{2}{2}
+        \ganttbar[bar/.append style={fill=blue!70}]{}{5}{5}
+        \ganttbar[bar/.append style={fill=blue!70}]{}{8}{8}
+        \ganttbar[bar/.append style={fill=blue!90}]{}{11}{11}\\
+        \ganttvrule[vrule/.append style={red}]{}{1}
+        \ganttvrule[vrule/.append style={red}]{}{3}
+        \ganttvrule[vrule/.append style={red}]{}{5}
+        \ganttvrule[vrule/.append style={red}]{}{7}
+        \ganttvrule[vrule/.append style={red}]{}{9}
+        \gantttitlelist[title label node/.append style={alias=n\x,opacity=0}]{0,...,11}{1}
+        \end{ganttchart}
+        \draw [-latex] (n0.north west) -- ([xshift=7pt]n11.north east) node[right] {$t$};
+        \foreach \N in {0,...,11} {
+            \draw
+            let
+            \p1=(n0.center), \p2=(n1.center),\n1={(\x2-\x1)/2}
+            in
+            (n\N.north) +(-\n1,2pt) -- +(-\n1,-2pt) node[below,font=\small]{\N};
+        }
+        
+        % draw tick for 19
+        \draw
+            let
+            \p1=(n0.center), \p2=(n1.center),\n1={(\x2-\x1)/2}
+            in
+            (n11.north) +(\n1,2pt) -- +(\n1,-2pt) node[below,font=\small]{12};
+        
+        \end{tikzpicture}\\
+        \caption{Beispiel Deadline Errors}
+        \label{fig:beispiel_deadline_errors}
+    \end{figure}
+
+    Wie in \autoref{fig:beispiel_deadline_errors} mit den Task Eigenschaften aus \autoref{table:beispiel_deadline_erros_task_parameter} zu sehen, können aufgrund der Task Eigenschaften immer nur zwei Tasks in einer Periode, welche mit roten Linien eingezeichnet sind, ihre Deadline erfüllen.
+    Durch die implementierte Deadline Fehlerbehandlung, wird bei gleicher Deadline zweier Tasks, immer die Task mit weniger Aufrufen ausgeführt.
+    Dieses Vorgehen ermöglicht die gleichmäßige Ausführung aller Tasks obwohl die Deadline nicht immer eingehalten werden können.
+    Eine andere Möglichkeit der Fehlerbehandlung wäre das unterbinden einer der drei Tasks, um den anderen zwei Tasks dauerhaft das Einhalten Ihrer Deadlines zu ermöglichen.
 
 \subsection{Debug Mode} \label{section:debug_mode}
 
