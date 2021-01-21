@@ -66,21 +66,7 @@ Als Standart ist bei einer \ac{freertos} Installation eine Millisekunde definier
     \end{figure}
     
     Bei der Berechnung der Prioritäten in der 'rescheduleEDF'-Funktion wird dabei die Deadline abzüglich der \ac{wcet} berücksichtigt, um nicht einer Task \ac{cpu}-Zeit zu geben, welche sowieso Ihre Deadline überschreiten würde.
-    Um einen Einblick in das Scheduling-Verfahren, mit der in dieser Arbeit implementierten \ac{edf} Schedulers, zu bekommen, ist in \autoref{fig:demonstrationsablauf_des_edf_schedulers} der Ablauf von drei Tasks mit den Eigenschaften aus \autoref{table:demonstrationsablauf_task_eigenschaften} dargestellt.
-
-    \begin{table}[ht!]
-        \centering
-        \begin{tabular}{l|c|c|c}
-            Taskname & Periode & Deadline & \ac{wcet} \\
-            \hline
-            Task 1 & 5 & 3 & 1 \\
-            Task 2 & 5 & 5 & 2 \\
-            Task 3 & 10 & 10 & 1 
-        \end{tabular}
-        \caption{Demonstrationsablauf Task Eigenschaften}
-        \label{table:demonstrationsablauf_task_eigenschaften}
-    \end{table}
-
+    Um einen Einblick in das Scheduling-Verfahren, mit der in dieser Arbeit implementierten \ac{edf} Schedulers, zu bekommen, ist in \autoref{fig:demonstrationsablauf_des_edf_schedulers} der Ablauf von drei Tasks dargestellt.
 
     \begin{figure}[ht!]
         \centering
@@ -133,6 +119,14 @@ Als Standart ist bei einer \ac{freertos} Installation eine Millisekunde definier
             (n19.north) +(\n1,2pt) -- +(\n1,-2pt) node[below,font=\small]{20};
         
         \end{tikzpicture}\\
+        \vspace {1cm}
+        \begin{tabular}{l|c|c|c}
+            Taskname & Periode & Deadline & \ac{wcet} \\
+            \hline
+            Task 1 & 5 & 3 & 1 \\
+            Task 2 & 5 & 5 & 2 \\
+            Task 3 & 10 & 10 & 1 
+        \end{tabular}
         \caption{Demonstrationsablauf des \ac{edf} Schedulers}
         \label{fig:demonstrationsablauf_des_edf_schedulers}
     \end{figure}
@@ -147,6 +141,7 @@ Als Standart ist bei einer \ac{freertos} Installation eine Millisekunde definier
 \subsection{Erstellung einer \ac{edf} Task} \label{section:erstellung_einer_edf_task}
 
     Für die Erstellung einer \ac{edf} Task muss die 'createEDFTask'-Funktion , mit allen Parametern die in \autoref{table:task_parameter_von_der_funktion_createEDFTask} aufgelistet sind, aufgerufen werden.
+    Bei dem Aufruf der Funktion wird eine \ac{edf} Struktur mit allen erforderlichen Parametern für den \ac{edf} Scheduler hinzugefügt, anschließend wird die \ac{reertos} Task erstellt.
 
     \begin{table}[H]
         \centering
@@ -167,61 +162,59 @@ Als Standart ist bei einer \ac{freertos} Installation eine Millisekunde definier
 
     Der Beispielaufruf der 'createEDFTask' ist in \autoref{code:create_edf_task_example} dargestellt, diese beinhaltet eine Test-Funktion, so wie auch der Aufruf der createEDFTask.
 
-    \begin{figure}[ht!]
-        \begin{lstlisting}[language=C, caption=FreeRTOS Task creation and deletion, label=code:freertos_task_creation]
-        /* Task to be created. */
-        void vTestFunction( void * pvParameters )
-        {
-            for( ;; )
-            {
-                /* Task example code goes here. */
-                int i = 1 + 2
+\begin{figure}[ht!]
+\begin{lstlisting}[language=C, caption=createEDFTask Beispiel, label=code:create_edf_task_example]
+/* Task to be created. */
+void vTestFunction( void * pvParameters )
+{
+    for( ;; )
+    {
+        /* Task example code goes here. */
+        int i = 1 + 2
 
-                /* At the end of every EDF Task, the rescheduleED
-                Function must be called */
-                rescheduleEDF();
-            }
-        }
+        /* At the end of every EDF Task, the rescheduleED
+        Function must be called */
+        rescheduleEDF();
+    }
+}
 
-        createEDFTask(              // Task Creation
-            vTestFunction,          // Pointer to task entry function
-            "Test Function",        // A descriptive name for the task
-            300,                    // The number of words to allocate
-            NULL,                   // Task parameters 
-            1,                      // WCET in ms
-            5,                      // Period of Task in ms
-            4 );                    // Deadline of Task in ms
-        \end{lstlisting}
-        \caption{createEDFTask Beispiel}
-        \label{code:create_edf_task_example}
-    \end{figure}
+createEDFTask(              // Task Creation
+    vTestFunction,          // Pointer to task entry function
+    "Test Function",        // A descriptive name for the task
+    300,                    // The number of words to allocate
+    NULL,                   // Task parameters 
+    1,                      // WCET in ms
+    5,                      // Period of Task in ms
+    4 );                    // Deadline of Task in ms
+\end{lstlisting}
+\end{figure}
+
+\subsection{Löschen einer \ac{edf} Task} \label{section:löschen_einer_edf_task}
+
+    In manchen Applikationen ist das Löschen von \ac{edf} Tasks von nöten und wurde aus diesem Grund ebenfalls implementiert.
+    Dabei muss die Funktion 'deleteEDFTask' und den String Namen der zu löschenden Task aufgerufen werden.
+    Bei dem Aufruf wird die zu löschende Task aus der \ac{edf} Array Struktur entfernt, anschließend wird die Task in \ac{freertos} gelöscht.
+    Ein Beispielaufruf, angelehnt an das Beispiel aus \autoref{code:create_edf_task_example} ist in \autoref{code:deleteEDFTask_example} dargestellt.
+
+\begin{figure}[ht!]
+\begin{lstlisting}[language=C, caption=deleteEDFTask Beispiel, label=code:deleteEDFTask_example]
+    deleteEDFTask("Test Function")
+\end{lstlisting}
+\end{figure}
 
 \subsection{Kompatibilität}
 
     Durch die Verwendung des originalen Schedulers können klassische \ac{freertos} Tasks parallel erstellt und abgearbeitet werden.
     Hierbei ist aber zu Beachten, dass die Priorität der klassischen \ac{freertos} Task eine höhere Priorität als den Wert '3' besitzt, da es ansonsten zu Konflikten innerhalb des \ac{edf} Schedulers kommen kann.
     Auch sollte bei der Implementierung von klassischen \ac{freertos} Task darauf geachtet werden, dass die \ac{edf} Tasks genügend Zeit für Ihre Abarbeitung zur Verfügung gestellt bekommen.
-
+    Wie auch schon eingangs erwähnt, sorgt das Verwenden des \ac{freertos} SysTick für den \ac{edf} Scheduler für eine breite Kompatibilität auf verschiedenen \ac{cpu} Architekturen.
 
 \subsection{Fehlerbehandlung} \label{section:Fehlerbehandlung}
 
     Falls eine Task ihre Deadline überschritten hat oder die Zeit für die Ausführung nicht mehr reicht, werden die \ac{edf} Parameter angepasst.
     Dadurch wird keine Task bei der Fehlerbehandlung bevorzugt oder benachteiligt, wobei natürlich die Task mit der kürzesten Deadline und der kleinsten Periode eine höhere Wahrscheinlichkeit besitzt, ausgeführt zu werden. 
 
-    \begin{table}[ht!]
-        \centering
-        \begin{tabular}{l|c|c|c}
-            Taskname & Periode & Deadline & \ac{wcet} \\
-            \hline
-            Task 1 & 2 & 2 & 1 \\
-            Task 2 & 2 & 2 & 1 \\
-            Task 3 & 2 & 2 & 1 
-        \end{tabular}
-        \caption{Task Parameter für Deadline Errors Beispiel}
-        \label{table:beispiel_deadline_erros_task_parameter}
-    \end{table}
-
-    \begin{figure}[ht!]
+    \begin{figure}[H]
         \centering
         \sffamily
         \begin{tikzpicture}
@@ -272,18 +265,39 @@ Als Standart ist bei einer \ac{freertos} Installation eine Millisekunde definier
             (n11.north) +(\n1,2pt) -- +(\n1,-2pt) node[below,font=\small]{12};
         
         \end{tikzpicture}\\
+        \vspace {1cm}
+        \begin{tabular}{l|c|c|c}
+            Taskname & Periode & Deadline & \ac{wcet} \\
+            \hline
+            Task 1 & 2 & 2 & 1 \\
+            Task 2 & 2 & 2 & 1 \\
+            Task 3 & 2 & 2 & 1 
+        \end{tabular}
         \caption{Beispiel Deadline Errors}
         \label{fig:beispiel_deadline_errors}
     \end{figure}
 
-    Wie in \autoref{fig:beispiel_deadline_errors} mit den Task Eigenschaften aus \autoref{table:beispiel_deadline_erros_task_parameter} zu sehen, können aufgrund der Task Eigenschaften immer nur zwei Tasks in einer Periode, welche mit roten Linien eingezeichnet sind, ihre Deadline erfüllen.
+    Wie in \autoref{fig:beispiel_deadline_errors} mit den Task dargestellt, können aufgrund der Task Eigenschaften immer nur zwei Tasks in einer Periode, welche mit roten Linien eingezeichnet sind, ihre Deadline erfüllen.
     Durch die implementierte Deadline Fehlerbehandlung, wird bei gleicher Deadline zweier Tasks, immer die Task mit weniger Aufrufen ausgeführt.
     Dieses Vorgehen ermöglicht die gleichmäßige Ausführung aller Tasks obwohl die Deadline nicht immer eingehalten werden können.
     Eine andere Möglichkeit der Fehlerbehandlung wäre das unterbinden einer der drei Tasks, um den anderen zwei Tasks dauerhaft das Einhalten Ihrer Deadlines zu ermöglichen.
 
 \subsection{Debug Mode} \label{section:debug_mode}
 
-    
+    Um das Entwickeln einer \ac{edf} Applikation zu vereinfachen oder auch Bugs zu finden, wurde ein DEBUG-FLAG integriert, welches folgende Features, sofern aktiviert, beinhaltet:
+
+    \begin{itemize}
+        \item \textbf{\ac{usart} Schnittstelle}: Über die \ac{usart} Schnittstelle wird die erfolgreiche Konfiguration der Hardware, Start des \ac{freertos} Schedulers, sowie auch der Start jeder \ac{edf} Funktion mitgeteilt.
+                                                 Des Weiteren werden nicht eingehaltene Deadlines und die Anzahl der Deadline Fehler, sofern vorhanden, mitgeteilt.
+        \item \textbf{Erweiterte \ac{edf} Array Struktur:} Die \ac{edf} Array Struktur wird um folgende fünf Parameter erweitert:
+        \begin{itemize}
+            \item \textbf{lastRunningTime}: Enthält die letzte Ausführzeit der Task in SysTicks
+            \item \textbf{maxRunningTime}: Enthält die bisherige maximale Ausführzeit (\ac{wcet} der Task in SysTicks
+            \item \textbf{startTime}: Enthält die letzte Startzeit der Task in SysTicks
+            \item \textbf{stopTime}: Enthält die letzte Stopzeit der Task in SysTicks
+            \item \textbf{deadlineErrorCounter}: Enthält die Anzahl der nicht eingehaltenen Deadlines
+        \end{itemize}
+    \end{itemize}
     
 
 
