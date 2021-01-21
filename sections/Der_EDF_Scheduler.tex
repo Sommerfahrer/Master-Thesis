@@ -55,10 +55,10 @@ Als Standart ist bei einer \ac{freertos} Installation eine Millisekunde definier
                 \node [papEnd, below = of pro3] (End) {Ende};
             
                 % Draw edges
-                \path [papLine] (Start1) -- (pro1);
-                \path [papLine] (pro1) -- (pro2);
-                \path [papLine] (pro2) -- (pro3);
-                \path [papLine] (pro3) -- (End);
+                \path [line] (Start1) -- (pro1);
+                \path [line] (pro1) -- (pro2);
+                \path [line] (pro2) -- (pro3);
+                \path [line] (pro3) -- (End);
             \end{tikzpicture}  
         \end{center}
         \caption{\ac{edf} Task Ausführungsablauf}
@@ -298,8 +298,5 @@ createEDFTask(              // Task Creation
             \item \textbf{deadlineErrorCounter}: Enthält die Anzahl der nicht eingehaltenen Deadlines
         \end{itemize}
     \end{itemize}
-    
-
-
 
 \end{document}

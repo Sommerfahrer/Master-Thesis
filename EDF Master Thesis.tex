@@ -19,15 +19,16 @@
 \usepackage{amssymb}
 \usepackage{subcaption}
 \usepackage{amsmath}
-\usepackage{tikz}
 \usepackage{float}
 \usepackage{scrhack}
 \usepackage{microtype}
 \usepackage{svg}
 \usepackage{pgfgantt}
 \usepackage{pgfplots}
+\usepackage{lmodern}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
 \usetikzlibrary{calc}
-\usetikzlibrary{positioning,arrows.meta}
 \usepackage[backend=biber,
 style=apa,
 ]{biblatex}
@@ -102,6 +103,7 @@ style=apa,
 		font=\footnotesize\itshape
 	}
 }
+\tikzset{line/.style={draw, -latex}}
 
 \lstset{style=mystyle}
 
@@ -129,8 +131,7 @@ style=apa,
 		\clearpage
 	\listof{equ}{Formelverzeichnis}
 	\clearpage
-	\section{Grundlagen} \label{section:grundlagen}
-		\subfile{sections/Einfuehrung.tex}
+	\section{Grundlagen}
 		\subsection{Echtzeitsysteme} \label{section:echtzeitsysteme}
 			\subfile{sections/Echtzeitsysteme.tex}
 		\subsection{Scheduler} \label{section:scheduler}
@@ -148,11 +149,18 @@ style=apa,
 	\clearpage
 	\section{Der EDF Scheduler} \label{section:der_edf_scheduler}
 		\subfile{sections/Der_EDF_Scheduler.tex}
-		\clearpage
+	\clearpage
+	\section{Demo Applikationen} \label{section:demo_applikationen}
+		\subfile{sections/Demo_Applikationen.tex}
+	\clearpage
+	\section{Fazit und Ausblick}
+		\subfile{sections/Fazit_und_Ausblick.tex}
+	\clearpage
 	\listoffigures
-		\clearpage
+	\clearpage
 	\listoftables
 	\clearpage
-		\printbibliography{}
-		\clearpage
+	\printbibliography{}
+	\clearpage
 \end{document}
+

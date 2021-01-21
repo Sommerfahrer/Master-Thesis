@@ -1,0 +1,60 @@
+\documentclass[../EDF Master Thesis.tex]{subfiles}
+
+\begin{document}
+    Ein Teil der Aufgabenstellung beinhaltet das Erstellen von zwei Demo Applikationen, welche die Funktion des \ac{edf} Schedulers unter Beweis stellen.
+
+    \subsection{Blinky Demo} \label{section:blinky_demo}
+        Für eine schnelle optische Vorführung des \ac{edf} Schedulers wurde eine 'Blinky Demo' erstellt, welche drei \ac{edf} Tasks beinhaltet.
+        Jede der drei Tasks toggelt eine unterschiedliche \ac{led} besitzen jedoch die gleichen \ac{edf} Parameter, welche in \autoref{table:blinky_demo_task_parameter} dargestellt sind.
+        Die drei Tasks wurden exakt so gewählt, dass Sie die verschiedenen möglichen Status des \ac{edf} Schedulers simuliert und optisch dargestellt werden.
+        Der Benutzer kann mit Hilfe des integrierten Button auf dem STM32f769I-Disc0 Board die drei Tasks, wie in \autoref{fig:blinky_demo_ablaufdiagramm} zu sehen, erstellen und löschen.
+        
+        \begin{figure}[ht!]
+            \begin{center}
+                \begin{tikzpicture}[node distance = 2cm, auto]
+                    % \draw[very thin,lightgray](-2,-9)grid[step=.5cm]+(6,10);
+                
+                    % Place nodes
+                    \node [papProcess, label={[papLabel]right:Button Counter = 0}](pro1){Warten auf Benutzer};
+                    \node [papProcess, below = of pro1,label={[papLabel]right:Button Counter = 0}](pro2){Idle Task};
+                    \node [papProcess, below = of pro2,label={[papLabel]right:Button Counter = 1}](pro3){Task 1 + Idle Task};
+                    \node [papProcess, below = of pro3,label={[papLabel]right:Button Counter = 2}](pro4){Task 1 + Task 2};
+                    \node [papProcess, below = of pro4,label={[papLabel]right:Button Counter = 3}](pro5){Task 1 + Task 2 + Task 3};
+                    \node [papProcess, below = of pro5,label={[papLabel]right:Button Counter = 4}](pro6){Task 2 + Task 3};
+                    \node [papProcess, below = of pro6,label={[papLabel]right:Button Counter = 5}](pro7){Task 3 + Idle Task};
+                            % invisible node helpful later
+                    \node[left=1cm of pro6,scale=0.05](inv){};
+                
+                    % Draw edges
+                    \path [line] (pro1) -- (pro2);
+                    \path [line] (pro2) -- (pro3);
+                    \path [line] (pro3) -- (pro4);
+                    \path [line] (pro4) -- (pro5);
+                    \path [line] (pro6) -- (pro7);
+                    \path[-,draw] (pro7) -| node{} (inv.north);
+                    \path[line]{} (inv.north) |- node[above]{reset} (pro1);
+                \end{tikzpicture}  
+            \end{center}
+            \caption{Blinky Demo Ablaufdiagramm}
+            \label{fig:blinky_demo_ablaufdiagramm}
+        \end{figure}
+
+
+        \begin{table}[ht!]
+            \centering
+            \begin{tabular}{l|c|c|c}
+                Tasks & Periode & Deadline & \ac{wcet} \\
+                \hline
+                Task 1 & 50 & 100 & 100\\
+                Task 2 & 50 & 100 & 100\\
+                Task 3 & 50 & 100 & 100\\
+            \end{tabular}
+            \caption{Blinky Demo Task Parameter}
+            \label{table:blinky_demo_task_parameter}
+        \end{table}
+
+    
+    \subsection{\ac{fft} Demo} \label{section:fft_demo}
+
+
+\end{document}
