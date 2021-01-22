@@ -1,19 +1,19 @@
 \babel@toc {ngerman}{}
 \defcounter {refsection}{0}\relax 
-\contentsline {equ}{\numberline {1}{\ignorespaces \ac {rms} Berechnung der \ac {cpu}-Auslastung \parencite {wiki:004}\relax }}{6}{equ.caption.22}%
+\contentsline {equ}{\numberline {1}{\ignorespaces \ac {rms} Berechnung der \ac {cpu}-Auslastung \parencite {wiki:004}\relax }}{9}{equ.caption.25}%
 \defcounter {refsection}{0}\relax 
-\contentsline {equ}{\numberline {2}{\ignorespaces \ac {edf} Berechnung \ac {cpu}-Auslastung \parencite {wiki:006}\relax }}{7}{equ.caption.23}%
+\contentsline {equ}{\numberline {2}{\ignorespaces \ac {edf} Berechnung \ac {cpu}-Auslastung \parencite {wiki:006}\relax }}{10}{equ.caption.26}%
 \defcounter {refsection}{0}\relax 
-\contentsline {equ}{\numberline {3}{\ignorespaces Parameter von periodischen Tasks\relax }}{11}{equ.caption.30}%
+\contentsline {equ}{\numberline {3}{\ignorespaces Parameter von periodischen Tasks\relax }}{14}{equ.caption.33}%
 \defcounter {refsection}{0}\relax 
-\contentsline {equ}{\numberline {4}{\ignorespaces Berechnung der \ac {dft} Komplexität\relax }}{12}{equ.caption.34}%
+\contentsline {equ}{\numberline {4}{\ignorespaces Berechnung der \ac {dft} Komplexität\relax }}{15}{equ.caption.37}%
 \defcounter {refsection}{0}\relax 
-\contentsline {equ}{\numberline {5}{\ignorespaces Rechenbedingung der \ac {fft}\relax }}{13}{equ.caption.36}%
+\contentsline {equ}{\numberline {5}{\ignorespaces Rechenbedingung der \ac {fft}\relax }}{16}{equ.caption.39}%
 \defcounter {refsection}{0}\relax 
-\contentsline {equ}{\numberline {6}{\ignorespaces Aufteilung der \ac {dft} \ac {iaa} \autocite {fft:002}\relax }}{13}{equ.caption.37}%
+\contentsline {equ}{\numberline {6}{\ignorespaces Aufteilung der \ac {dft} \ac {iaa} \autocite {fft:002}\relax }}{16}{equ.caption.40}%
 \defcounter {refsection}{0}\relax 
-\contentsline {equ}{\numberline {7}{\ignorespaces Umformung \ac {dft} \ac {iaa} \autocite {fft:002}\relax }}{13}{equ.caption.39}%
+\contentsline {equ}{\numberline {7}{\ignorespaces Umformung \ac {dft} \ac {iaa} \autocite {fft:002}\relax }}{16}{equ.caption.42}%
 \defcounter {refsection}{0}\relax 
-\contentsline {equ}{\numberline {8}{\ignorespaces Resultierende Gleichungen nach Aufspaltung der \ac {dft} \ac {iaa} \autocite {fft:002}\relax }}{14}{equ.caption.40}%
+\contentsline {equ}{\numberline {8}{\ignorespaces Resultierende Gleichungen nach Aufspaltung der \ac {dft} \ac {iaa} \autocite {fft:002}\relax }}{17}{equ.caption.43}%
 \defcounter {refsection}{0}\relax 
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

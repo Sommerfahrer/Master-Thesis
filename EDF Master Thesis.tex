@@ -36,9 +36,10 @@ style=apa,
 
 \renewcaptionname{ngerman}{\tablename}{Tabelle}
 \renewcaptionname{ngerman}{\figurename}{Abbildung}
-\renewcaptionname{ngerman}{\listtablename}{Tabellen}
-\renewcaptionname{ngerman}{\listfigurename}{Abbildungen}
+\renewcaptionname{ngerman}{\listtablename}{Tabellenverzeichnis}
+\renewcaptionname{ngerman}{\listfigurename}{Abbildungsverzeichnis}
 \renewcommand{\lstlistingname}{Programmcode}
+\renewcommand{\lstlistlistingname}{Programmcode-Verzeichnis}
 
 
 
@@ -150,16 +151,20 @@ style=apa,
 	\section*{Aufgabenbeschreibung}
 		\subfile{sections/Aufgabenbeschreibung.tex}
 		\clearpage
-	\section*{Abstract}
-		\subfile{sections/Abstract.tex}
-		\clearpage
+		\pagenumbering{arabic}
 	\tableofcontents
-		\clearpage
-	\pagenumbering{arabic}
+	\clearpage
+	\listoffigures
+	\listoftables
+	\listof{equ}{Formelverzeichnis}
+	\clearpage
+	\lstlistoflistings
+	\clearpage
 	\section*{Abkürzungen}
 		\subfile{sections/Abkuerzungen.tex}
 		\clearpage
-	\listof{equ}{Formelverzeichnis}
+	\section*{Abstract}
+		\subfile{sections/Abstract.tex}
 	\clearpage
 	\section{Grundlagen}
 		\subsection{Echtzeitsysteme} \label{section:echtzeitsysteme}
@@ -174,6 +179,7 @@ style=apa,
 			\subfile{sections/udp.tex}
 		\subsection{\ac{fft}} \label{section:fft}
 			\subfile{sections/fft.tex}
+		\clearpage
 		\subsection{Plattform} \label{section:plattform}
 			\subfile{sections/Plattform.tex}
 	\clearpage
@@ -183,14 +189,15 @@ style=apa,
 	\section{Demo Applikationen} \label{section:demo_applikationen}
 		\subfile{sections/Demo_Applikationen.tex}
 	\clearpage
-	\section{Fazit und Ausblick}
+	\section{Aufgetretene Probleme} \label{section:aufgetretene_probleme}
+		\subfile{sections/Aufgetretene_Probleme.tex}
+	\clearpage
+	\section{Fazit und Ausblick} \label{section:fazit_und_ausblick}
 		\subfile{sections/Fazit_und_Ausblick.tex}
-	\clearpage
-	\listoffigures
-	\clearpage
-	\listoftables
 	\clearpage
 	\printbibliography{}
 	\clearpage
+	\section{Anlagen} \label{section:anlagen}
+		\subfile{sections/Anlagen.tex}
 \end{document}
 

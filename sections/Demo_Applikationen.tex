@@ -3,6 +3,113 @@
 \begin{document}
     Ein Teil der Aufgabenstellung beinhaltet das Erstellen von zwei Demo Applikationen, welche die Funktion des \ac{edf} Schedulers unter Beweis stellen.
 
+    \subsection{\ac{fft} Demo} \label{section:fft_demo}
+
+        Für die zweite Applikation erstellt und sendet ein Host-Computer alle 10ms ein Signal, bestehend aus einem oder mehreren Sinus- oder Kosinus-Signalen, an den Mikrocontroller über das \ac{udp} Protokoll gesendet wird.
+        Das Interval von 10ms wurde so gewählt, dass eine ausreichend schnelle Aktualisierung und eine mittelmäßige Auslastung des Host-Computers gewährleistet ist.
+        Dieses Interval kann in der Konfiguration der \ac{fft} Demo angepasst werden, jedoch sollte das Interval nicht kleiner als 6ms gewählt werden, da die Summe der \ac{wcet} aller Tasks auf dem Mikrocontroller 6ms beträgt.
+        Der Mikrocontroller führt, basierend auf dem empfangenen Signal, eine \ac{fft}-Berechnung aus und sendet die Ergebnisse an den Host-Computer zurück.
+        Das Ablaufdiagramm mit allen Komponenten für die \ac{fft} Demo sieht wie folgt aus:
+
+        \begin{figure}[H]
+            \centering
+            \includegraphics[height=10cm, width=14cm]{./attachments/FFT Ablauf.pdf}
+            \caption{\ac{fft} Demo Ablaufdiagramm}
+            \label{fig:fft_demo_ablaufdiagramm}
+        \end{figure}
+
+        Für das Erstellen und Senden eines Signals, der Empfang der Ergebnisse und das darstellen der Signale wurde eine \ac{gui}, basierend auf der Programmiersprache Python erstellt.
+        Des Weiteren wurden für die Kommunikation mit dem Host-Computer, sowie die Berechnung der \ac{fft} drei \ac{edf} Tasks erstellt.
+        Das in dieser Arbeit generierte Signal wurde mit 2048 Abtastpunkten erstellt und besitzt somit die gleiche Größe wie die verwendete \ac{fft}.
+        Die Standard \ac{udp} Paketgröße beträgt 1454 Bytes, um 2048 Abtastpunkte von float-Werten (4 Byte) zu übermitteln, muss das Signal in mindestens 6 Pakete aufgeteilt werden.
+        Jedoch besitzt das \ac{udp} Protokoll keine Sortierfunktion, dass heißt falls ein Paket langsamer übertragen wird, als das nächstfolgende Paket, würde dies zu einer Signalverfälschung führen.
+        Aus diesem Grund wird bei jedem Paket auch die Paketnummer in einer Variable mit übertragen, des Weiteren wurde entscheiden, dass alle Pakete die gleiche Größe aufweisen.
+        Deshalb wird das Signal in 8 Pakete mit je 256 Samples geteilt und übertragen.
+
+        \clearpage
+        \subsubsection{\ac{gui}}
+            Die \ac{gui} wurde für eine einfache Bedienung und einer übersichtlichen Anzeige gestaltet und ist in \autoref{fig:gui} abgebildet:
+
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.97\textwidth]{./attachments/gui.png}
+                \caption{\ac{gui} Interface}
+                \label{fig:gui}
+            \end{figure}
+
+        In der linken oberen Ecke wird der Verbindungsstatus zum Mikrocontroller angezeigt, darunter kann der Benutzer bis zu acht Signale aktiveren oder deaktivieren, sowie auch deren Eigenschaften verändern.
+        Das generierte Signal wird dann zentral in dem oberen Plotfenster dargestellt.
+        Im unteren Plot werden die Ergebnisse der \ac{fft}-Berechnung angezeigt, zusätzlich werden die erkannten Frequenzen in Textform angezeigt.
+
+        \subsubsection{Tasks des Mikrocontrollers}
+            Die Perioden der drei \ac{edf} Tasks, siehe \autoref{table:fft_demo_task_parameter}, wurden an das Interval der \ac{gui} auf 10ms angepasst.
+            Jede der drei Task hat einen \ac{wcet} von 2ms, welche mit Hilfe des Debug Mode ermittelt wurden, somit ergibt sich eine \ac{cpu}-Auslastung von 60\%, wie auch in \autoref{fig:fft_demo_task_scheduling} dargestellt.
+
+            \begin{table}[ht!]
+                \centering
+                \begin{tabular}{l|c|c|c|l}
+                    Taskname & Periode & Deadline & \ac{wcet} & Aufgabe \\
+                    \hline
+                    Task 1 & 10 & 10 & 2 & Empfangen des Signals über \ac{udp}\\
+                    Task 2 & 10 & 10 & 2 & Berechnung der \ac{fft}\\
+                    Task 3 & 10 & 10 & 2 & Senden der \ac{fft} Ergebnisse über \ac{udp}
+                \end{tabular}
+                \caption{\ac{fft} Demo Task Parameter}
+                \label{table:fft_demo_task_parameter}
+            \end{table}
+
+            Die \ac{wcet} ändern sich mit der Größe des empfangenen Signals und der Größe der \ac{fft}, jedoch wurde die Werte so gewählt, dass ein guter Kompromiss zwischen Arbeitsspeicherbelegung und Signalverarbeitung gewählt wurde.
+            Für die Kommunikation der Tasks untereinander wurden \ac{freertos} Queues verwendet und können sich somit nicht gegenseitig blockieren.
+
+            \begin{figure}[H]
+                \centering
+                \sffamily
+                \begin{tikzpicture}
+                \begin{ganttchart}[%
+                    hgrid,
+                    inline, 
+                    y unit title=1.1cm,
+                    canvas/.style={draw=none},
+                    title/.style={draw=none},
+                    bar inline label anchor=west,
+                    bar inline label node/.append style={anchor=west, text=white},
+                    bar/.append style={fill=cyan!90!black}, 
+                    bar height=1,
+                    bar top shift = 0]{0}{19}
+                \ganttbar[inline=false, bar/.append style={fill=blue!50}, bar label font=\color{blue!50}]{udpReceivingTask}{0}{1}
+                \ganttbar[bar/.append style={fill=blue!50}]{}{10}{11}\\
+                \ganttbar[inline=false, bar/.append style={fill=blue!70}, bar label font=\color{blue!70}]{calculateFFT}{2}{3}
+                \ganttbar[bar/.append style={fill=blue!70}]{}{12}{13}\\
+                \ganttbar[inline=false, bar/.append style={fill=blue!90}, bar label font=\color{blue!90}]{udpSendingTask}{4}{5}
+                \ganttbar[bar/.append style={fill=blue!90}]{}{14}{15}\\
+                \ganttbar[inline=false, bar label font=\color{cyan!90!black}]{Idle Task}{6}{9}
+                \ganttbar[]{}{16}{19}\\
+                \ganttvrule[vrule/.append style={red}]{Interval}{9}
+                \ganttvrule[vrule/.append style={red}]{Interval}{19}
+                \gantttitlelist[title label node/.append style={alias=n\x,opacity=0}]{0,...,19}{1}
+                \end{ganttchart}
+                \draw [-latex] (n0.north west) -- ([xshift=7pt]n19.north east) node[right] {$t$};
+                \foreach \N in {0,...,19} {
+                    \draw
+                    let
+                    \p1=(n0.center), \p2=(n1.center),\n1={(\x2-\x1)/2}
+                    in
+                    (n\N.north) +(-\n1,2pt) -- +(-\n1,-2pt) node[below,font=\small]{\N};
+                }
+                
+                % draw tick for 19
+                \draw
+                    let
+                    \p1=(n0.center), \p2=(n1.center),\n1={(\x2-\x1)/2}
+                    in
+                    (n19.north) +(\n1,2pt) -- +(\n1,-2pt) node[below,font=\small]{20};
+                
+                \end{tikzpicture}\\
+                \caption{\ac{fft} Demo Task Scheduling}
+                \label{fig:fft_demo_task_scheduling}
+            \end{figure}
+
+    \clearpage
     \subsection{Blinky Demo} \label{section:blinky_demo}
         Für eine optische Vorführung des \ac{edf} Schedulers wurde eine 'Blinky Demo' erstellt, welche drei \ac{edf} Tasks beinhaltet.
         Jede der drei Tasks toggelt eine unterschiedliche \ac{led}, besitzen jedoch die gleichen \ac{edf} Parameter, welche in \autoref{table:blinky_demo_task_parameter} dargestellt sind.
@@ -27,8 +134,6 @@
             \centering
             \resizebox{0.8\textwidth}{!}{%
                 \begin{tikzpicture}[node distance = 2cm, auto]
-                    % \draw[very thin,lightgray](-2,-9)grid[step=.5cm]+(6,10);
-                
                     % Place nodes
                     \node [papProcess](pro1){Warten auf Benutzer};
                     \node [papProcess, below = of pro1](pro2){Idle Task};
@@ -87,50 +192,5 @@
                 Das System befindet sich nun wieder am Anfang der Ausführung und kann erneut die einzelnen Status ausführen.
         \end{itemize}
 
-    \subsection{\ac{fft} Demo} \label{section:fft_demo}
-
-        Für die zweite Applikation erstellt und sendet ein Host-Computer ein Signal, bestehend aus einem oder mehreren Sinus- oder Kosinus-Signalen, an den Mikrocontroller über das \ac{udp} Protokoll gesendet wird.
-        Der Mikrocontroller führt, basierend auf dem empfangenen Signal, eine \ac{fft}-Berechnung aus und sendet die Ergebnisse an den Host-Computer zurück.
-        Für das Erstellen und Senden eines Signals, der Empfang der Ergebnisse und das darstellen der Signale wurde eine \ac{gui}, basierend auf der Programmiersprache Python erstellt.
-        Des Weiteren wurden für die Kommunikation mit dem Host-Computer, sowie die Berechnung der \ac{fft} drei \ac{edf} Tasks erstellt, welche folgende Eigenschaften besitzen:
-
-        \begin{table}[ht!]
-            \centering
-            \begin{tabular}{l|c|c|c|l}
-                Taskname & Periode & Deadline & \ac{wcet} & Aufgabe \\
-                \hline
-                Task 1 & 10 & 10 & 2 & Empfangen des Signals über \ac{udp}\\
-                Task 2 & 10 & 10 & 2 & Berechnung der \ac{fft}\\
-                Task 3 & 10 & 10 & 2 & Senden der \ac{fft} Ergebnisse über \ac{udp}
-            \end{tabular}
-            \caption{Blinky Demo Task Parameter}
-            \label{table:blinky_demo_task_parameter}
-        \end{table}
-
-        Der komplette Ablauf der einzelnen Komponenten sieht wie folgt aus:
-
-        \begin{figure}[H]
-            \centering
-            \includegraphics[height=10cm, width=14cm]{./attachments/FFT Ablauf.pdf}
-            \caption{\ac{fft} Demo Ablaufdiagramm}
-            \label{fig:fft_demo_ablaufdiagramm}
-        \end{figure}
-
-        \clearpage
-        \subsubsection{\ac{gui}}
-            Die \ac{gui} wurde für eine einfache Bedienung und einer übersichtlichen Anzeige gestaltet und ist in \autoref{fig:gui} abgebildet:
-
-            \begin{figure}[H]
-                \centering
-                \includegraphics[width=0.97\textwidth]{./attachments/gui.png}
-                \caption{\ac{gui} Interface}
-                \label{fig:gui}
-            \end{figure}
-
-        In der linken oberen Ecke wird der Verbindungsstatus zum Mikrocontroller angezeigt, darunter kann der Benutzer bis zu acht Signale aktiveren oder deaktivieren, sowie auch deren Eigenschaften verändern.
-        Das resultierende Signal wird dann zentral in dem oberen Plotfenster dargestellt.
-        Im unteren Plot werden die Ergebnisse der \ac{fft}-Berechnung angezeigt, zusätzlich werden die erkannten Frequenzen in Textform angezeigt.
-
-        \subsubsection{Tasks des Mikrocontrollers}
 
 \end{document}

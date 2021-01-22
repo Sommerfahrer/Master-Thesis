@@ -202,13 +202,6 @@ createEDFTask(              // Task Creation
 \end{lstlisting}
 \end{figure}
 
-\subsection{Kompatibilität}
-
-    Durch die Verwendung des originalen Schedulers können klassische \ac{freertos} Tasks parallel erstellt und abgearbeitet werden.
-    Hierbei ist aber zu Beachten, dass die Priorität der klassischen \ac{freertos} Task eine höhere Priorität als den Wert '3' besitzt, da es ansonsten zu Konflikten innerhalb des \ac{edf} Schedulers kommen kann.
-    Auch sollte bei der Implementierung von klassischen \ac{freertos} Task darauf geachtet werden, dass die \ac{edf} Tasks genügend Zeit für Ihre Abarbeitung zur Verfügung gestellt bekommen.
-    Wie auch schon eingangs erwähnt, sorgt das Verwenden des \ac{freertos} SysTick für den \ac{edf} Scheduler für eine breite Kompatibilität auf verschiedenen \ac{cpu} Architekturen.
-
 \subsection{Fehlerbehandlung} \label{section:Fehlerbehandlung}
 
     Falls eine Task ihre Deadline überschritten hat oder die Zeit für die Ausführung nicht mehr reicht, werden die \ac{edf} Parameter angepasst.
@@ -281,6 +274,13 @@ createEDFTask(              // Task Creation
     Durch die implementierte Deadline Fehlerbehandlung, wird bei gleicher Deadline zweier Tasks, immer die Task mit weniger Aufrufen ausgeführt.
     Dieses Vorgehen ermöglicht die gleichmäßige Ausführung aller Tasks obwohl die Deadline nicht immer eingehalten werden können.
     Eine andere Möglichkeit der Fehlerbehandlung wäre das unterbinden einer der drei Tasks, um den anderen zwei Tasks dauerhaft das Einhalten Ihrer Deadlines zu ermöglichen.
+
+\subsection{Kompatibilität}
+
+    Durch die Verwendung des originalen Schedulers können klassische \ac{freertos} Tasks parallel erstellt und abgearbeitet werden.
+    Hierbei ist aber zu Beachten, dass die Priorität der klassischen \ac{freertos} Task eine höhere Priorität als den Wert '3' besitzt, da es ansonsten zu Konflikten innerhalb des \ac{edf} Schedulers kommen kann.
+    Auch sollte bei der Implementierung von klassischen \ac{freertos} Task darauf geachtet werden, dass die \ac{edf} Tasks genügend Zeit für Ihre Abarbeitung zur Verfügung gestellt bekommen.
+    Wie auch schon eingangs erwähnt, sorgt das Verwenden des \ac{freertos} SysTick für den \ac{edf} Scheduler für eine breite Kompatibilität auf verschiedenen \ac{cpu} Architekturen.
 
 \subsection{Debug Mode} \label{section:debug_mode}
 
