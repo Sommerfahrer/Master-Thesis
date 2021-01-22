@@ -312,48 +312,84 @@ createEDFTask(              // Task Creation
         \centering
         \sffamily
         \begin{tikzpicture}
-        \begin{ganttchart}[%
-            hgrid,
-            inline, 
-            y unit title=1.1cm,
-            canvas/.style={draw=none},
-            title/.style={draw=none},
-            bar inline label anchor=west,
-            bar inline label node/.append style={anchor=west, text=white},
-            bar/.append style={fill=cyan!90!black,}, 
-            bar height=1,
-            bar top shift = 0]{0}{11}
-        \ganttbar[inline=false, bar/.append style={fill=blue!50}, bar label font=\color{blue!50}]{Task}{0}{0}
-        \ganttbar[bar/.append style={fill=blue!50}]{}{6}{7}\\
-        \ganttvrule[vrule/.append style={red}]{Blocked}{0}
-        \ganttvrule[vrule/.append style={red}]{Continued}{5}
-        \gantttitlelist[title label node/.append style={alias=n\x,opacity=0}]{0,...,11}{1}
-        \end{ganttchart}
-        \draw [-latex] (n0.north west) -- ([xshift=7pt]n11.north east) node[right] {$t$};
-        \foreach \N in {0,...,11} {
+            \begin{ganttchart}[%
+                hgrid,
+                inline, 
+                y unit title=1.1cm,
+                canvas/.style={draw=none},
+                title/.style={draw=none},
+                bar inline label anchor=west,
+                bar inline label node/.append style={anchor=west, text=white},
+                bar/.append style={fill=cyan!90!black,}, 
+                bar height=1,
+                bar top shift = 0]{0}{11}
+                \ganttbar[inline=false, bar/.append style={fill=blue!50}, bar label font=\color{blue!50}]{Task ohne 'Blocked'}{0}{2}
+                \ganttbar[bar/.append style={fill=blue!50}]{}{6}{8}\\
+                \gantttitlelist[title label node/.append style={alias=n\x,opacity=0}]{0,...,11}{1}
+            \end{ganttchart}
+            \draw [-latex] (n0.north west) -- ([xshift=7pt]n11.north east) node[right] {$t$};
+            \foreach \N in {0,...,11} {
+                \draw
+                let
+                \p1=(n0.center), \p2=(n1.center),\n1={(\x2-\x1)/2}
+                in
+                (n\N.north) +(-\n1,2pt) -- +(-\n1,-2pt) node[below,font=\small]{\N};
+            }
+            
+            % draw tick for 19
             \draw
-            let
-            \p1=(n0.center), \p2=(n1.center),\n1={(\x2-\x1)/2}
-            in
-            (n\N.north) +(-\n1,2pt) -- +(-\n1,-2pt) node[below,font=\small]{\N};
-        }
-        
-        % draw tick for 19
-        \draw
-            let
-            \p1=(n0.center), \p2=(n1.center),\n1={(\x2-\x1)/2}
-            in
-            (n11.north) +(\n1,2pt) -- +(\n1,-2pt) node[below,font=\small]{12};
-        
+                let
+                \p1=(n0.center), \p2=(n1.center),\n1={(\x2-\x1)/2}
+                in
+                (n11.north) +(\n1,2pt) -- +(\n1,-2pt) node[below,font=\small]{12};
         \end{tikzpicture}\\
+        \begin{tikzpicture}
+            \begin{ganttchart}[%
+                hgrid,
+                inline, 
+                y unit title=1.1cm,
+                canvas/.style={draw=none},
+                title/.style={draw=none},
+                bar inline label anchor=west,
+                bar inline label node/.append style={anchor=west, text=white},
+                bar/.append style={fill=cyan!90!black,}, 
+                bar height=1,
+                bar top shift = 0]{0}{11}
+            \ganttbar[inline=false, bar/.append style={fill=blue!50}, bar label font=\color{blue!50}]{Task mit 'Blocked'}{0}{0}
+            \ganttbar[bar/.append style={fill=blue!50}]{}{6}{7}\\
+            \ganttvrule[vrule/.append style={red}]{Blocked}{0}
+            \ganttvrule[vrule/.append style={red}]{Continued}{5}
+            \gantttitlelist[title label node/.append style={alias=n\x,opacity=0}]{0,...,11}{1}
+            \end{ganttchart}
+            \draw [-latex] (n0.north west) -- ([xshift=7pt]n11.north east) node[right] {$t$};
+            \foreach \N in {0,...,11} {
+                \draw
+                let
+                \p1=(n0.center), \p2=(n1.center),\n1={(\x2-\x1)/2}
+                in
+                (n\N.north) +(-\n1,2pt) -- +(-\n1,-2pt) node[below,font=\small]{\N};
+            }
+            
+            % draw tick for 19
+            \draw
+                let
+                \p1=(n0.center), \p2=(n1.center),\n1={(\x2-\x1)/2}
+                in
+                (n11.north) +(\n1,2pt) -- +(\n1,-2pt) node[below,font=\small]{12};
+            
+        \end{tikzpicture}\\
+
+
         \vspace {1cm}
         \begin{tabular}{l|c|c|c}
             Taskname & Periode & Deadline & \ac{wcet} \\
             \hline
-            Task 1 & 6 & 6 & 3 \\
+            Task mit 'Blocked' & 6 & 6 & 3 \\
+            Task ohne 'Blocked' & 6 & 6 & 3 
         \end{tabular}
         \caption{'Blocked' Status in \ac{edf} Tasks}
         \label{fig:blocked_status_in_edf_tasks}
     \end{figure}
+
 
 \end{document}
