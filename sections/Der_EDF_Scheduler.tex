@@ -320,11 +320,11 @@ createEDFTask(              // Task Creation
                 title/.style={draw=none},
                 bar inline label anchor=west,
                 bar inline label node/.append style={anchor=west, text=white},
-                bar/.append style={fill=cyan!90!black,}, 
                 bar height=1,
                 bar top shift = 0]{0}{11}
-                \ganttbar[inline=false, bar/.append style={fill=blue!50}, bar label font=\color{blue!50}]{Task ohne 'Blocked'}{0}{2}
-                \ganttbar[bar/.append style={fill=blue!50}]{}{6}{8}\\
+                \gantttitle{Task ohne 'Blocked'}{12} \\
+                \ganttbar[inline=false]{Task}{0}{2}
+                \ganttbar[]{}{6}{8}\\
                 \gantttitlelist[title label node/.append style={alias=n\x,opacity=0}]{0,...,11}{1}
             \end{ganttchart}
             \draw [-latex] (n0.north west) -- ([xshift=7pt]n11.north east) node[right] {$t$};
@@ -351,14 +351,12 @@ createEDFTask(              // Task Creation
                 canvas/.style={draw=none},
                 title/.style={draw=none},
                 bar inline label anchor=west,
-                bar inline label node/.append style={anchor=west, text=white},
-                bar/.append style={fill=cyan!90!black,}, 
+                bar inline label node/.append style={anchor=west, text=white}, 
                 bar height=1,
                 bar top shift = 0]{0}{11}
-            \ganttbar[inline=false, bar/.append style={fill=blue!50}, bar label font=\color{blue!50}]{Task mit 'Blocked'}{0}{0}
-            \ganttbar[bar/.append style={fill=blue!50}]{}{6}{7}\\
-            \ganttvrule[vrule/.append style={red}]{Blocked}{0}
-            \ganttvrule[vrule/.append style={red}]{Continued}{5}
+            \gantttitle{Task mit 'Blocked'}{12} \\
+            \ganttbar[inline=false, broken right]{Task}{0}{0}
+            \ganttbar[broken left]{}{6}{7}\\
             \gantttitlelist[title label node/.append style={alias=n\x,opacity=0}]{0,...,11}{1}
             \end{ganttchart}
             \draw [-latex] (n0.north west) -- ([xshift=7pt]n11.north east) node[right] {$t$};
@@ -376,20 +374,20 @@ createEDFTask(              // Task Creation
                 \p1=(n0.center), \p2=(n1.center),\n1={(\x2-\x1)/2}
                 in
                 (n11.north) +(\n1,2pt) -- +(\n1,-2pt) node[below,font=\small]{12};
-            
         \end{tikzpicture}\\
 
-
-        \vspace {1cm}
+        \vspace {0.5cm}
         \begin{tabular}{l|c|c|c}
             Taskname & Periode & Deadline & \ac{wcet} \\
             \hline
-            Task mit 'Blocked' & 6 & 6 & 3 \\
-            Task ohne 'Blocked' & 6 & 6 & 3 
+            Test Task & 6 & 6 & 3 \\
         \end{tabular}
         \caption{'Blocked' Status in \ac{edf} Tasks}
         \label{fig:blocked_status_in_edf_tasks}
     \end{figure}
+
+    Wie in \autoref{fig:blocked_status_in_edf_tasks} zu sehen, sind zwei Tasks mit den identischen \ac{edf} Parametern dargestellt, allerdings enthält eine Task einen Programmcode welcher zu einem 'Blocked' Status führt.
+    Aus diesem Grund wird diese Task erst in der nächsten Periode fortgesetzt, wobei die Task ohne einen 'Blocked' Status in der gleichen Zeit zweimal ausgeführt wird.
 
 
 \end{document}

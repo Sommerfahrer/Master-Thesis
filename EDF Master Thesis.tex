@@ -27,7 +27,7 @@
 \usepackage{pgfplots}
 \usepackage{lmodern}
 \usepackage{tikz}
-\usetikzlibrary{shapes,arrows,positioning}
+\usetikzlibrary{shapes,arrows,positioning, decorations.pathmorphing}
 \usetikzlibrary{calc}
 \usepackage[backend=biber,
 style=apa,
@@ -78,8 +78,6 @@ style=apa,
 \tikzset{
 	pap/.style={
 		draw,
-		minimum height=7mm,
-		font=\ttfamily\footnotesize,
 		align=flush center,
 		on grid
 	},
@@ -104,8 +102,40 @@ style=apa,
 	}
 }
 \tikzset{line/.style={draw, -latex}}
-
 \lstset{style=mystyle}
+\tikzset{Shift/.style 2 args={shift={(+#1.5\pgflinewidth,+#2.5\pgflinewidth)}}}
+\newcommand*{\pgfkeysstylelet}[2]{\expandafter\let\csname pgfk@#1/.@cmd\expandafter\endcsname\csname pgfk@#2/.@cmd\endcsname}
+\ganttset{
+    /tikz/broken/.style={
+        decoration={
+            name=zigzag,
+            amplitude=+1pt,
+            segment length=+2pt}},
+    broken right/.code={
+        \pgfkeysstylelet{/pgfgantt/bar backup}{/pgfgantt/bar}
+        \pgfkeysalso{
+            /pgfgantt/bar left shift=-.5\pgflinewidth/\ganttvalueof{x unit},
+            /pgfgantt/bar right shift=(.5\pgflinewidth+.5\pgfdecorationsegmentamplitude)/\ganttvalueof{x unit},
+            /pgfgantt/bar/.append style={
+                draw=none,
+                path picture={
+                    \draw[/pgfgantt/bar backup, broken] ([Shift=+-] path picture bounding box.north west) |-
+                                                        ([Shift=-+, xshift=-\pgfdecorationsegmentamplitude-.6\pgflinewidth] path picture bounding box.south east)
+                                           decorate {-- ([Shift=--, xshift=-\pgfdecorationsegmentamplitude-.6\pgflinewidth] path picture bounding box.north east)}
+                                                     -- cycle;}}}},
+    broken left/.code={
+        \pgfkeysstylelet{/pgfgantt/bar backup}{/pgfgantt/bar}
+        \pgfkeysalso{
+            /pgfgantt/bar right shift=.5\pgflinewidth/\ganttvalueof{x unit},
+            /pgfgantt/bar left shift=(-.5\pgflinewidth-.5\pgfdecorationsegmentamplitude)/\ganttvalueof{x unit},
+            /pgfgantt/bar/.append style={
+                draw=none,
+                path picture={
+                    \draw[/pgfgantt/bar backup, broken] ([Shift=--] path picture bounding box.north east) |-
+                                                        ([Shift=++, xshift=\pgfdecorationsegmentamplitude+.6\pgflinewidth] path picture bounding box.south west)
+                                           decorate {-- ([Shift=+-, xshift=\pgfdecorationsegmentamplitude+.6\pgflinewidth] path picture bounding box.north west)}
+                                                     -- cycle;}}}}}
+
 
 
 \begin{document}
