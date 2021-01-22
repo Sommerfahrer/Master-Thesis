@@ -299,4 +299,61 @@ createEDFTask(              // Task Creation
         \end{itemize}
     \end{itemize}
 
+\subsection{Limitationen} \label{section:limitationen}
+
+    Eine \ac{freertos} Task kann, wie in \autoref{section:task_states} beschrieben, in den 'Blocked' Status gehen und übergibt, trotz höhere Priorität, \ac{cpu} Zeit an eine niedrigere Zeit.
+    Dieses Vorgehen macht Sinn, wenn \ac{zb} die höher priorisierte Task auf Daten warten muss oder in der Applikation die Funktion 'vTaskDelay' benutzt wurde.
+    Aus der Überlegung ob dies der \ac{edf} Scheduler unterstützen sollte, wurde die Laufzeit der 'rescheduleEDF'-Funktion mit und ohne der 'Blocked'-Implementierung getestet.
+    Die Laufzeit vergrößerte sich nur gering, allerdings wurde dann entschieden, dass es bei einem Taskhandling nach dem \ac{edf}-Prinzip keinen Sinn macht, dies zu unterstützen.
+    Aus diesem Grund und der verringerten Laufzeit der 'rescheduleEDF' darf eine \ac{edf} Task nicht in den 'blocked' Status gesetzt werden.  
+    Sollte dies dennoch in einer Applikation nötig sein, muss beachtet werden, dass die betreffende Task erst innerhalb ihrer nächsten Periode, wie in \autoref{fig:blocked_status_in_edf_tasks} dargestellt, wieder aufgerufen wird.
+
+    \begin{figure}[H]
+        \centering
+        \sffamily
+        \begin{tikzpicture}
+        \begin{ganttchart}[%
+            hgrid,
+            inline, 
+            y unit title=1.1cm,
+            canvas/.style={draw=none},
+            title/.style={draw=none},
+            bar inline label anchor=west,
+            bar inline label node/.append style={anchor=west, text=white},
+            bar/.append style={fill=cyan!90!black,}, 
+            bar height=1,
+            bar top shift = 0]{0}{11}
+        \ganttbar[inline=false, bar/.append style={fill=blue!50}, bar label font=\color{blue!50}]{Task}{0}{0}
+        \ganttbar[bar/.append style={fill=blue!50}]{}{6}{7}\\
+        \ganttvrule[vrule/.append style={red}]{Blocked}{0}
+        \ganttvrule[vrule/.append style={red}]{Continued}{5}
+        \gantttitlelist[title label node/.append style={alias=n\x,opacity=0}]{0,...,11}{1}
+        \end{ganttchart}
+        \draw [-latex] (n0.north west) -- ([xshift=7pt]n11.north east) node[right] {$t$};
+        \foreach \N in {0,...,11} {
+            \draw
+            let
+            \p1=(n0.center), \p2=(n1.center),\n1={(\x2-\x1)/2}
+            in
+            (n\N.north) +(-\n1,2pt) -- +(-\n1,-2pt) node[below,font=\small]{\N};
+        }
+        
+        % draw tick for 19
+        \draw
+            let
+            \p1=(n0.center), \p2=(n1.center),\n1={(\x2-\x1)/2}
+            in
+            (n11.north) +(\n1,2pt) -- +(\n1,-2pt) node[below,font=\small]{12};
+        
+        \end{tikzpicture}\\
+        \vspace {1cm}
+        \begin{tabular}{l|c|c|c}
+            Taskname & Periode & Deadline & \ac{wcet} \\
+            \hline
+            Task 1 & 6 & 6 & 3 \\
+        \end{tabular}
+        \caption{'Blocked' Status in \ac{edf} Tasks}
+        \label{fig:blocked_status_in_edf_tasks}
+    \end{figure}
+
 \end{document}

@@ -10,7 +10,8 @@
         Der Benutzer kann mit Hilfe des integrierten Button auf dem STM32f769I-Disc0 Board die drei Tasks, wie in \autoref{fig:blinky_demo_ablaufdiagramm} zu sehen, erstellen und löschen.
         
         \begin{figure}[H]
-            \begin{center}
+            \centering
+            \resizebox{0.5\textwidth}{!}{%
                 \begin{tikzpicture}[node distance = 2cm, auto]
                     % \draw[very thin,lightgray](-2,-9)grid[step=.5cm]+(6,10);
                 
@@ -34,7 +35,7 @@
                     \path[-,draw] (pro7) -| node{} (inv.north);
                     \path[line]{} (inv.north) |- node[above]{reset} (pro1);
                 \end{tikzpicture}  
-            \end{center}
+            }%
             \caption{Blinky Demo Ablaufdiagramm}
             \label{fig:blinky_demo_ablaufdiagramm}
         \end{figure}
