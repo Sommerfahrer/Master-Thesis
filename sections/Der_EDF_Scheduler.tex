@@ -139,7 +139,7 @@ Sollte dieser Wert angepasst werden, führt dies zu einer Änderung der Genauigk
     Nachdem nun alle drei Tasks innerhalb Ihrer Periode unter Einhaltung der Deadlines ausgeführt wurden, wird die Idle Task solange ausgeführt, bis die nächste Periode einer Task beginnt.
 
 
-\subsection{Erstellung einer \ac{edf}-Task} \label{section:erstellung_einer_edf_task}
+\subsection{Erstellung einer \acf{edf}-Task} \label{section:erstellung_einer_edf_task}
 
     Für die Erstellung einer \ac{edf}-Task muss die 'createEDFTask'-Funktion , mit allen Parametern die in \autoref{table:task_parameter_von_der_funktion_createEDFTask} aufgelistet sind, aufgerufen werden.
     Bei dem Aufruf der Funktion wird eine \ac{edf}-Struktur mit allen erforderlichen Parametern für den \ac{edf} Scheduler hinzugefügt, anschließend wird die \ac{freertos}-Task erstellt.
@@ -190,7 +190,7 @@ createEDFTask(              // Task Creation
 \end{lstlisting}
 \end{figure}
 
-\subsection{Löschen einer \ac{edf}-Task} \label{section:löschen_einer_edf_task}
+\subsection{Löschen einer \acf{edf}-Task} \label{section:löschen_einer_edf_task}
 
     In manchen Applikationen wird das Löschen von \ac{edf} Tasks benötigt und wurde aus diesem Grund ebenfalls in dieser Arbeit implementiert.
     Dabei muss die Funktion 'deleteEDFTask' und der Stringname der zu löschenden Task aufgerufen werden.
@@ -295,7 +295,7 @@ createEDFTask(              // Task Creation
             \item \textbf{lastRunningTime}: Enthält die letzte Ausführzeit der Task in SysTicks
             \item \textbf{maxRunningTime}: Enthält die bisherige maximale Ausführzeit (\ac{wcet} der Task in SysTicks
             \item \textbf{startTime}: Enthält die letzte Startzeit der Task in SysTicks
-            \item \textbf{stopTime}: Enthält die letzte Stopzeit der Task in SysTicks
+            \item \textbf{stopTime}: Enthält die letzte Stoppzeit der Task in SysTicks
             \item \textbf{deadlineErrorCounter}: Enthält die Anzahl der nicht eingehaltenen Deadlines
         \end{itemize}
     \end{itemize}
@@ -383,7 +383,7 @@ createEDFTask(              // Task Creation
             \hline
             Test Task & 6 & 6 & 3 \\
         \end{tabular}
-        \caption{'Blocked' Status in \ac{edf} Tasks}
+        \caption{'Blocked' Status in \ac{edf}-Tasks}
         \label{fig:blocked_status_in_edf_tasks}
     \end{figure}
 

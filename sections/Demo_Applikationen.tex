@@ -3,7 +3,7 @@
 \begin{document}
     Ein Teil der Aufgabenstellung beinhaltet das Erstellen von zwei Demo-Applikationen, welche die Funktion des \ac{edf}-Schedulers unter Beweis stellen.
 
-    \subsection{\ac{fft}-Demo} \label{section:fft_demo}
+    \subsection{\acf{fft}-Demo} \label{section:fft_demo}
 
         Die \ac{fft}-Demo erstellt und sendet ein Host-Computer alle 10ms ein Signal, bestehend aus einem oder mehreren Sinus- oder Kosinus-Signalen, an den Mikrocontroller über das \ac{udp}-Protokoll gesendet.
         Das Interval von 10ms wurde so gewählt, dass eine ausreichend schnelle Aktualisierung und eine mittelmäßige Auslastung des Host-Computers gewährleistet ist.
@@ -19,7 +19,7 @@
         \end{figure}
 
         Für das Erstellen und Senden eines Signals, der Empfang der Ergebnisse und das darstellen der Signale wurde eine \ac{gui}, basierend auf der Programmiersprache Python erstellt.
-        Des Weiteren wurden für die Kommunikation mit dem Host-Computer, sowie die Berechnung der \ac{fft} drei \ac{edf} Tasks erstellt.
+        Des Weiteren wurden für die Kommunikation mit dem Host-Computer, sowie die Berechnung der \ac{fft} drei \ac{edf}-Tasks erstellt.
         Das in dieser Arbeit generierte Signal wurde mit 2048 Abtastpunkten erstellt und besitzt somit die gleiche Größe wie die verwendete \ac{fft}.
         Die Standard \ac{udp}-Paketgröße beträgt 1454 Bytes, um 2048 Abtastpunkte von float-Werten (4 Byte) zu übermitteln, muss das Signal in mindestens 6 Pakete aufgeteilt werden.
         Jedoch besitzt das \ac{udp}-Protokoll keine Sortierfunktion, dass heißt falls ein Paket langsamer übertragen wird, als das nächstfolgende Paket, würde dies zu einer Signalverfälschung führen.
@@ -27,7 +27,7 @@
         Deshalb wird das Signal in 8 Pakete mit je 256 Samples geteilt und übertragen.
 
         \clearpage
-        \subsubsection{\ac{gui}}
+        \subsubsection{\acf{gui}}
             Die \ac{gui} wurde für eine einfache Bedienung, sowie mit einer übersichtlichen Anzeige gestaltet und ist in \autoref{fig:grafische_benutzeroberflaeche} abgebildet:
 
             \begin{figure}[H]
@@ -111,7 +111,7 @@
 
     \clearpage
     \subsection{Blinky-Demo} \label{section:blinky_demo}
-        Für eine optische Vorführung des \ac{edf} Schedulers wurde eine 'Blinky-Demo' erstellt, welche drei \ac{edf}-Tasks beinhaltet.
+        Für eine optische Vorführung des \ac{edf}-Schedulers wurde eine 'Blinky-Demo' erstellt, welche drei \ac{edf}-Tasks beinhaltet.
         Jede der drei Tasks toggelt eine unterschiedliche \ac{led}, besitzen aber die gleichen \ac{edf} Parameter, welche in \autoref{table:blinky_demo_task_parameter} dargestellt sind.
 
         \begin{table}[ht!]

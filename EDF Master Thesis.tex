@@ -27,6 +27,7 @@
 \usepackage{pgfplots}
 \usepackage{lmodern}
 \usepackage{tikz}
+\usepackage[acronym,nonumberlist]{glossaries}
 \usetikzlibrary{shapes,arrows,positioning, decorations.pathmorphing}
 \usetikzlibrary{calc}
 \usepackage[backend=biber,
@@ -100,7 +101,7 @@ style=apa,
 	papLabel/.style={
 		label distance=.5cm,
 		font=\footnotesize\itshape
-	}
+	},
 }
 \tikzset{line/.style={draw, -latex}}
 \lstset{style=mystyle}
@@ -175,9 +176,9 @@ style=apa,
 			\subfile{sections/FreeRTOS.tex}
 		\subsection{Periodische Tasks} \label{section:periodische_tasks}
 			\subfile{sections/periodischeTasks.tex}
-		\subsection{\ac{udp}} \label{section:udp}
+		\subsection{\acf{udp}} \label{section:udp}
 			\subfile{sections/udp.tex}
-		\subsection{\ac{fft}} \label{section:fft}
+		\subsection{\acf{fft}} \label{section:fft}
 			\subfile{sections/fft.tex}
 		\clearpage
 		\subsection{Plattform} \label{section:plattform}

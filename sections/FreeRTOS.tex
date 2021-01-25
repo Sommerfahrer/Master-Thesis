@@ -7,12 +7,12 @@ Des Weiteren wurde \ac{freertos} auf über 40 Mikrocontroller-Architekturen port
 \ac{freertos} hat wenig Overhead und der Kernel unterstützt Multithreading, Warteschlangen, Semaphore, Software-Timer, Mutexes und Eventgruppen \parencite{freertos-features}.
 Des Weiteren stellt \ac{freertos} unter der Bezeichnung "FreeRTOS Plus" verschiedene Erweiterungen zur Verfügung, welche erweiterte Funktionen bereitstellen \parencite{freertos-extensions}.
 \begin{itemize}
-    \item \textbf{FreeRTOS + TCP}: Socketbasiertes \acs{tcp}/\acs{udp}/\acs{ip} Interface.
-    \item \textbf{Application Protocols}: \acs{mqtt} und \acs{http} Anwendungsprotokolle für \acs{iot}.
-    \item \textbf{coreJson}: Effizienter Parser für \acs{json}
-    \item \textbf{corePKCS\#11}: Verschlüsselungs \acs{api}-Layer
+    \item \textbf{FreeRTOS + TCP}: Socketbasiertes \ac{tcp}/\ac{udp}/\ac{ip} Interface.
+    \item \textbf{Application Protocols}: \ac{mqtt} und \ac{http} Anwendungsprotokolle für \ac{iot}.
+    \item \textbf{coreJson}: Effizienter Parser für \ac{json}
+    \item \textbf{corePKCS\#11}: Verschlüsselungs \ac{api}-Layer
     \item \textbf{FreeRTOS + IO}: Erweiterung für Peripheriegeräte
-    \item \textbf{FreeRTOS + CLI}: Effiziente \acs{cli}-Eingaben
+    \item \textbf{FreeRTOS + CLI}: Effiziente \ac{cli}-Eingaben
 \end{itemize}
 
 Im Zuge dieser Masterarbeit wurde als einziges der Stack '\ac{freertos} + \acs{tcp}' für die Verbindung zwischen Computer und Mikrocontroller verwendet.
@@ -56,7 +56,7 @@ Ein Ablaufdiagramm der einzelnen Zustände und deren Wechsel mit Hilfe von \ac{f
     \label{fig:FreeRTOS_Task_States}
 \end{figure}
 
-\subsection{Idle Task} \label{section:idle_task}
+\subsubsection{Idle Task} \label{section:idle_task}
 Die \ac{freertos} Idle Task wird immer dann aufgerufen, wenn keine Task ausgeführt werden kann.
 Dabei wird die \ac{freertos} Idle Task automatisch beim Start des \ac{freertos}-Schedulers mit der niedrigsten verfügbaren Priorität erstellt, um keine Tasks im 'ready' Status zu blockieren.
 Das heißt die Idle Task wird nur ausgeführt, wenn keine Task eine höhere Priorität als die Idle Task Priorität hat oder keine Task die eine höhere Priorität hat sich im 'ready' Status befindet.
@@ -78,12 +78,12 @@ Nach der Unterbrechungsanforderung (\ac{irq}) führt der Prozessor eine Unterbre
 Im Anschluss wird der vorherige Zustand des Prozessors wiederhergestellt und die vorherige Ausführung an der unterbrochenen Stelle fortgesetzt \parencite{wiki:008}.
 
 
-\subsubsection{\ac{freertos} Sys-Tick} \label{section:freertos_sys_tick}
+\subsubsection{\acf{freertos} Sys-Tick} \label{section:freertos_sys_tick}
 Der \ac{freertos} Sys-Tick, auch System Tick genannt, ist fundemental für die Taskwechsel in \ac{freertos}, dieser Interrupt wird standartmäßig jede Millisekunde aufgerufen.
 Dieser Wert bietet eine gute Balance zwischen Taskgeschwindigkeit und Overhead von Taskwechsel.
 Bei jedem Sys-Tick wird die \ac{freertos} Funktion 'vTaskSwitchContext()' aufgerufen, diese überprüft ob eine höher priorisierte Task unblocked, also ausführbar geworden ist und falls dies zutrifft wird ein Taskwechsel auf die höher priorisierte Task durchgeführt.
 
-\subsubsection{\ac{freertos} Queues} \label{section:queues}
+\subsubsection{\acf{freertos} Queues} \label{section:queues}
 Queues, zu Deutsch Warteschlange, werden oft, auch außerhalb von \ac{freertos} für die sichere Kommunikation zwischen verschiedenen Tasks und/oder Interrupts verwendet.
 Diese Implementierung von \ac{freertos} vermeidet Fehler wie \ac{zb} eine höher priorisierte Task wartet auf einen Wert einer niederen priorisierten Task, wobei die niedere priorisierte Task nie ausgeführt wird.
 Bei Queues wird oft das Prinzip \ac{fifo} verwendet, um eine zeitliche Abarbeitung der Daten zu gewährleisten.
