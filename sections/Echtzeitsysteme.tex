@@ -2,9 +2,8 @@
 
 \begin{document}
     Unter Echtzeit wird die Anforderung bezeichnet, dass innerhalb einer kürzesten definierten Zeitspanne die geforderte Aufgabe korrekt ausgeführt wird.
-    Echtzeitsysteme sind Systeme, welche diese Anforderungen erfüllen und kommen in diversen Technikgebieten zur Anwendung, wie \ac{zb} in Signalstellanlagen, Robotik und Motorsteuerungen.
-    Da nicht bei allen Systemen eine Einhaltung der vorher definierten Zeitspanne von Nöten ist, wird die Echtzeitanforderungen in drei Kategorien unterteilt.
-    Dabei wird bei Echtzeit unter drei verschiedenen Kategorien unterschieden:
+    Echtzeitsysteme sind Systeme, welche diese Anforderungen erfüllen und kommen in diversen Technikgebieten, wie \ac{zb} in Signalstellanlagen, Robotik und Motorsteuerungen, zur Anwendung.
+    Da nicht bei allen Systemen eine Einhaltung der vorher definierten Zeitspanne von Nöten ist, wird die Echtzeitanforderungen in drei Kategorien unterteilt:
     \begin{itemize}
         \item \textbf{Feste Echtzeitanforderung} führt bei einer Überschreitung der vorher definierten Zeitspanne zum Abbruch der Aufgabe.
             \begin{itemize}
@@ -24,15 +23,14 @@
     Dies kann je nach Anforderung das Echtzeitsystem rein auf Software auf einem normalen Computer implementiert sein, jedoch wird bei harter Echtzeitanforderung oftmals eine reine Hardware-Lösung mit speziellen Architekturen in Hard- und Software wie \ac{zb} Mikrocontroller-, \ac{fpga}- oder \ac{dsp}-basierte Lösungen verwendet. 
     Bei der Implementierung eines Echtzeitsystems wird unter drei verschiedenen Umsetzungen unterschieden:
     \begin{itemize}
-        \item \textbf{Feste periodische Abarbeitung:} Es wird nur eine Aufgabe, wie \ac{zb} bei der Umwandlung von analogen Signalen zu digitalen Signalen, mit einer fixen Frequenz f abgearbeitet, welche die Reaktionszeit $ f = \frac{1}{Reaktionszeit}$ erfüllt.
+        \item \textbf{Feste periodische Abarbeitung:} Es wird nur eine Aufgabe, wie \ac{zb} bei der Umwandlung von analogen Signalen zu digitalen Signalen, mit einer fixen Frequenz f abgearbeitet, welche die Reaktionszeit $ f = \frac{1}{Reaktionszeit}$ erfüllt \autocite{wiki:001, echtzeit-grundlagen}.
         \item \textbf{Synchrone Abarbeitung:} Im Gegensatz zur festen periodischen Abarbeitung können bei diesem Ansatz mehrere Aufgaben, wie \ac{zb} das Abfragen mehrere Sensoren und einer unterschiedlichen Reaktion darauf, erfüllt werden.
-            Allerdings muss dabei die kleinste geforderte Reaktionszeit unter den Aufgaben die hälfte der maximalen Laufzeit für den Gesamtdurchlauf aller Aufgaben betragen.
+            Allerdings muss dabei die kleinste geforderte Reaktionszeit unter den Aufgaben die hälfte der maximalen Laufzeit für den Gesamtdurchlauf aller Aufgaben betragen \autocite{wiki:001, echtzeit-grundlagen}.
             Dieser Ansatz wird vor allem für weiche Echtzeitsysteme verwendet, weil je nach Komplexität des Systems, das Vorhandensein mehrere Codepfade oder das Warten auf Ein- oder Ausgangssignalen mit unterschiedlicher Ausführungszeit ein Nichtdeterminismus besteht.
-        \item \textbf{Prozessbasierte Abarbeitung:} Bei diesem Ansatz können, wie auch bei der Synchronen Abarbeitung mehrere Aufgaben erledigt werden, jedoch mit viel höheren Komplexität.
+        \item \textbf{Prozessbasierte Abarbeitung:} Bei diesem Ansatz können, wie auch bei der synchronen Abarbeitung mehrere Aufgaben erledigt werden, jedoch mit einer viel höheren Komplexität.
             Dabei laufen in der Regel verschieden Prozesse gleichzeitig und mit unterschiedlicher Priorität ab, geregelt durch das Echtzeitbetriebssystem.
             Die minimale Reaktionszeit definiert sich durch die Zeitdauer für einen Wechsel von einem Prozess niederer Priorität zu einem Prozess höherer Priorität, anschließend beginnt erst die Abarbeitung des Prozesses mit der höheren Priorität.
             Durch die Unterbrechung eines Prozesses niedriger Priorität zu einem Prozess höherer Priorität wird für diesen die Erfüllung einer harten Echtzeitanforderung erzwungen, dies wird auch als Präemptives Multitasking bezeichnet.
-            Der Wechsel wird dann eingeleitet, wenn ein definiertes Ereignis eintritt, \ac{zb} durch den internen Timer des Prozessors oder einem externen Trigger (Interrupt) wie \ac{zb} ein anliegendes Signal.
+            Der Wechsel wird dann eingeleitet, wenn ein definiertes Ereignis eintritt, \ac{zb} durch den internen Timer des Prozessors oder einem externen Trigger (Interrupt) wie \ac{zb} ein anliegendes Signal \autocite{wiki:001, echtzeit-grundlagen}.
     \end{itemize}
-    \parencite{wiki:001, echtzeit-grundlagen}
 \end{document}

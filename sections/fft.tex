@@ -2,7 +2,7 @@
 
 \begin{document}
 
-Die \ac{dft} kann ein zeitdiskretes Signal in dessen Frequenzteile (Spektrum) aufspalten, wie in \autoref{fig:aufspaltung_eines_Signals_in_dessen_Frequenzteile} dargestellt. Dies ist sehr nützlich für viele Bereiche der Signalverarbeitung \ac{zb} für das Komprimieren von Musikaufnahmen, wo nicht hörbare Frequenzen rausgefiltert werden.
+Die \ac{dft} kann ein zeitdiskretes Signal in dessen Frequenzteile (Spektrum), wie in \autoref{fig:aufspaltung_eines_Signals_in_dessen_Frequenzteile} dargestellt, aufspalten. Dies ist sehr nützlich für viele Bereiche der Signalverarbeitung \ac{zb} für das Komprimieren von Musikaufnahmen, wo nicht hörbare Frequenzen rausgefiltert werden.
 
 \begin{figure}[ht!]
     \includegraphics[width=1\textwidth]{attachments/fft_example.pdf}
@@ -17,7 +17,7 @@ Dies führt dazu, dass eine reine Berechnung mit Hilfe der \ac{dft} auf kleinen 
     \begin{equation}
         O(N) = (N^2)
     \end{equation}
-    \caption{Berechnung der \ac{dft} Komplexität}
+    \caption{Berechnung der \ac{dft}-Komplexität}
     \label{form:berechnung_der_dft_komplexitaet}
 \end{equ}
 
@@ -83,7 +83,7 @@ Und berücksichtigt folgende Umformungen:
 
 Resultieren zwei Gleichungen mit der halben Länge:
 
-\begin{equ}[ht!]
+\begin{equ}[H]
     \begin{equation}
         X(k) = \sum_{m=0}^{M-1} x(2m) \cdot w_M^{m \cdot k} + \sum_{m=0}^{M-1} x(2m + 1) \cdot w_M^{m \cdot k}
     \end{equation}

@@ -8,10 +8,10 @@ Im Gegensatz zu einem kooperativen Scheduler kann ein präemptiven Scheduler ein
 Allgemein lassen sich die unterschiedliche Scheduler-Systeme in drei Rubriken unterteilen \parencite{wiki:007}:
 \begin{itemize}
     \item \textbf{Stapelverarbeitungssysteme}: Ankommende Prozesse werden nach Eingangszeit in eine Reihe (Queue) angeordnet, die dann nacheinander abgearbeitet wird.
-    \item \textbf{Interaktive Systeme}: Eingaben von Benutzen sollten schnellstmöglich abgearbeitet werden, weniger wichtige Aufgaben wie \ac{zb} die Aktualisierung der Uhrzeit werden unterbrochen oder erst im Nachhinein abgearbeitet.
+    \item \textbf{Interaktive Systeme}: Eingaben von Benutzern sollten schnellstmöglich abgearbeitet werden, weniger wichtige Aufgaben wie \ac{zb} die Aktualisierung der Uhrzeit werden unterbrochen oder erst im Nachhinein abgearbeitet.
     \item \textbf{Echtzeitsysteme}: Das Echtzeitsystem garantiert die Fertigstellung des Prozesses innerhalb einer definierten Zeitspanne, sofern die \ac{cpu} Auslastung nicht über 100\% beträgt.
 \end{itemize}
-Für die Anordnung selbst, wann welcher Prozess ausgeführt wird, gibt es verschiedene Arten von Scheduler.
+Für die Anordnung der Prozesse selbst, wann welcher Prozess ausgeführt wird, gibt es verschiedene Arten von Scheduler.
 
 
 \subsubsection{\ac{rms}} \label{section:rms}
@@ -45,7 +45,7 @@ Für die Anordnung selbst, wann welcher Prozess ausgeführt wird, gibt es versch
     Im Unterschied zu \ac{dms} wird bei \ac{edf} beim Eintreffen eines Prozesses mit höherer Priorität der aktuelle Prozess mit niedriger Priorität nicht unterbrochen, auch sind die Prioritäten nicht statisch, sondern werden bei jedem Scheduling-Vorgang neu vergeben.
     Ein Context Switch, das heißt ein Wechsel zwischen den Prozessen, findet nur vor Beginn eines Prozesses oder am Ende eines Prozesses statt.
     In Zuge dieser Masterarbeit wird ein Context Switch nur nach Beendigung eines Prozesses ausgelöst, sofern ein anderer Prozess eine höhere Priorität erhalten hat.
-    Im Gegensatz zu \ac{rms} und \ac{dms} kann bei \ac{edf} der Scheduler die \ac{cpu} bis auf 100\% betragen, dabei darf die Zeitspanne der einzelnen Prozesse bis zur Deadline nur jeweils größer oder gleich der Periode des Prozesses sein \parencite{wiki:006}.
+    Im Gegensatz zu \ac{rms} und \ac{dms} kann bei \ac{edf} der Scheduler die \ac{cpu} bis auf 100\% auslasten, dabei darf die Zeitspanne der einzelnen Prozesse bis zur Deadline nur jeweils größer oder gleich der Periode des Prozesses sein \parencite{wiki:006}.
 
     \begin{equ}[ht!]
         \begin{equation}

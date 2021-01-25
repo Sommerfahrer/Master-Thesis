@@ -15,13 +15,13 @@ Des Weiteren stellt \ac{freertos} unter der Bezeichnung "FreeRTOS Plus" verschie
     \item \textbf{FreeRTOS + CLI}: Effiziente \acs{cli}-Eingaben
 \end{itemize}
 
-Im Zuge dieser Masterarbeit wurde als einziges der Stack '\ac{freertos} + \acs{tcp}' für die Verbindung zwischen Computer und Mikrocontroller.
+Im Zuge dieser Masterarbeit wurde als einziges der Stack '\ac{freertos} + \acs{tcp}' für die Verbindung zwischen Computer und Mikrocontroller verwendet.
 
 \subsubsection{\ac{freertos} Scheduling Richtlinie} \label{section:freertos_scheduling_richtlinie}
-Der \ac{freertos} Scheduler arbeitet prioritätsbasiert und beinhaltet standartmäßig hauptsächlich zwei Eigenschaften:
+Der \ac{freertos} Scheduler arbeitet prioritätsbasiert und beinhaltet standartmäßig zwei Eigenschaften:
 \begin{itemize}
-    \item \textbf{Time Slicing Scheduling Policy}: Gleich priorisierte Tasks erhalten die gleiche Anteile an \ac{cpu}-Zeit, dieses Verfahren ist auch als 'Round-Robin Algorithmus' bekannt.
-    \item \textbf{Fixed Priority Preemptive Scheduling}: Es wird immer die Task ausgeführt, mit der höchsten Priorität.
+    \item \textbf{Time Slicing Scheduling Policy}: Tasks mit gleicher Priorität erhalten die gleiche Anteile an \ac{cpu}-Zeit, dieses Verfahren ist auch als 'Round-Robin Algorithmus' bekannt.
+    \item \textbf{Fixed Priority Preemptive Scheduling}: Es wird immer die Task  mit der höchsten Priorität ausgeführt.
                                                          Das bedeutet eine niedriger priorisierte Task bekommt nur \ac{cpu}-Zeit, wenn die höher priorisierten Tasks nicht den 'ready'-Status besitzen.
                                                          Teilen sich zwei Tasks gleichzeitig die höchste Priorität, tritt die Time Slicing Scheduling Policy in Kraft.
 \end{itemize}
@@ -33,7 +33,7 @@ Um einen oder beide dieser Eigenschaften abzuschalten, kann dies unter der Datei
 
 
 \subsubsection{Overhead und Footprint} \label{section:overhead_und_footprint}
-Die Dauer eines Context Switches, auch Taskwechsel genannt, zwischen zwei tasks ist abhängig von dem Port, dem Compiler und der Konfiguration von FreeRTOS.
+Die Dauer eines Context Switches, auch Taskwechsel genannt, zwischen zwei Tasks ist abhängig von dem Port, dem Compiler und der Konfiguration von FreeRTOS.
 FreeRTOS selbst gibt ein Beispiel anhand einer Cortex-M3 CPU eine Taskwechsel Zeit von 84 \ac{cpu} Zyklen an \parencite{freertos-overhead}.
 Der minimale \ac{ram}- und \ac{rom}-Footprint wird zwischen 6kByte und 12kByte angegeben \parencite{freertos-footprint}.
 
@@ -58,11 +58,11 @@ Ein Ablaufdiagramm der einzelnen Zustände und deren Wechsel mit Hilfe von \ac{f
 
 \subsection{Idle Task} \label{section:idle_task}
 Die \ac{freertos} Idle Task wird immer dann aufgerufen, wenn keine Task ausgeführt werden kann.
-Dabei wird die \ac{freertos} Idle Task automatisch beim Start des \ac{freertos} Schedulers mit der niedrigsten verfügbaren Priorität erstellt, um keine Tasks im 'ready' Status zu blockieren.
+Dabei wird die \ac{freertos} Idle Task automatisch beim Start des \ac{freertos}-Schedulers mit der niedrigsten verfügbaren Priorität erstellt, um keine Tasks im 'ready' Status zu blockieren.
 Das heißt die Idle Task wird nur ausgeführt, wenn keine Task eine höhere Priorität als die Idle Task Priorität hat oder keine Task die eine höhere Priorität hat sich im 'ready' Status befindet.
-Sollte eine Task die gleiche Priorität mit der Idle Task teilen, wird die \ac{cpu} Zeit, bei Standartkonfiguration, zwischen den zwei Tasks aufgeteilt.
+Sollte eine Task die gleiche Priorität mit der Idle Task teilen, wird die \ac{cpu}-Zeit, bei Standartkonfiguration, zwischen den zwei Tasks aufgeteilt.
 Des Weiteren wird die Idle Task in \ac{freertos} Standartkonfiguration mit der Priorität 0, also der niedrigsten Priorität gestartet.
-Beim Ausführen der \ac{freertos} Idle Task wird der zugewiesener Speicher von gelöschten Tasks endgültig gelöscht und sollte somit regelmäßig \ac{cpu} Zeit bekommen, da ansonsten der Arbeitsspeicher überlaufen kann.
+Beim Ausführen der \ac{freertos} Idle Task wird der zugewiesener Speicher von gelöschten Tasks endgültig gelöscht und sollte somit regelmäßig \ac{cpu}-Zeit bekommen, da ansonsten der Arbeitsspeicher überlaufen kann.
 Des Weiteren kann mit der Flag, wie in \autoref{code:freertos_idle_task_hook} zu sehen, der Idle Task Hook aktiviert werden.
 Der Idle Task Hook wird bei jedem Aufruf der Idle Task ausgeführt und ermöglicht dem Benutzer dabei einen zusätzlichen Code auszuführen.
 Dies kann für verschiedene Einsatzbereiche benutzt werden, \ac{zb} den Mikrocontroller in den Energiesparmodus zu setzen.
@@ -74,7 +74,7 @@ Dies kann für verschiedene Einsatzbereiche benutzt werden, \ac{zb} den Mikrocon
 
 \subsubsection{Interrupts} \label{section:interrupts}
 Interrupts werden durch ein Ereignis ausgelöst, \ac{zb} von einem bestimmten Wert eines Timers und führt zur einer Unterbrechung der aktuellen Programmausführung, um in der Regel kurzen, aber zeitlich kritischen, Vorgang abzuarbeiten.
-Nach der Unterbrechungsanforderung (\ac{irq}) führt der Prozessor eine Unterbrechungsroutine (\ac{isr}) mit erweiterten Privilegien ausgeführt.
+Nach der Unterbrechungsanforderung (\ac{irq}) führt der Prozessor eine Unterbrechungsroutine (\ac{isr}) mit erweiterten Privilegien aus.
 Im Anschluss wird der vorherige Zustand des Prozessors wiederhergestellt und die vorherige Ausführung an der unterbrochenen Stelle fortgesetzt \parencite{wiki:008}.
 
 
@@ -85,6 +85,6 @@ Bei jedem Sys-Tick wird die \ac{freertos} Funktion 'vTaskSwitchContext()' aufger
 
 \subsubsection{\ac{freertos} Queues} \label{section:queues}
 Queues, zu Deutsch Warteschlange, werden oft, auch außerhalb von \ac{freertos} für die sichere Kommunikation zwischen verschiedenen Tasks und/oder Interrupts verwendet.
-Diese Implementierung von \ac{freertos} vermeidet Fehler wie ein Deadlock, \ac{zb} eine höher priorisierte Task wartet auf einen Wert einer niederen priorisierten Task, wobei die niedere priorisierte Task nie ausgeführt wird.
-Dabei wird oft das Prinzip \ac{fifo} verwendet, um eine zeitliche Abarbeitung der Daten abzuarbeiten.
+Diese Implementierung von \ac{freertos} vermeidet Fehler wie \ac{zb} eine höher priorisierte Task wartet auf einen Wert einer niederen priorisierten Task, wobei die niedere priorisierte Task nie ausgeführt wird.
+Bei Queues wird oft das Prinzip \ac{fifo} verwendet, um eine zeitliche Abarbeitung der Daten zu gewährleisten.
 \end{document}
