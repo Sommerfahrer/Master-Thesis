@@ -3,23 +3,24 @@
 \begin{document}
 
 Der \ac{edf} Scheduler lässt sich mit einer einzelnen C-Datei, sowie einer Header-Datei in \ac{freertos} implementieren.
-Dies vereinfacht die Implementierung auf andere \ac{freertos} Versionen, sowie auch das portieren auf andere Plattformen.
-Um die Portabilität weiter zu vereinfachen, wurde der \ac{freertos} SystemTick (SysTick) mit der standartmäßigen Genauigkeit von einer Millisekunde und nicht ein weiterer benutzerdefinierter Timer, wie es die Cortex-M Serie ermöglicht, benutzt.
-Aus dieser Entscheidungen resultiert auch die Genauigkeit des Schedulers von einer Millisekunde, wobei auftauchende Interrupts, wie die \ac{cpu}-Ausführzeit des SysTick, in dieser Arbeit vernachlässigt werden.
+Dies vereinfacht die Implementierung auf andere \ac{freertos} Versionen, sowie auch das Portieren auf andere Plattformen.
+Um die Portabilität weiter zu vereinfachen, wurde der \ac{freertos} SystemTick (SysTick) mit der standardmäßigen Genauigkeit von einer Millisekunde und nicht ein weiterer benutzerdefinierter Timer, wie es die Cortex-M Serie ermöglicht, benutzt.
+Aus diesen Entscheidungen resultiert auch die Genauigkeit des Schedulers von einer Millisekunde, wobei auftauchende Interrupts, wie die \ac{cpu}-Ausführzeit des SysTick, in dieser Arbeit vernachlässigt werden.
 Dieser Standartwert bietet für den \ac{edf}-Scheduler einen guten Kompromiss zwischen Applikationslaufzeit und Genauigkeit.
-Die Periode des SysTick lässt sich unter der Datei 'FreeRTOSConfig.h', wie in \autoref{section:freertos_sys_tick} dargestellt.
+Die Periode des SysTick lässt sich unter der Datei 'FreeRTOSConfig.h' konfigurieren, wie in \autoref{code:freertos_sys_tick_deklaration} dargestellt.
 Sollte dieser Wert angepasst werden, führt dies zu einer Änderung der Genauigkeit des \ac{edf}-Schedulers.
 
-\begin{lstlisting}[language=C, caption=FreeRTOS Idle Task Hook, label=code:freertos_idle_task_hook]
+\begin{lstlisting}[language=C, caption=FreeRTOS Sys Tick Deklaration, label=code:freertos_sys_tick_deklaration]
     #define configTICK_RATE_HZ						( 1000 ) // 1ms SysTick
 \end{lstlisting}
 
 \subsection{Implementierung} \label{section:implementierung}
     Um eine einfache und zugleich sehr performante Implementierung eines \ac{edf}-Schedulers in \ac{freertos} zu gewährleisten, wurde in dieser Arbeit der \ac{freertos}-Scheduler weiterverwendet.
     Der \ac{freertos}-Scheduler arbeitet, wie in \autoref{section:freertos_scheduling_richtlinie} bereits behandelt, prioritätsbasiert.
-    Mit dem Aufruf der Funktion 'rescheduleEDF' am Ende jeder \ac{edf}-Task, wird zwischen allen erstellten \ac{edf}-Tasks, die Priorität der nächsten Task nachdem \ac{edf}-Prinzip auf die höchste Priorität gesetzt und die aktive Task auf eine niedere Priorität als die \ac{freertos} Idle Task gesetzt.
-    Anschließend wird ein Context Switch ausgelöst und die nach dem \ac{edf}-Prinzip nächste Task wird von dem \ac{freertos}-Scheduler aufgerufen und ausgeführt.
-    Falls alle \ac{edf}-Tasks bereits in Ihrer Periode ausgeführt wurden und alle Deadlines der Tasks weiter als ihre Periode in der Zukunft liegen, wird die \ac{freertos} Idle Task aufgerufen.
+    Mit dem Aufruf der Funktion 'rescheduleEDF' am Ende jeder \ac{edf}-Task, wird zwischen allen erstellten \ac{edf}-Tasks, die Priorität der nächsten Task nachdem \ac{edf}-Prinzip auf die höchste Priorität und die aktive Task auf eine niedere Priorität als die \ac{freertos} Idle Task gesetzt.
+    Aus diesem Grund wurde die Standard-Priorität der \ac{freertos} Idle Task von dem Wert '0' auf den Wert '1' erhöht.
+    Anschließend wird ein Context Switch ausgelöst und die nachdem \ac{edf}-Prinzip nächste Task wird von dem \ac{freertos}-Scheduler aufgerufen und ausgeführt.
+    Falls alle \ac{edf}-Tasks bereits in ihrer Periode ausgeführt wurden und alle Deadlines der Tasks weiter als ihre Periode in der Zukunft liegen, wird die \ac{freertos} Idle Task aufgerufen.
 
     \begin{table}[ht!]
         \centering
@@ -36,11 +37,11 @@ Sollte dieser Wert angepasst werden, führt dies zu einer Änderung der Genauigk
     \end{table}
 
     Der \ac{edf}-Scheduler arbeitet mit vier unterschiedlichen Prioritäten, wie in \autoref{table:edf_prioritaeten_der_tasks} dargestellt und inkrementiert bei der Implementierung die Priorität der Idle Task von der niedrigsten Priorität '0' auf die zweit niedrigste Priorität '1' in der \ac{freertos} Umgebung.
-    Alle \ac{edf} Tasks die nicht ausgeführt werden sollen, erhalten die Priorität 0, das führt dazu, dass die Idle Task immer ausgeführt wird und verhindert die nicht gewollte Ausführung einer \ac{edf}-Task.
+    Alle \ac{edf} Tasks die nicht ausgeführt werden sollen, erhalten die Priorität 0, was dazu führt, dass die Idle Task immer ausgeführt wird und verhindert die nicht gewollte Ausführung einer \ac{edf}-Task.
     Um ein \ac{edf}-Scheduling in der Idle Task zu ermöglichen, wird die 'rescheduleEDF'-Funktion mit Hilfe des Idle Task Hook aufgerufen.
     Die Task, welche aktuell ausgeführt wurde und am Ende die 'rescheduleEDF'-Funktion ausführt, erhält während der Funktionsausführung die höchste \ac{edf}-Priorität mit dem Wert '3', um einen vorzeitigen Context Switch zur nächsten, nach dem \ac{edf}-Prinzip ausgewählte Task, zu unterbinden.
     Nachdem alle \ac{edf}-Parameter von allen \ac{edf}-Tasks neu gesetzt wurden, gibt die aktuelle Task die höchste Priorität mit dem Wert '3' ab und erzwingt einen Context Switch zu der nächsten zu ausführenden \ac{edf}-Task mit der Priorität '2'.
-    Für einen reibungslosen Start des \ac{edf}-Schedulers, werden die Prioritäten aller \ac{edf}-Tasks nachdem Erstellen automatisch auf die Priorität mit dem Wert '0' gesetzt, damit die Idle Task die allerste Ausführung übernimmt und somit zu Beginn 'rescheduleEDF'-Funktion durch den Idle Task Hook ausgeführt wird.
+    Für einen reibungslosen Start des \ac{edf}-Schedulers, werden die Prioritäten aller \ac{edf}-Tasks nachdem Erstellen automatisch auf die Priorität mit dem Wert '0' gesetzt, damit die Idle Task die allerste Ausführung übernimmt und somit zu Beginn die 'rescheduleEDF'-Funktion durch den Idle Task Hook ausgeführt wird.
     In \autoref{fig:edf_task_ausfuehrungsablauf} werden die verschiedenen Prioritäten je nach Status der Task innerhalb einer Periode angezeigt.
     
     \begin{figure}[ht!]
@@ -62,9 +63,11 @@ Sollte dieser Wert angepasst werden, führt dies zu einer Änderung der Genauigk
                 \path [line] (pro3) -- (End);
             \end{tikzpicture}  
         \end{center}
-        \caption{\ac{edf}-Task Ausführungsablauf}
+        \caption[\ac{edf}-Task Ausführungsablauf]{\ac{edf}-Task Ausführungsablauf (eigene Darstellung)}
         \label{fig:edf_task_ausfuehrungsablauf}
     \end{figure}
+
+    \clearpage
     
     Bei der Berechnung der Prioritäten in der 'rescheduleEDF'-Funktion wird dabei die Deadline abzüglich der \ac{wcet} berücksichtigt, um nicht einer Task \ac{cpu}-Zeit zu geben, welche sowieso Ihre Deadline überschreiten würde.
     Um einen Einblick in das Scheduling-Verfahren, mit der in dieser Arbeit implementierten \ac{edf}-Schedulers, zu bekommen, ist in \autoref{fig:demonstrationsablauf_des_edf_schedulers} der Ablauf von drei Beispiel-Tasks dargestellt.
@@ -128,16 +131,17 @@ Sollte dieser Wert angepasst werden, führt dies zu einer Änderung der Genauigk
             Task 2 & 5 & 5 & 2 \\
             Task 3 & 10 & 10 & 1 
         \end{tabular}
-        \caption{Demonstrationsablauf des \ac{edf}-Schedulers}
+        \caption[Demonstrationsablauf des \ac{edf}-Schedulers]{Demonstrationsablauf des \ac{edf}-Schedulers (eigene Darstellung)}
         \label{fig:demonstrationsablauf_des_edf_schedulers}
     \end{figure}
 
     Bei der Darstellung in \autoref{fig:demonstrationsablauf_des_edf_schedulers} wurde die Anfangsphase, so wie der erste Aufruf der Idle Task vernachlässigt.
-    Des Weiteren wurde als Vereinfachung der Darstellung der Starttick der ersten Task als null angenommen.
+    Des Weiteren wurde als Vereinfachung der Darstellung der Starttick der ersten Task als Null angenommen.
     Als erstes bekommt Task 1 \ac{cpu}-Zeit zugeteilt, da diese die kürzeste Deadline besitzt.
     Anschließend wird Task 2 ausgeführt, welche die nächst kürzeste Deadline besitzt und als letztes wird Task 3 ausgeführt.
-    Nachdem nun alle drei Tasks innerhalb Ihrer Periode unter Einhaltung der Deadlines ausgeführt wurden, wird die Idle Task solange ausgeführt, bis die nächste Periode einer Task beginnt.
+    Nachdem nun alle drei Tasks innerhalb ihrer Periode unter Einhaltung der Deadlines ausgeführt wurden, wird die Idle Task solange ausgeführt bis die nächste Periode einer Task beginnt.
 
+\clearpage
 
 \subsection{Erstellung einer \acf{edf}-Task} \label{section:erstellung_einer_edf_task}
 
@@ -149,7 +153,7 @@ Sollte dieser Wert angepasst werden, führt dies zu einer Änderung der Genauigk
         \begin{tabular}{l|l|l}
             Parameter & Datentyp & Beschreibung \\
             \hline
-            taskCode & TaskFunction\_t & Funktionname der Task \\
+            taskCode & TaskFunction\_t & Funktionsname der Task \\
             TaskName & const char\( ^* \) & Name der Task  \\
             stackDepth & configSTACK\_DEPTH\_TYPE & Größe des Taskstacks \\
             pvParameters & void\( ^* \) & Task Parameter \\
@@ -161,7 +165,8 @@ Sollte dieser Wert angepasst werden, führt dies zu einer Änderung der Genauigk
         \label{table:task_parameter_von_der_funktion_createEDFTask}
     \end{table}
 
-    Der Beispielaufruf der 'createEDFTask' ist in \autoref{code:create_edf_task_example} dargestellt, diese beinhaltet eine Test-Funktion, so wie auch der Aufruf der createEDFTask.
+    Der Beispielaufruf der 'createEDFTask' ist in \autoref{code:create_edf_task_example} dargestellt.
+    Diese beinhaltet eine Test-Funktion, so wie auch der Aufruf der createEDFTask.
 
 \begin{figure}[ht!]
 \begin{lstlisting}[language=C, caption=createEDFTask Beispiel, label=code:create_edf_task_example]
@@ -190,6 +195,8 @@ createEDFTask(              // Task Creation
 \end{lstlisting}
 \end{figure}
 
+\clearpage
+
 \subsection{Löschen einer \acf{edf}-Task} \label{section:löschen_einer_edf_task}
 
     In manchen Applikationen wird das Löschen von \ac{edf} Tasks benötigt und wurde aus diesem Grund ebenfalls in dieser Arbeit implementiert.
@@ -202,6 +209,25 @@ createEDFTask(              // Task Creation
     deleteEDFTask("Test Function")
 \end{lstlisting}
 \end{figure}
+
+\subsection{Debugmodus} \label{section:debug_mode}
+
+    Um das Entwickeln einer \ac{edf}-Applikation zu vereinfachen oder auch Bugs zu finden, wurde ein Debug-Flag integriert, welches folgende Features, sofern aktiviert, beinhaltet:
+
+    \begin{itemize}
+        \item \textbf{\ac{usart}-Schnittstelle}: Über die \ac{usart} Schnittstelle wird die erfolgreiche Konfiguration der Hardware, der Start des \ac{freertos}-Schedulers, sowie auch der Start jeder \ac{edf}-Funktion mitgeteilt.
+                                                 Des Weiteren werden nicht eingehaltene Deadlines und die Anzahl der Deadlinefehler, sofern vorhanden, mitgeteilt.
+        \item \textbf{Erweiterte \ac{edf} Array Struktur:} Die \ac{edf} Array Struktur wird um folgende fünf Parameter erweitert:
+        \begin{itemize}
+            \item \textbf{lastRunningTime}: Enthält die letzte Ausführzeit der Task in SysTicks
+            \item \textbf{maxRunningTime}: Enthält die bisherige maximale Ausführzeit (\ac{wcet} der Task in SysTicks
+            \item \textbf{startTime}: Enthält die letzte Startzeit der Task in SysTicks
+            \item \textbf{stopTime}: Enthält die letzte Stoppzeit der Task in SysTicks
+            \item \textbf{deadlineErrorCounter}: Enthält die Anzahl der nicht eingehaltenen Deadlines
+        \end{itemize}
+    \end{itemize}
+
+\clearpage
 
 \subsection{Fehlerbehandlung} \label{section:Fehlerbehandlung}
 
@@ -271,39 +297,17 @@ createEDFTask(              // Task Creation
         \label{fig:beispiel_deadline_errors}
     \end{figure}
 
-    Wie in \autoref{fig:beispiel_deadline_errors} dargestellt, können aufgrund der Task Eigenschaften immer nur zwei Tasks in Ihrer Periode, welche mit roten Linien eingezeichnet sind, ihre Deadline erfüllen.
+    Wie in \autoref{fig:beispiel_deadline_errors} dargestellt, können aufgrund der Task Eigenschaften immer nur zwei Tasks in ihrer Periode, welche mit roten Linien eingezeichnet ist, ihre Deadline erfüllen.
     Durch die implementierte Deadline-Fehlerbehandlung, wird bei gleicher Deadline zweier Tasks, immer die Task mit weniger Aufrufen ausgeführt.
-    Dieses Vorgehen ermöglicht die gleichmäßige Ausführung aller Tasks obwohl die Deadline nicht immer eingehalten werden können.
-    Eine andere Möglichkeit der Fehlerbehandlung wäre das unterbinden einer der drei Tasks, um den anderen zwei Tasks dauerhaft das Einhalten Ihrer Deadlines zu ermöglichen.
+    Dieses Vorgehen ermöglicht die gleichmäßige Ausführung aller Tasks obwohl die Deadline nicht immer eingehalten werden kann.
+    Eine andere Möglichkeit der Fehlerbehandlung wäre das unterbinden einer der drei Tasks, um den anderen zwei Tasks dauerhaft das Einhalten ihrer Deadlines zu ermöglichen.
 
-\subsection{Kompatibilität}
-
-    Durch die Verwendung des originalen Schedulers können klassische \ac{freertos} Tasks parallel erstellt und abgearbeitet werden.
-    Hierbei ist aber zu beachten, dass die Priorität der klassischen \ac{freertos} Task eine höhere Priorität als den Wert '3' besitzt, da es ansonsten zu Konflikten innerhalb des \ac{edf}-Schedulers kommen kann.
-    Auch sollte bei der Implementierung von klassischen \ac{freertos}-Task darauf geachtet werden, dass die \ac{edf}-Tasks genügend Zeit für Ihre Abarbeitung zur Verfügung gestellt bekommen.
-    Wie auch schon eingangs erwähnt, sorgt das Verwenden des \ac{freertos} SysTick für den \ac{edf}-Scheduler für eine breite Kompatibilität auf verschiedenen Prozessorarchitekturen.
-
-\subsection{Debugmodus} \label{section:debug_mode}
-
-    Um das Entwickeln einer \ac{edf}-Applikation zu vereinfachen oder auch Bugs zu finden, wurde ein Debug-Flag integriert, welches folgende Features, sofern aktiviert, beinhaltet:
-
-    \begin{itemize}
-        \item \textbf{\ac{usart}-Schnittstelle}: Über die \ac{usart} Schnittstelle wird die erfolgreiche Konfiguration der Hardware, der Start des \ac{freertos}-Schedulers, sowie auch der Start jeder \ac{edf}-Funktion mitgeteilt.
-                                                 Des Weiteren werden nicht eingehaltene Deadlines und die Anzahl der Deadlinefehler, sofern vorhanden, mitgeteilt.
-        \item \textbf{Erweiterte \ac{edf} Array Struktur:} Die \ac{edf} Array Struktur wird um folgende fünf Parameter erweitert:
-        \begin{itemize}
-            \item \textbf{lastRunningTime}: Enthält die letzte Ausführzeit der Task in SysTicks
-            \item \textbf{maxRunningTime}: Enthält die bisherige maximale Ausführzeit (\ac{wcet} der Task in SysTicks
-            \item \textbf{startTime}: Enthält die letzte Startzeit der Task in SysTicks
-            \item \textbf{stopTime}: Enthält die letzte Stoppzeit der Task in SysTicks
-            \item \textbf{deadlineErrorCounter}: Enthält die Anzahl der nicht eingehaltenen Deadlines
-        \end{itemize}
-    \end{itemize}
+\clearpage
 
 \subsection{Limitationen} \label{section:limitationen}
 
     Eine \ac{freertos}-Task kann, wie in \autoref{section:task_states} beschrieben, in den 'Blocked' Status gehen und übergibt, trotz höhere Priorität, \ac{cpu}-Zeit an eine niedrigere Zeit.
-    Dieses Vorgehen macht Sinn, wenn \ac{zb} eine höher priorisierte Task auf Daten warten muss oder in der Applikation die Funktion 'vTaskDelay' benutzt wurde.
+    Dieses Vorgehen macht Sinn, wenn z.B. eine höher priorisierte Task auf Daten warten muss oder in der Applikation die Funktion 'vTaskDelay' benutzt wurde.
     Aus der Überlegung ob dies der \ac{edf}-Scheduler unterstützen sollte, wurde die Laufzeit der 'rescheduleEDF'-Funktion mit und ohne der 'Blocked'-Implementierung getestet.
     Die Laufzeit vergrößerte sich nur gering, allerdings wurde dann entschieden, dass es bei einem Taskhandling nach dem \ac{edf}-Prinzip keinen Sinn macht, dies zu unterstützen.
     Aus diesem Grund und der verringerten Laufzeit der 'rescheduleEDF' darf eine \ac{edf}-Task nicht in den 'Blocked' Status gesetzt werden.  
@@ -390,5 +394,12 @@ createEDFTask(              // Task Creation
     Wie in \autoref{fig:blocked_status_in_edf_tasks} zu sehen, sind zwei Tasks mit den identischen \ac{edf}-Eigenschaften dargestellt, allerdings enthält eine Task einen Programmcode welcher zu einem 'Blocked' Status führt.
     Aus diesem Grund wird diese Task erst in der nächsten Periode fortgesetzt, wobei die Task ohne einen 'Blocked' Status in der gleichen Zeit zweimal ausgeführt wird.
 
+
+\subsection{Kompatibilität}
+
+    Durch die Verwendung des originalen Schedulers können klassische \ac{freertos} Tasks parallel erstellt und abgearbeitet werden.
+    Hierbei ist aber zu beachten, dass die Priorität der klassischen \ac{freertos} Task eine höhere Priorität als den Wert '3' besitzt, da es ansonsten zu Konflikten innerhalb des \ac{edf}-Schedulers kommen kann.
+    Auch sollte bei der Implementierung von klassischen \ac{freertos}-Task darauf geachtet werden, dass die \ac{edf}-Tasks genügend Zeit für Ihre Abarbeitung zur Verfügung gestellt bekommen.
+    Wie auch schon eingangs erwähnt, sorgt das Verwenden des \ac{freertos} SysTick für den \ac{edf}-Scheduler für eine breite Kompatibilität auf verschiedenen Prozessorarchitekturen.
 
 \end{document}

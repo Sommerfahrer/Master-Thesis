@@ -1,12 +1,18 @@
 \documentclass[../EDF Master Thesis.tex]{subfiles}
 
 \begin{document}
-    Das Ziel dieser Arbeit besteht darin, einen \ac{edf}-Scheduler zu entwickeln und in \ac{freertos} zu integrieren.
-    Durch die Entwicklung zweier Demo-Applikationen soll die korrekte Funktion des Schedulers gewährleistet werden.
-    Einleitend werden die Grundlagen für das Verständnis der Arbeit beschrieben.
-    Anschließend wird die Implementierung des \ac{edf}-Schedulers erläutert.
+    In den meisten \ac{rtos} werden fixed-priority pre-emptive Scheduler verwendet, bei der jeder Prozess eine feste Priorität zugewiesen bekommt, welche über die gesamte Laufzeit konstant bleibt.
+    Vorteil dieser Scheduler Prinzips ist die weniger komplexe Implementierung im Kernel und der geringe Overhead.
+    Die Unterstützung mehrere Scheduler im Kernel eines \ac{rtos} würde dessen Weiterentwicklung stark beeinflussen, da die Komplexität mit jeder Unterstützung steigt.
+    Allerdings gibt es die Möglichkeit ein anderes Scheduling-Verfahren außerhalb des Kernels, also im Userspace eines \ac{rtos} zu implementieren.
+    Bei einem Scheduling-Verfahren nach dem \ac{edf}-Prinzip kann die \ac{cpu} maximal ausgelastet werden, des Weiteren muss die Prozessstruktur und deren Prioritäten nicht vorher festgelegt werden.
+    Aus diesen Gründen besteht das Ziel dieser Arbeit darin, einen \ac{edf}-Scheduler im Userspace von \ac{freertos} zu implementieren.
+    Durch die Entwicklung zweier Demo-Applikationen soll die korrekte Funktion des Schedulers nachgewiesen werden.
+    Dabei dient eine Demo als Vorführung des \ac{edf}-Schedulers, bei der alle Status innerhalb und außerhalb der Grenzen des \ac{edf}-Schedulers abgefragt werden.
+    Die zweite Demo stellt eine komplexere Anwendung dar, wobei drei unterschiedliche Prozesse Daten verarbeiten und untereinander kommunizieren müssen. 
+    Einleitend werden die Grundlagen für das Verständnis der Arbeit beschrieben, anschließend wird die Implementierung des \ac{edf}-Schedulers erläutert.
     Danach werden die zwei erarbeiten Demo-Applikation vorgestellt und die verschiedenen Status des Schedulers innerhalb der Applikationen.\\
     Der erarbeitete Scheduler soll in Zukunft als Erweiterung für \ac{freertos} dienen.
-    Das trennen des Scheduler-Codes von \ac{freertos}, der geringe Overhead und Footprint, sowie die Verwendung des \ac{freertos} Timer ermöglicht eine breite Portierbarkeit auf verschiedene Plattformen.
-    Des Weiteren zeigen die erarbeiteten Demo-Applikationen die korrekte Funktion des Schedulers.
+    Das trennen des Scheduler-Codes von \ac{freertos}, der geringe Overhead und Footprint, sowie die Verwendung des \ac{freertos} Timer ermöglicht eine hohe Portierbarkeit auf verschiedene Plattformen.
+    Des Weiteren weisen die erarbeiteten Demo-Applikationen die korrekte Funktion des Schedulers nach.
 \end{document}

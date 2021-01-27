@@ -1,36 +1,34 @@
 \documentclass[../EDF Master Thesis.tex]{subfiles}
 
 \begin{document}
-    Unter Echtzeit wird die Anforderung bezeichnet, dass innerhalb einer kürzesten definierten Zeitspanne die geforderte Aufgabe korrekt ausgeführt wird.
-    Echtzeitsysteme sind Systeme, welche diese Anforderungen erfüllen und kommen in diversen Technikgebieten, wie \ac{zb} in Signalstellanlagen, Robotik und Motorsteuerungen, zur Anwendung.
+Unter Determinismus eines Algorithmus versteht sich, dass dieser zu jedem Zeitpunkt 'nachvollziehbar' ist.
+Dabei ist gemeint, dass ein Algorithmus unter gleichen Eingabewerten immer die gleichen Ausgabewerte als Ergebnis liefert \autocite{determinismus}.
+Um das Verhalten eines Echtzeitsystems bestimmen und deren Rechtzeitigkeit und Korrektheit einhalten zu können, muss das Verhalten eindeutig im Voraus bestimmt, also deterministisch sein.
+    Echtzeitsysteme sind Systeme, welche diese Anforderungen erfüllen und werden in diversen Technikgebieten, wie z.b. in Signalverarbeitung, Robotik und Steuerungen zur Anwendung gebracht.
     Da nicht bei allen Systemen eine Einhaltung der vorher definierten Zeitspanne von Nöten ist, wird die Echtzeitanforderungen in drei Kategorien unterteilt:
     \begin{itemize}
-        \item \textbf{Feste Echtzeitanforderung} führt bei einer Überschreitung der vorher definierten Zeitspanne zum Abbruch der Aufgabe.
+        \item \textbf{Feste Echtzeitanforderung} Führt bei einer Überschreitung der vorher definierten Zeitspanne zum Abbruch der Aufgabe.
             \begin{itemize}
                 \item \textbf{Beispiel:} Verbindungsaufbau eines Smartphones in das lokale \ac{wlan}.
             \end{itemize}
-        \item \textbf{Weiche Echtzeitanforderung} kann die vorher definierte Zeitspanne überschreiten, arbeitet die Aufgabe normalerweise aber schnell genug ab.
-            Die definierte Zeitspanne kann auch als Richtlinie bezeichnet werden, die aber nicht eingehalten werden muss.
+        \item \textbf{Weiche Echtzeitanforderung} Kann die vorher definierte Zeitspanne überschreiten, arbeitet die Aufgabe normalerweise aber schnell genug ab.
+            Die definierte Zeitspanne kann auch als Richtlinie bezeichnet werden, welche aber nicht eingehalten werden muss. 
+            Sollte die Zeitspanne überschritten werden, wird die Aufgabe nächstmöglichst bearbeitet, jedoch hat dies keine direkte Auswirkungen auf das Gesamtsystem.
             \begin{itemize}
                 \item \textbf{Beispiel:} Druckgeschwindigkeit eines Druckers.
             \end{itemize}
-        \item \textbf{Harte Echtzeitanforderung} garantiert die Erfüllung der Aufgabe zu der vorher definierten Zeitspanne.
+        \item \textbf{Harte Echtzeitanforderung} Garantiert die Erfüllung der Aufgabe in der vorher definierten Zeitspanne.
         \begin{itemize}
-            \item \textbf{Beispiel:} Bremspedal eines Autos.
+            \item \textbf{Beispiel:} Bremspedal eines Autos oder die Abschaltung der Maschine beim Betreten der Sicherheitszone.
         \end{itemize}
     \end{itemize}
+
+    \clearpage
+
     Echtzeit beschreibt somit das zeitliche Ein- bzw. Ausgangsverhalten eines Systems, allerdings nichts über dessen Realisierung.
-    Dies kann je nach Anforderung das Echtzeitsystem rein auf Software auf einem normalen Computer implementiert sein, jedoch wird bei harter Echtzeitanforderung oftmals eine reine Hardware-Lösung mit speziellen Architekturen in Hard- und Software wie \ac{zb} Mikrocontroller-, \ac{fpga}- oder \ac{dsp}-basierte Lösungen verwendet. 
-    Bei der Implementierung eines Echtzeitsystems wird unter drei verschiedenen Umsetzungen unterschieden:
-    \begin{itemize}
-        \item \textbf{Feste periodische Abarbeitung:} Es wird nur eine Aufgabe, wie \ac{zb} bei der Umwandlung von analogen Signalen zu digitalen Signalen, mit einer fixen Frequenz f abgearbeitet, welche die Reaktionszeit $ f = \frac{1}{Reaktionszeit}$ erfüllt \autocite{wiki:001, echtzeit-grundlagen}.
-        \item \textbf{Synchrone Abarbeitung:} Im Gegensatz zur festen periodischen Abarbeitung können bei diesem Ansatz mehrere Aufgaben, wie \ac{zb} das Abfragen mehrere Sensoren und einer unterschiedlichen Reaktion darauf, erfüllt werden.
-            Allerdings muss dabei die kleinste geforderte Reaktionszeit unter den Aufgaben die hälfte der maximalen Laufzeit für den Gesamtdurchlauf aller Aufgaben betragen \autocite{wiki:001, echtzeit-grundlagen}.
-            Dieser Ansatz wird vor allem für weiche Echtzeitsysteme verwendet, weil je nach Komplexität des Systems, das Vorhandensein mehrere Codepfade oder das Warten auf Ein- oder Ausgangssignalen mit unterschiedlicher Ausführungszeit ein Nichtdeterminismus besteht.
-        \item \textbf{Prozessbasierte Abarbeitung:} Bei diesem Ansatz können, wie auch bei der synchronen Abarbeitung mehrere Aufgaben erledigt werden, jedoch mit einer viel höheren Komplexität.
-            Dabei laufen in der Regel verschieden Prozesse gleichzeitig und mit unterschiedlicher Priorität ab, geregelt durch das Echtzeitbetriebssystem.
-            Die minimale Reaktionszeit definiert sich durch die Zeitdauer für einen Wechsel von einem Prozess niederer Priorität zu einem Prozess höherer Priorität, anschließend beginnt erst die Abarbeitung des Prozesses mit der höheren Priorität.
-            Durch die Unterbrechung eines Prozesses niedriger Priorität zu einem Prozess höherer Priorität wird für diesen die Erfüllung einer harten Echtzeitanforderung erzwungen, dies wird auch als Präemptives Multitasking bezeichnet.
-            Der Wechsel wird dann eingeleitet, wenn ein definiertes Ereignis eintritt, \ac{zb} durch den internen Timer des Prozessors oder einem externen Trigger (Interrupt) wie \ac{zb} ein anliegendes Signal \autocite{wiki:001, echtzeit-grundlagen}.
-    \end{itemize}
+    Dies kann je nach Anforderung das Echtzeitsystem rein auf Software auf einem normalen Computer oder auch als reine Hardware-Lösung implementiert sein.
+    Allerdings wird bei harter Echtzeitanforderung oftmals spezielle Architekturen in Hard- und Software wie z.b. Mikrocontroller-, \ac{fpga}- oder \ac{dsp}-basierte Lösungen verwendet.
+    Ein Prozess, auch Task genannt, beschreibt die Abarbeitung von Software, welche eine bestimmten Aufgabe erfüllt \autocite{echtzeit_systeme}.
+
+    \clearpage
 \end{document}

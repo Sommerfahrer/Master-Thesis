@@ -1,14 +1,16 @@
 \documentclass[../EDF Master Thesis.tex]{subfiles}
 
 \begin{document}
-    Für die Erfüllung der Aufgabe dieser Masterarbeit musste ein Kommunikationsmittel zwischen Host-Computer und Mikrocontroller ausgesucht werden, welches verschiedene Eigenschaften erfüllt:
+    Für die Kommunikation zwischen Host-Computer und Mikrocontroller bei der \ac{fft}-Demo wurde \ac{udp} als Protokoll ausgewählt, da dieses eine einfache aber sogleich sehr schnelle Übertragungsart gewährleistet.
+    Des Weiteren ist die erforderliche Ethernet-Schnittstelle weit verbreitet und ist daher auf vielen Mikrocontrollern und Computer verbaut.
+    Viele Anwendungen wie z.B. \ac{ip}-Telefonie oder Livestreams benutzen \ac{udp} als Übertragungsprotokoll.
+    Für den Verbindungsaufbau selbst verwendet \ac{udp} Ports, welche ein Teil einer Netzwerk-Adresse darstellen.
+    Dadurch können Anwendungen gezielt Daten zu der gewünschten Gegenstelle versenden \parencite{elektronik_kompendium}.
+    Das \ac{udp}-Protokoll selbst erfüllt für diese Arbeit folgende wichtige Eigenschaften:
     \begin{itemize}
         \item \textbf{verbindungslos}: Der Sender sendet Daten ohne eine Bestätigung des Eingangs der Daten zu bekommen.
                                        Dies hat den Vorteil einer latenzärmeren Datenübertragung.
-        \item \textbf{wenig Overhead}: Das Empfangen und Senden sollte so wenig wie möglich Ressourcen, wie \c{zb} \ac{cpu}-Zeit, blockieren.
+        \item \textbf{wenig Overhead}: Das Empfangen und Senden sollte so wenig wie möglich die \ac{cpu} unterbrechen und somit blockieren.
         \item \textbf{hohe Übertragungsrate}: Es sollten so viele Daten wie möglich, innerhalb einer bestimmten Zeit übertragen werden können.
     \end{itemize}
-
-    Aus diesen Gründen wurde das Netzwerkprotokoll \ac{udp}, welches heutzutage in vielen Anwendungen, wie \ac{zb} \ac{ip}-Telefonie und Videostreams, verwendet.
-    Für den Verbindungsaufbau verwendet \ac{udp} Ports, welche Teil einer Netzwerk-Adresse darstellen, um versendete Daten dem gewünschten Programm an der Gegenstelle zukommen zu lassen \parencite{wiki:009}.
 \end{document}
