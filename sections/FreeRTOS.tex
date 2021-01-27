@@ -5,7 +5,7 @@
 Für eine leichte Wartbarkeit wurde \ac{freertos} weitestgehend in C entwickelt.
 Außerdem ist der Scheduler des Betriebsystems zwischen präemptiver und kooperativer Betrieb konfigurierbar um verschiedene Einsatzzwecke abzudecken \parencite{wiki:002}.
 \ac{freertos} unterstützt über 40 Mikrocontroller-Architekturen, um eine größere Bandbreite zu erreichen \parencite{freertos}.
-Für nicht unterstütze Boards stellt \ac{freertos} eine Portierungs-Anleitung zur Verfügung, welche als Unterstützung bei der Portierung von \ac{freertos} auf andere Boards dient \autocite{freertos_port}.
+Für nicht unterstütze Architekturen stellt \ac{freertos} eine Portierungs-Anleitung zur Verfügung, welche als Unterstützung bei der Portierung von \ac{freertos} auf andere Boards dient \autocite{freertos_port}.
 \ac{freertos} hat wenig Overhead und der Kernel unterstützt Multithreading, Warteschlangen, Semaphore, Software-Timer, Mutexes und Eventgruppen \parencite{freertos-features}.
 Des Weiteren stellt \ac{freertos} unter der Bezeichnung "FreeRTOS Plus" verschiedene Erweiterungen zur Verfügung, welche erweiterte Funktionen bereitstellen \parencite{freertos-extensions}.
 Folgende Erweiterungen sind zum Stand dieser Arbeit verfügbar:
@@ -52,10 +52,10 @@ In FreeRTOS erzeugte Tasks können vier verschiedene Zustände erreichen.
 Diese Zustände ermöglichen komplexere Algorithmen zu implementieren und sehen wie folgt aus:
 
 \begin{itemize}
-    \item \textbf{Running}: Wird gerade ausgeführt.
-    \item \textbf{Ready}: Ist bereit zur Ausführung.
-    \item \textbf{Blocked}: Wartet auf ein Event, kann nicht ausgeführt werden.
-    \item \textbf{Suspended}: Wurde temporär deaktiviert.
+    \item \textbf{Running}: Die Task wird gerade ausgeführt.
+    \item \textbf{Ready}: Die Task ist bereit zur Ausführung.
+    \item \textbf{Blocked}: Die Task wartet auf ein Event, kann nicht ausgeführt werden.
+    \item \textbf{Suspended}: Die Task wurde temporär deaktiviert.
 \end{itemize}
 \begin{center}
     \parencite{freertos-task-states}

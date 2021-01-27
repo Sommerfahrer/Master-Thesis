@@ -3,7 +3,7 @@
 \begin{document}
 Als Scheduler (zu Deutsch Steuerprogramm) wird eine Logik bezeichnet, welche die zeitliche Ausführung von mehreren Prozessen steuert.
 Sie wird als präemptiver oder kooperativer Scheduler in Betriebssystemen eingesetzt.
-Dabei ist der Scheduler für die richtige Anordnung, sowie den Wechsel zwischen den einzelnen Prozessen, auch Taskwechsel genannt, verantwortlich.
+Dabei ist der Scheduler für die zeitliche Anordnung der Prozesse verantwortlich.
 Als Ressourcen wird in dieser Arbeit alle Hardware bezeichnet, wie z.B. \ac{rom} und \ac{ram}, außer die \ac{cpu} selbst.
 Bei einem kooperativen Scheduling werden einem Prozess die benötigten Ressourcen übergeben und der Scheduler wartet, bis der Prozess vollständig abgearbeitet wurde.
 Im Gegensatz zu einem kooperativen Scheduler kann ein präemptiver Scheduler einem Prozess die Ressourcen vor der Fertigstellung entziehen, um zwischenzeitlich diese anderen Prozessen zuzuweisen \parencite{mikrocontroller:001}.
@@ -54,7 +54,7 @@ In den nachfolgend vorgestellten Scheduler-Verfahren wird bei der Berechnung der
     Ein Context Switch, was ein Wechsel von einem Prozess zu einem anderen Prozess entspricht, findet nur vor Beginn eines Prozesses oder am Ende eines Prozesses statt.
     In Zuge dieser Masterarbeit wird ein Context Switch nur nach Beendigung eines Prozesses ausgelöst, sofern ein anderer Prozess eine höhere Priorität erhalten hat.
     Im Gegensatz zu \ac{rms} und \ac{dms} kann bei \ac{edf} der Scheduler die \ac{cpu} bis auf 100\% auslasten, dabei darf die Zeitspanne der einzelnen Prozesse bis zur Deadline nur jeweils größer oder gleich der Periode des Prozesses sein \parencite{echtzeit-grundlagen}.
-    
+
     \begin{equ}[ht!]
         \begin{equation}
             U = \sum_{i=1}^{n} \frac{\Delta e_i}{\Delta d_i}
