@@ -3,23 +3,24 @@
 \begin{document}
 Unter Determinismus eines Algorithmus versteht sich, dass dieser zu jedem Zeitpunkt 'nachvollziehbar' ist.
 Dabei ist gemeint, dass ein Algorithmus unter gleichen Eingabewerten immer die gleichen Ausgabewerte als Ergebnis liefert \autocite{determinismus}.
+Außerdem ist für Echtzeitsysteme unabdingbar zu wissen, wie lange eine Abarbeitung eines Codes benötigt, welcher durch das deterministische Verhalten eindeutig gegeben ist. 
 Um das Verhalten eines Echtzeitsystems bestimmen und deren Rechtzeitigkeit und Korrektheit einhalten zu können, muss das Verhalten eindeutig im Voraus bestimmt, also deterministisch sein.
     Echtzeitsysteme sind Systeme, welche diese Anforderungen erfüllen und werden in diversen Technikgebieten, wie z.b. in Signalverarbeitung, Robotik und Steuerungen zur Anwendung gebracht.
     Da nicht bei allen Systemen eine Einhaltung der vorher definierten Zeitspanne von Nöten ist, wird die Echtzeitanforderungen in drei Kategorien unterteilt:
     \begin{itemize}
         \item \textbf{Feste Echtzeitanforderung}: Führt bei einer Überschreitung der vorher definierten Zeitspanne zum Abbruch der Aufgabe.
             \begin{itemize}
-                \item \textbf{Beispiel:} Verbindungsaufbau eines Smartphones in das lokale \ac{wlan}.
+                \item \textbf{Beispiel}: Verbindungsaufbau eines Smartphones in das lokale \ac{wlan}.
             \end{itemize}
-        \item \textbf{Weiche Echtzeitanforderung} Kann die vorher definierte Zeitspanne überschreiten, arbeitet die Aufgabe normalerweise aber schnell genug ab.
+        \item \textbf{Weiche Echtzeitanforderung}: Kann die vorher definierte Zeitspanne überschreiten, arbeitet die Aufgabe normalerweise aber schnell genug ab.
             Die definierte Zeitspanne kann auch als Richtlinie bezeichnet werden, welche aber nicht eingehalten werden muss. 
             Sollte die Zeitspanne überschritten werden, wird die Aufgabe nächstmöglichst bearbeitet, jedoch hat dies keine direkte Auswirkungen auf das Gesamtsystem.
             \begin{itemize}
-                \item \textbf{Beispiel:} Druckgeschwindigkeit eines Druckers.
+                \item \textbf{Beispiel}: Druckgeschwindigkeit eines Druckers.
             \end{itemize}
-        \item \textbf{Harte Echtzeitanforderung} Garantiert die Erfüllung der Aufgabe in der vorher definierten Zeitspanne.
+        \item \textbf{Harte Echtzeitanforderung}: Garantiert die Erfüllung der Aufgabe in der vorher definierten Zeitspanne.
         \begin{itemize}
-            \item \textbf{Beispiel:} Bremspedal eines Autos oder die Abschaltung der Maschine beim Betreten der Sicherheitszone.
+            \item \textbf{Beispiel}: Bremspedal eines Autos oder die Abschaltung der Maschine beim Betreten der Sicherheitszone.
         \end{itemize}
     \end{itemize}
 
@@ -27,7 +28,7 @@ Um das Verhalten eines Echtzeitsystems bestimmen und deren Rechtzeitigkeit und K
 
     Echtzeit beschreibt somit das zeitliche Ein- bzw. Ausgangsverhalten eines Systems, allerdings nichts über dessen Realisierung.
     Dies kann je nach Anforderung das Echtzeitsystem rein auf Software auf einem normalen Computer oder auch als reine Hardware-Lösung implementiert sein.
-    Allerdings wird bei harter Echtzeitanforderung oftmals spezielle Architekturen in Hard- und Software wie z.b. Mikrocontroller-, \ac{fpga}- oder \ac{dsp}-basierte Lösungen verwendet.
+    Allerdings werden bei harter Echtzeitanforderung oftmals spezielle Architekturen in Hard- und Software wie z.b. Mikrocontroller-, \ac{fpga}- oder \ac{dsp}-basierte Lösungen verwendet.
     Ein Prozess, auch in \ac{freertos} Task genannt, beschreibt die Abarbeitung von Software, welche eine bestimmten Aufgabe erfüllt \autocite{echtzeit_systeme}.
 
     \clearpage

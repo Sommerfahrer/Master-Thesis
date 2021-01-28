@@ -2,9 +2,9 @@
 
 \begin{document}
 
-Die \ac{fft} ist ein Algorithmus der die gleichen Ergebnisse wie die \ac{dft} liefert, jedoch mit wesentlich weniger Rechenzeit .
+\ac{fft} berechnet die Fourier Transformierte aus und ist und ist ein Algorithmus der die gleichen Ergebnisse wie die \ac{dft} liefert, jedoch mit wesentlich weniger Rechenzeit.
 Dabei können beide Algorithmen ein zeitdiskretes Signal in dessen Frequenzteile (Spektrum), wie in \autoref{fig:aufspaltung_eines_Signals_in_dessen_Frequenzteile} dargestellt, aufspalten.
-Dies ist sehr nützlich für viele Bereiche der Signalverarbeitung z.B. für das Komprimieren von Musikaufnahmen, wo nicht hörbare Frequenzen rausgefiltert werden.
+Dies ist sehr nützlich für viele Bereiche der Signalverarbeitung z.B. für das Komprimieren von Musikaufnahmen, wo nicht hörbare Frequenzen entfernt werden.
 
 \begin{figure}[ht!]
     \includegraphics[width=1\textwidth]{attachments/fft_example.pdf}
@@ -15,7 +15,7 @@ Dies ist sehr nützlich für viele Bereiche der Signalverarbeitung z.B. für das
 \clearpage
 
 Bei der Berechnung einer \ac{dft} steigt dessen Komplexität $O$ mit der Anzahl der Abtastpunkte $N$ quadratisch an, wie in der \autoref{form:berechnung_der_dft_komplexitaet} dargestellt.
-Dies führt dazu, dass eine reine Berechnung mit Hilfe der \ac{dft} auf kleinen Mikrocontrollern häufig nicht praktikabel ist \autocite{fft:002}.
+Dies führt bei hohen Samplegrößen zu einer extremen Rechenzeit, was nicht praktikabel ist \autocite{fft:002}.
 
 \begin{equ}[ht!]
     \begin{equation}
@@ -50,11 +50,11 @@ Wird die Rechenbedingung in \autoref{form:rechenbedingung_der_fft} erfüllt, kan
 
 \begin{equ}[ht!]
     \begin{equation}
-        X(k) = \sum_{n=0}^{N-1} x(n) \cdot w_N^{n \cdot k} = \sum_{n=0,2,...}^{N-2} x(n) \cdot w_N^{n \cdot k} +  \sum_{n=1,3,...}^{N-1} x(n) \cdot w_N^{n \cdot k}
+        X(k) = \sum_{n=0}^{N-1} x(n) \: w_N^{n \: k} = \sum_{n=0,2,...}^{N-2} x(n) \: w_N^{n \: k} +  \sum_{n=1,3,...}^{N-1} x(n) \: w_N^{n \: k}
     \end{equation}
     \begin{center}
         \begin{tabular}{lcr}
-            $w = e ^ {-j \cdot \frac{2 \cdot \pi}{N}}$ & komplexer Drehfaktor der \ac{dft} \\
+            $w = e ^ {-j \: \frac{2 \: \pi}{N}}$ & komplexer Drehfaktor der \ac{dft} \\
         \end{tabular}
     \end{center}
     \caption[Aufteilung der \ac{dft}]{Aufteilung der \ac{dft} (\ac{iaa} \cite{fft:002})}
@@ -81,7 +81,7 @@ Unter Berücksichtigung der Umformungen aus \autoref{form:umformung_dft} resulti
 
 \begin{equ}[ht!]
     \begin{equation}
-        w_N^{2m \cdot k} = w_M^{m \cdot k} \qquad \text{und}\qquad w_N^{(2m + 1) \cdot k} = w_N^k \cdot w_M^{m \cdot k}
+        w_N^{2m \: k} = w_M^{m \: k} \qquad \text{und}\qquad w_N^{(2m + 1) \: k} = w_N^k \: w_M^{m \: k}
     \end{equation}
     \caption[Umformung \ac{dft}]{Umformung \ac{dft} (\ac{iaa} \cite{fft:002})}
     \label{form:umformung_dft}
@@ -89,7 +89,7 @@ Unter Berücksichtigung der Umformungen aus \autoref{form:umformung_dft} resulti
 
 \begin{equ}[H]
     \begin{equation}
-        X(k) = \sum_{m=0}^{M-1} x(2m) \cdot w_M^{m \cdot k} + \sum_{m=0}^{M-1} x(2m + 1) \cdot w_M^{m \cdot k}
+        X(k) = \sum_{m=0}^{M-1} x(2m) \: w_M^{m \: k} + \sum_{m=0}^{M-1} x(2m + 1) \: w_M^{m \: k}
     \end{equation}
     \caption[Resultierende Formeln nach Aufspaltung der \ac{dft}]{Resultierende Gleichungen nach Aufspaltung der \ac{dft} (\ac{iaa} \cite{fft:002})}
     \label{form:resultierende_gleichungen_nach_der_Aufspaltung_der_dft}

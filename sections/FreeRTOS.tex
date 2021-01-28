@@ -2,11 +2,10 @@
 
 \begin{document}
 \ac{freertos} ist ein Echtzeitbetriebssystem für eingebettete Systeme, welches unter der freizügigen Open-Source Lizenz \href{https://de.wikipedia.org/wiki/MIT-Lizenz}{MIT} steht.
-Für eine leichte Wartbarkeit wurde \ac{freertos} weitestgehend in C entwickelt.
 Außerdem ist der Scheduler des Betriebsystems zwischen präemptiver und kooperativer Betrieb konfigurierbar um verschiedene Einsatzzwecke abzudecken \parencite{wiki:002}.
 \ac{freertos} unterstützt über 40 Mikrocontroller-Architekturen, um eine größere Bandbreite zu erreichen \parencite{freertos}.
-Für nicht unterstütze Architekturen stellt \ac{freertos} eine Portierungs-Anleitung zur Verfügung, welche als Unterstützung bei der Portierung von \ac{freertos} auf andere Boards dient \autocite{freertos_port}.
-\ac{freertos} hat wenig Overhead und der Kernel unterstützt Multithreading, Warteschlangen, Semaphore, Software-Timer, Mutexes und Eventgruppen \parencite{freertos-features}.
+Für nicht unterstütze Architekturen stellt \ac{freertos} eine Portierungs-Anleitung zur Verfügung, welche als Unterstützung bei der Portierung von \ac{freertos} auf andere \ac{cpu}s dient \autocite{freertos_port}.
+\ac{freertos} ist einfach zu implementieren und der Kernel unterstützt Multithreading, Warteschlangen, Semaphore, Software-Timer, Mutexes und Eventgruppen \parencite{freertos-features}.
 Des Weiteren stellt \ac{freertos} unter der Bezeichnung "FreeRTOS Plus" verschiedene Erweiterungen zur Verfügung, welche erweiterte Funktionen bereitstellen \parencite{freertos-extensions}.
 Folgende Erweiterungen sind zum Stand dieser Arbeit verfügbar:
 \begin{itemize}
@@ -25,7 +24,7 @@ Im Zuge dieser Masterarbeit wurde als einziges der Stack '\ac{freertos} + \acs{t
 Wobei die Integration von anderen Erweiterungen keinen Einfluss auf den in dieser Arbeit implementierten \ac{edf}-Scheduler hat.
 
 \subsubsection{\ac{freertos} Scheduling Richtlinie} \label{section:freertos_scheduling_richtlinie}
-Der \ac{freertos} Scheduler arbeitet prioritätsbasiert und beinhaltet standardmäßig zwei Eigenschaften:
+Der \ac{freertos}-Scheduler arbeitet prioritätsbasiert und beinhaltet standardmäßig zwei Eigenschaften:
 \begin{itemize}
     \item \textbf{Time Slicing Scheduling Policy}: Tasks mit gleicher Priorität erhalten die gleiche Anteile an \ac{cpu}-Zeit, dieses Verfahren ist auch als 'Round-Robin Algorithmus' bekannt.
     \item \textbf{Fixed Priority Preemptive Scheduling}: Es wird immer die Task  mit der höchsten Priorität ausgeführt.
@@ -43,7 +42,7 @@ Je nach gewünschter Anwendung könnten diese Optionen diese negativ oder positi
 \subsubsection{Overhead und Footprint} \label{section:overhead_und_footprint}
 Die Dauer eines Context Switches, auch Taskwechsel genannt, zwischen zwei Tasks ist abhängig von der Portierung, dem Compiler und der Konfiguration von FreeRTOS.
 FreeRTOS selbst gibt ein Beispiel anhand einer Cortex-M3 CPU eine Taskwechsel Zeit von 84 \ac{cpu} Zyklen an \parencite{freertos-overhead}.
-Der minimale \ac{ram}- und \ac{rom}-Footprint wird zwischen 6kByte und 12kByte angegeben \parencite{freertos-footprint}.
+Typischerweise besitzt ein \ac{freertos} Kernel Binary Image eine Größe zwischen 6Byte und 12kByte \parencite{freertos-footprint}.
 
 \clearpage
 
@@ -55,13 +54,13 @@ Diese Zustände ermöglichen komplexere Algorithmen zu implementieren und sehen 
     \item \textbf{Running}: Die Task wird gerade ausgeführt.
     \item \textbf{Ready}: Die Task ist bereit zur Ausführung.
     \item \textbf{Blocked}: Die Task wartet auf ein Event, kann nicht ausgeführt werden.
-    \item \textbf{Suspended}: Die Task wurde temporär deaktiviert.
+    \item \textbf{Suspended}: Die Task wurde von der Anwendung deaktiviert.
 \end{itemize}
 \begin{center}
     \parencite{freertos-task-states}
 \end{center}
 
-Ein Ablaufdiagramm der einzelnen Zustände und deren Wechsel mit Hilfe von \ac{freertos} Funktionen wird in \autoref{fig:FreeRTOS_Task_States} dargestellt.
+Ein Ablaufdiagramm der einzelnen Zustände und deren Wechsel mit Hilfe von \ac{freertos}-Funktionen wird in \autoref{fig:FreeRTOS_Task_States} dargestellt.
 Dabei wird erläutert, mit welchen \ac{freertos}-Funktionen oder Events den Statuswechsel auslösen \autocite{freertos-task-states}.
 
 \begin{figure}[H]
@@ -74,10 +73,10 @@ Dabei wird erläutert, mit welchen \ac{freertos}-Funktionen oder Events den Stat
 \subsubsection{Idle Task} \label{section:idle_task}
 Die \ac{freertos} Idle Task wird immer dann aufgerufen, wenn keine Task ausgeführt werden kann.
 Dabei wird die \ac{freertos} Idle Task automatisch beim Start des \ac{freertos}-Schedulers mit der niedrigsten verfügbaren Priorität erstellt, um keine Tasks im 'ready' Status zu blockieren.
-Das heißt die Idle Task wird nur ausgeführt, wenn keine Task eine höhere Priorität als die Idle Task Priorität hat, oder keine Task die eine höhere Priorität hat sich im 'ready' Status befindet.
+Das heißt die Idle Task wird nur ausgeführt, wenn es keine Task mit einer höheren Priorität gibt, oder keine Task mit einer höheren Priorität sich im 'ready' Status befindet.
 Sollte eine Task die gleiche Priorität mit der Idle Task teilen, wird die \ac{cpu}-Zeit, bei Standartkonfiguration, zwischen den zwei Tasks aufgeteilt.
 Des Weiteren wird die Idle Task in \ac{freertos} Standartkonfiguration mit der Priorität 0, also der niedrigsten Priorität gestartet.
-Beim Ausführen der \ac{freertos} Idle Task wird der zugewiesener Speicher von gelöschten Tasks endgültig gelöscht und sollte somit regelmäßig \ac{cpu}-Zeit bekommen, da ansonsten der Arbeitsspeicher überlaufen kann.
+Beim Ausführen der \ac{freertos} Idle Task wird nicht mehr benötigter zugewiesener Speicher gelöscht und sollte somit regelmäßig \ac{cpu}-Zeit bekommen, da im schlimmsten Fall der Arbeitsspeicher überlaufen kann.
 Des Weiteren kann mit der Flag, wie in \autoref{code:freertos_idle_task_hook_flag} zu sehen, der Idle Task Hook aktiviert werden.
 Der Idle Task Hook wird bei jedem Aufruf der Idle Task ausgeführt und ermöglicht dem Benutzer dabei einen zusätzlichen Code auszuführen.
 Dies kann für verschiedene Einsatzbereiche benutzt werden, wie beispielsweise um den Mikrocontroller in den Energiesparmodus zu setzen \autocite{freertos_idle_task}.
@@ -102,6 +101,5 @@ Die Funktion selbst überprüft ob eine höher priorisierte Task unblocked, also
 
 \subsubsection{\ac{freertos} Queues} \label{section:queues}
 Queues, zu Deutsch Warteschlangen, werden oft auch außerhalb von \ac{freertos} für die sichere Kommunikation zwischen verschiedenen Tasks und/oder Interrupts verwendet.
-Diese Implementierung von \ac{freertos} vermeidet Fehler wie z.B. eine höher priorisierte Task wartet auf einen Wert einer niedrigeren priorisierten Task, wobei die niedere priorisierte Task nie ausgeführt wird.
-Bei Queues wird oft das Prinzip \ac{fifo} verwendet, um eine zeitliche Abarbeitung der Daten zu gewährleisten \autocite{freertos_queues}.
+Bei Queues wird oft das Prinzip \ac{fifo} verwendet, bei dem die Daten, welche zu erst in die Queue gesendet wurden, als erstes weiterverarbeitet werden.
 \end{document}

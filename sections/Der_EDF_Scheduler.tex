@@ -10,7 +10,7 @@ Dieser Standartwert bietet für den \ac{edf}-Scheduler einen guten Kompromiss zw
 Die Periode des SysTick lässt sich unter der Datei 'FreeRTOSConfig.h' konfigurieren, wie in \autoref{code:freertos_sys_tick_deklaration} dargestellt.
 Sollte dieser Wert angepasst werden, führt dies zu einer Änderung der Genauigkeit des \ac{edf}-Schedulers.
 
-\begin{lstlisting}[language=C, caption=FreeRTOS Sys Tick Deklaration, label=code:freertos_sys_tick_deklaration]
+\begin{lstlisting}[language=C, caption=FreeRTOS SysTick Deklaration, label=code:freertos_sys_tick_deklaration]
     #define configTICK_RATE_HZ						( 1000 ) // 1ms SysTick
 \end{lstlisting}
 

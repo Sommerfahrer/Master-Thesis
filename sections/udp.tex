@@ -4,12 +4,11 @@
     Für die Kommunikation zwischen Host-Computer und Mikrocontroller bei der \ac{fft}-Demo wurde \ac{udp} als Protokoll ausgewählt, da dieses eine einfache aber sogleich sehr schnelle Übertragungsart gewährleistet.
     Des Weiteren ist die erforderliche Ethernet-Schnittstelle weit verbreitet und ist daher auf vielen Mikrocontrollern und Computer verbaut.
     Viele Anwendungen wie z.B. \ac{ip}-Telefonie oder Livestreams benutzen \ac{udp} als Übertragungsprotokoll.
-    Für den Verbindungsaufbau selbst verwendet \ac{udp} Ports, welche ein Teil einer Netzwerk-Adresse darstellen.
     Dadurch können Anwendungen gezielt Daten zu der gewünschten Gegenstelle versenden \parencite{elektronik_kompendium}.
-    Das \ac{udp}-Protokoll selbst erfüllt für diese Arbeit folgende wichtige Eigenschaften:
+    Das \ac{udp}-Protokoll selbst erfüllt für diese Arbeit folgende Eigenschaften:
     \begin{itemize}
-        \item \textbf{verbindungslos}: Der Sender sendet Daten ohne eine Bestätigung des Eingangs der Daten zu bekommen.
-                                       Dies hat den Vorteil einer latenzärmeren Datenübertragung.
+        \item \textbf{Verfügbarkeit}: Ethernet-Schnittstellen sind in vielen Computern und Mikrocontroller verbaut, dadurch ist eine breite Verfügbarkeit dieses Verbindungsart gewährleistet.
+        \item \textbf{Latenzarm}: Die gesendeten \ac{udp}-Pakete werden vom Empfänger nicht bestätigt. Das heißt der Sender sendet Daten ohne deren Ankunft zu überprüfen.
         \item \textbf{wenig Overhead}: Das Empfangen und Senden sollte so wenig wie möglich die \ac{cpu} unterbrechen und somit blockieren.
         \item \textbf{hohe Übertragungsrate}: Es sollten so viele Daten wie möglich, innerhalb einer bestimmten Zeit übertragen werden können.
     \end{itemize}
