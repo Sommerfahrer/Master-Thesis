@@ -6,7 +6,7 @@ Der \ac{edf} Scheduler lässt sich mit einer einzelnen C-Datei, sowie einer Head
 Dies vereinfacht die Implementierung auf andere \ac{freertos} Versionen, sowie auch das Portieren auf andere Plattformen.
 Um die Portabilität weiter zu vereinfachen, wurde der \ac{freertos} SystemTick (SysTick) mit der standardmäßigen Genauigkeit von einer Millisekunde und nicht ein weiterer benutzerdefinierter Timer, wie es die Cortex-M Serie ermöglicht, benutzt.
 Aus diesen Entscheidungen resultiert auch die Genauigkeit des Schedulers von einer Millisekunde, wobei auftauchende Interrupts, wie die \ac{cpu}-Ausführzeit des SysTick, in dieser Arbeit vernachlässigt werden.
-Dieser Standartwert bietet für den \ac{edf}-Scheduler einen guten Kompromiss zwischen Applikationslaufzeit und Genauigkeit.
+Dieser Standardwert bietet für den \ac{edf}-Scheduler einen guten Kompromiss zwischen Applikationslaufzeit und Genauigkeit.
 Die Periode des SysTick lässt sich unter der Datei 'FreeRTOSConfig.h' konfigurieren, wie in \autoref{code:freertos_sys_tick_deklaration} dargestellt.
 Sollte dieser Wert angepasst werden, führt dies zu einer Änderung der Genauigkeit des \ac{edf}-Schedulers.
 
