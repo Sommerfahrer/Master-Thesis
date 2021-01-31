@@ -85,9 +85,6 @@
             Das System befindet sich nun wieder am Anfang der Ausführung und kann erneut die einzelnen Status ausführen.
     \end{itemize}
 
-    Abschließend ist noch zu klären, dass die \ac{cpu}-Auslastung nur auf die Auslastung der Applikation bezogen ist.
-    In dieser Demo wird die Idle Task immer ausgeführt, sofern keine Task der Anwendung \ac{cpu}-Zeit beansprucht und somit beträgt die \ac{cpu}-Auslastung dauerhaft 100\%.
-
     \clearpage
 
     \subsection{\acf{fft}-Demo} \label{section:fft_demo}
@@ -105,15 +102,14 @@
             \label{fig:fft_demo_ablaufdiagramm}
         \end{figure}
 
-        Für das Erstellen und Senden eines Signals, der Empfang der Ergebnisse und das Darstellen der Signale wurde eine \ac{gui}, basierend auf der Programmiersprache Python erstellt.
+        Für das Erstellen und Senden eines Signals, des Empfangs der Ergebnisse und das Darstellen der Signale wurde eine \ac{gui}, basierend auf der Programmiersprache Python, erstellt.
         Des Weiteren wurden für die Kommunikation mit dem Host-Computer sowie die Berechnung der \ac{fft} drei \ac{edf}-Tasks erstellt.
         Das in dieser Arbeit generierte Signal wurde mit 2048 Abtastpunkten erzeugt und besitzt somit die gleiche Größe wie die verwendete \ac{fft}.
         Die Standard \ac{udp}-Paketgröße beträgt 1454 Bytes.
         Um 2048 Abtastpunkte von float-Werten (4 Byte) zu übermitteln, muss das Signal in mindestens 6 Pakete aufgeteilt werden.
         Jedoch besitzt das \ac{udp}-Protokoll keine Sortierfunktion, was bedeutet, falls ein Paket langsamer als das nächstfolgende Paket übertragen wird, würde dies zu einer Signalverfälschung führen.
         Aus diesem Grund wird bei jedem Paket auch die Paketnummer in einer Variable mit übertragen.
-        Des Weiteren wurde entscheiden, dass alle Pakete die gleiche Größe aufweisen.
-        Aus diesem Grund wird das Signal in 8 Pakete mit je 256 Samples geteilt und übertragen.
+        Somit werden zur Übertragung von 2048 Abtastpunkten acht Pakte mit je 256 Samples übertragen.
 
         \clearpage
 
@@ -150,7 +146,7 @@
             \end{table}
 
             Die \ac{wcet} ändern sich mit der Größe des empfangenen Signals und der Größe der \ac{fft}, jedoch wurden die Werte so gewählt, dass ein guter Kompromiss zwischen Arbeitsspeicherbelegung und Signalverarbeitung gewährleistet ist.
-            Für die Implementierung der \ac{fft}-Demo ist es nötig, dass die Tasks untereinander Daten austauschen können.
+            Für die Implementierung der \ac{fft}-Demo ist es notwendig, dass die Tasks untereinander Daten austauschen können.
             Aus diesem Grund wurden \ac{freertos} Queues verwendet, damit die Tasks sich untereinander nicht blockieren können.
 
             \begin{figure}[H]

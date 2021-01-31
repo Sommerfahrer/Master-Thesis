@@ -2,7 +2,7 @@
 
 \begin{document}
 \ac{freertos} ist ein Echtzeitbetriebssystem für eingebettete Systeme, welches unter der freizügigen Open-Source Lizenz \href{https://de.wikipedia.org/wiki/MIT-Lizenz}{MIT} steht.
-Außerdem ist der Scheduler des Betriebsystems zwischen präemptiver und kooperativer Betrieb konfigurierbar um verschiedene Einsatzzwecke abzudecken \parencite{wiki:002}.
+Außerdem ist der Scheduler des Betriebsystems zwischen präemptiver und kooperativer Betrieb konfigurierbar um verschiedene Einsatzzwecke abzudecken \parencite{freertos_license}.
 \ac{freertos} unterstützt über 40 Mikrocontroller-Architekturen, um eine größere Bandbreite zu erreichen \parencite{freertos}.
 Für nicht unterstütze Architekturen stellt \ac{freertos} eine Portierungs-Anleitung zur Verfügung, welche als Unterstützung bei der Portierung von \ac{freertos} auf andere \ac{cpu}s dient \autocite{freertos_port}.
 \ac{freertos} ist einfach zu implementieren und der Kernel unterstützt Multithreading, Warteschlangen, Semaphore, Software-Timer, Mutexes und Eventgruppen \parencite{freertos-features}.
@@ -60,9 +60,6 @@ Diese Zustände ermöglichen komplexere Algorithmen zu implementieren und sehen 
     \parencite{freertos-task-states}
 \end{center}
 
-Ein Ablaufdiagramm der einzelnen Zustände und deren Wechsel mit Hilfe von \ac{freertos}-Funktionen wird in \autoref{fig:FreeRTOS_Task_States} dargestellt.
-Dabei wird erläutert, mit welchen \ac{freertos}-Funktionen oder Events den Statuswechsel auslösen \autocite{freertos-task-states}.
-
 \begin{figure}[H]
     \centering
     \includegraphics[height=10cm, width=10cm]{./attachments/FreeRTOS_Task_States.pdf}
@@ -70,8 +67,11 @@ Dabei wird erläutert, mit welchen \ac{freertos}-Funktionen oder Events den Stat
     \label{fig:FreeRTOS_Task_States}
 \end{figure}
 
+Ein Ablaufdiagramm der einzelnen Zustände und deren Wechsel mit Hilfe von \ac{freertos}-Funktionen wird in \autoref{fig:FreeRTOS_Task_States} dargestellt.
+Dabei wird erläutert, mit welchen \ac{freertos}-Funktionen oder Events den Statuswechsel auslösen \autocite{freertos-task-states}.
+
 \subsubsection{Idle Task} \label{section:idle_task}
-Die \ac{freertos} Idle Task wird immer dann aufgerufen, wenn keine Task ausgeführt werden kann.
+Die \ac{freertos} Idle Task wird immer dann aufgerufen, wenn keine andere Task ausgeführt werden kann.
 Dabei wird die \ac{freertos} Idle Task automatisch beim Start des \ac{freertos}-Schedulers mit der niedrigsten verfügbaren Priorität erstellt, um keine Tasks im 'ready' Status zu blockieren.
 Das heißt die Idle Task wird nur ausgeführt, wenn es keine Task mit einer höheren Priorität gibt, oder keine Task mit einer höheren Priorität sich im 'ready' Status befindet.
 Sollte eine Task die gleiche Priorität mit der Idle Task teilen, wird die \ac{cpu}-Zeit, bei Standardkonfiguration, zwischen den zwei Tasks aufgeteilt.
@@ -87,7 +87,7 @@ Dies kann für verschiedene Einsatzbereiche benutzt werden, wie beispielsweise u
 
 
 \subsubsection{Interrupts} \label{section:interrupts}
-Interrupts werden durch ein Ereignis ausgelöst, wie z.B. einem bestimmten Wert eines Timers ausgelöst und führen zur einer Unterbrechung der aktuellen Programmausführung, um in der Regel kurzen, aber zeitlich kritischen, Vorgang abzuarbeiten.
+Interrupts werden durch ein Ereignis ausgelöst, wie z.B. einem bestimmten Wert eines Timers ausgelöst und führen zur einer Unterbrechung der aktuellen Programmausführung, um in der Regel kurzen, zeitlich kritischen, Vorgang abzuarbeiten.
 Nach der Unterbrechungsanforderung (\ac{irq}) führt der Prozessor eine Unterbrechungsroutine (\ac{isr}) mit erweiterten Privilegien aus.
 Im Anschluss wird der vorherige Zustand des Prozessors wiederhergestellt und die vorherige Ausführung an der unterbrochenen Stelle fortgesetzt \parencite{grundkurs_betriebssysteme, wiki:008}.
 

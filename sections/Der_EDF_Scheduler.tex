@@ -309,7 +309,8 @@ createEDFTask(              // Task Creation
     Eine \ac{freertos}-Task kann, wie in \autoref{section:task_states} beschrieben, in den 'Blocked' Status gehen und übergibt, trotz höhere Priorität, \ac{cpu}-Zeit an eine niedrigere Zeit.
     Dieses Vorgehen macht Sinn, wenn z.B. eine höher priorisierte Task auf Daten warten muss oder in der Applikation die Funktion 'vTaskDelay' benutzt wurde.
     Aus der Überlegung ob dies der \ac{edf}-Scheduler unterstützen sollte, wurde die Laufzeit der 'rescheduleEDF'-Funktion mit und ohne der 'Blocked'-Implementierung getestet.
-    Die Laufzeit vergrößerte sich nur gering, allerdings wurde dann entschieden, dass es bei einem Taskhandling nach dem \ac{edf}-Prinzip keinen Sinn macht, dies zu unterstützen.
+    Die Laufzeit eines Taskhandlings vergrößerte sich zwar nur gering, jedoch muss die Summe aller Taskhandlings einer Anwendung betrachtet werden.
+    Aus diesem Grund unterstützt der in dieser Arbeit entworfene \ac{edf}-Scheduler keine 'Blocked'-Status.
     Aus diesem Grund und der verringerten Laufzeit der 'rescheduleEDF' darf eine \ac{edf}-Task nicht in den 'Blocked' Status gesetzt werden.  
     Sollte dies dennoch in einer Applikation nötig sein, muss beachtet werden, dass die betreffende Task erst innerhalb ihrer nächsten Periode, wie in \autoref{fig:blocked_status_in_edf_tasks} dargestellt, wieder aufgerufen wird.
 
@@ -391,7 +392,7 @@ createEDFTask(              // Task Creation
         \label{fig:blocked_status_in_edf_tasks}
     \end{figure}
 
-    Wie in \autoref{fig:blocked_status_in_edf_tasks} zu sehen, sind zwei Tasks mit den identischen \ac{edf}-Eigenschaften dargestellt, allerdings enthält eine Task einen Programmcode welcher zu einem 'Blocked' Status führt.
+    \autoref{fig:blocked_status_in_edf_tasks} zeigt, sind zwei Tasks mit den identischen \ac{edf}-Eigenschaften dargestellt, allerdings enthält eine Task einen Programmcode welcher zu einem 'Blocked' Status führt.
     Aus diesem Grund wird diese Task erst in der nächsten Periode fortgesetzt, wobei die Task ohne einen 'Blocked' Status in der gleichen Zeit zweimal ausgeführt wird.
 
 
@@ -400,6 +401,6 @@ createEDFTask(              // Task Creation
     Durch die Verwendung des originalen Schedulers können klassische \ac{freertos} Tasks parallel erstellt und abgearbeitet werden.
     Hierbei ist aber zu beachten, dass die Priorität der klassischen \ac{freertos} Task eine höhere Priorität als den Wert '3' besitzt, da es ansonsten zu Konflikten innerhalb des \ac{edf}-Schedulers kommen kann.
     Auch sollte bei der Implementierung von klassischen \ac{freertos}-Task darauf geachtet werden, dass die \ac{edf}-Tasks genügend Zeit für Ihre Abarbeitung zur Verfügung gestellt bekommen.
-    Wie auch schon eingangs erwähnt, sorgt das Verwenden des \ac{freertos} SysTick für den \ac{edf}-Scheduler für eine breite Kompatibilität auf verschiedenen Prozessorarchitekturen.
+    Außerdem sorgt die Verwendung der \ac{freertos}-\ac{api} für die gleiche Kompatibilität wie \ac{freertos} zu anderen Architekturen. 
 
 \end{document}

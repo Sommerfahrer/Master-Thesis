@@ -1,11 +1,11 @@
 \documentclass[../EDF Master Thesis.tex]{subfiles}
 
 \begin{document}
-Als Scheduler (zu Deutsch Steuerprogramm) wird eine Logik bezeichnet, welche die zeitliche Ausführung von mehreren Prozessen steuert.
-Sie wird als präemptiver oder kooperativer Scheduler in Betriebssystemen eingesetzt.
+Als Scheduler ( zu Deutsch: Steuerprogramm) wird eine Logik bezeichnet, welche die zeitliche Ausführung von mehreren Prozessen steuert.
+Diese Logik wird als präemptiver oder kooperativer Scheduler in Betriebssystemen eingesetzt.
 Der Scheduler ist für die zeitliche Anordnung der Prozesse verantwortlich.
 Für die Neuanordnung, welche Task \ac{cpu}-Zeit bekommen soll, löst der Scheduler einen Context Switch, auch Taskwechsel genannt, aus.
-Die \ac{cpu} ist für einen Scheduler die einzige Ressource von Bedeutung, andere Hardware ist für einen Scheduler nicht relevant, wie z.B. \ac{rom} oder \ac{ram}.
+Die \ac{cpu} ist für einen Scheduler die einzige Ressource von Relevanz, andere Hardware ist für einen Scheduler nicht relevant, wie z.B. \ac{rom} oder \ac{ram}.
 Bei einem kooperativen Scheduling werden einem Prozess die benötigten Ressourcen übergeben und der Scheduler wartet, bis der Prozess vollständig abgearbeitet wurde.
 Im Gegensatz zu einem kooperativen Scheduler kann ein präemptiver Scheduler einem Prozess die Ressourcen vor der Fertigstellung entziehen, um zwischenzeitlich diese anderen Prozessen zuzuweisen \parencite{mikrocontroller:001}.
 
