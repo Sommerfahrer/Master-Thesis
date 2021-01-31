@@ -117,20 +117,16 @@ BaseType_t createEDFTask(    // Task Creation
     Für eine einfache und zugleich sehr performante Implementierung eines \ac{edf}-Schedulers in \ac{freertos} zu gewährleisten, wurde in dieser Arbeit der \ac{freertos}-Scheduler weiterverwendet.
     Der \ac{freertos}-Scheduler arbeitet, wie in \autoref{section:freertos_scheduling_richtlinie} bereits behandelt, prioritätsbasiert.
     Die eigentliche Scheduler-Logik befindet sich in der 'rescheduleEDF'-Funktion, welche bei jeder \ac{edf}-Task am Ende des Taskcodes, wie in \autoref{code:create_edf_task_example} zu sehen, aufgerufen werden muss.
-    Mit dem Aufruf der Funktion 'rescheduleEDF' wird zwischen allen erstellten \ac{edf}-Tasks, die Priorität der nächsten Task nachdem \ac{edf}-Prinzip auf die höchste Priorität und die aktive Task auf eine niedere Priorität als die \ac{freertos} Idle Task gesetzt.
-    Aus diesem Grund wurde die Standard-Priorität der \ac{freertos} Idle Task von dem Wert '0' auf den Wert '1' erhöht.
-    Anschließend wird ein Context Switch ausgelöst und die nachdem \ac{edf}-Prinzip nächste Task wird von dem \ac{freertos}-Scheduler aufgerufen und ausgeführt.
     Falls alle \ac{edf}-Tasks bereits in ihrer Periode ausgeführt wurden und alle Deadlines der Tasks weiter als ihre Periode in der Zukunft liegen, wird die \ac{freertos} Idle Task aufgerufen.
 
     \begin{table}[ht!]
         \centering
-        \begin{tabular}{l|c}
-            Tasks & Priorität \\
+        \begin{tabular}{l|c|l}
+            Taskzustand & zugeteilte Priorität & Erklärung\\
             \hline
-            Deaktivierte \ac{edf} Task(s) & 0\\
-            \ac{freertos} Idle Task & 1\\
-            Auführende \ac{edf} Task & 2\\
-            'rescheduleEDF' ausführende Task & 3
+            inaktiv & 0 & wird nicht ausgeführt\\
+            aktiv & 2 & wird ausgeführt\\
+            'rescheduleEDF & 3 & führt 'rescheduleEDF' aus
         \end{tabular}
         \caption{\ac{edf}-Prioritäten der Tasks}
         \label{table:edf_prioritaeten_der_tasks}
@@ -142,6 +138,7 @@ BaseType_t createEDFTask(    // Task Creation
     Die Task, welche aktuell ausgeführt wurde und am Ende die 'rescheduleEDF'-Funktion ausführt, erhält während der Funktionsausführung die höchste \ac{edf}-Priorität mit dem Wert '3', um einen vorzeitigen Context Switch zur nächsten, nach dem \ac{edf}-Prinzip ausgewählte Task, zu unterbinden.
     Nachdem alle \ac{edf}-Parameter von allen \ac{edf}-Tasks neu gesetzt wurden, gibt die aktuelle Task die höchste Priorität mit dem Wert '3' ab und erzwingt einen Context Switch zu der nächsten zu ausführenden \ac{edf}-Task mit der Priorität '2'.
     Für einen reibungslosen Start des \ac{edf}-Schedulers, werden die Prioritäten aller \ac{edf}-Tasks nachdem Erstellen automatisch auf die Priorität mit dem Wert '0' gesetzt, damit die Idle Task die allerste Ausführung übernimmt und somit zu Beginn die 'rescheduleEDF'-Funktion durch den Idle Task Hook ausgeführt wird.
+    Falls alle \ac{edf}-Tasks bereits in ihrer Periode ausgeführt wurden und alle Deadlines der Tasks weiter als ihre Periode in der Zukunft liegen, wird die \ac{freertos} Idle Task aufgerufen.
     In \autoref{fig:edf_task_ausfuehrungsablauf} werden die verschiedenen Prioritäten je nach Status der Task innerhalb einer Periode angezeigt.
     
     \begin{figure}[ht!]
