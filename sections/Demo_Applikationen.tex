@@ -22,7 +22,7 @@
     \end{table}
 
     Die drei Tasks wurden exakt so gewählt, dass sie die verschiedenen möglichen Status des \ac{edf}-Schedulers simulieren und optisch dargestellen werden.
-    Der Benutzer kann mit Hilfe des integrierten Button auf dem STM32F769I-Disc0 Board die drei Tasks, wie in \autoref{fig:blinky_demo_ablaufdiagramm} zu sehen, erstellen und löschen.
+    Der Benutzer kann mithilfe des integrierten Button auf dem STM32F769I-Disc0 Board die drei Tasks, wie in \autoref{fig:blinky_demo_ablaufdiagramm} zu sehen, erstellen und löschen.
     Eine \ac{cpu}-Auslastung über 100\% ist nicht möglich und führt somit zur Fehlerbehandlung aus \autoref{section:Fehlerbehandlung}.
     
     \begin{figure}[H]
@@ -91,7 +91,7 @@
 
     \subsection{\acf{fft}-Demo} \label{section:fft_demo}
 
-        Die \ac{fft}-Demo erstellt und sendet mit Hilfe der erarbeiteten \ac{gui} auf dem Host-Computer alle 10ms ein Signal, bestehend aus einem oder mehreren Sinus- oder Kosinus-Signalen, an den Mikrocontroller über das \ac{udp}-Protokoll.
+        Die \ac{fft}-Demo erstellt und sendet mithilfe der erarbeiteten \ac{gui} auf dem Host-Computer alle 10ms ein Signal, bestehend aus einem oder mehreren Sinus- oder Kosinus-Signalen, an den Mikrocontroller über das \ac{udp}-Protokoll.
         Das Interval von 10ms wurde so gewählt, dass eine ausreichend schnelle Aktualisierung und eine mittelmäßige Auslastung des Host-Computers gewährleistet ist.
         Dieses Interval kann in der Konfiguration der \ac{fft}-Demo angepasst werden, jedoch sollte das Interval nicht kleiner als 6ms gewählt werden, da die Summe der \ac{wcet} aller Tasks auf dem Mikrocontroller 6ms beträgt.
         Der Mikrocontroller führt, basierend auf dem empfangenen Signal, eine \ac{fft}-Berechnung aus und sendet die Ergebnisse an den Host-Computer zurück.
@@ -133,7 +133,7 @@
 
         \subsubsection{Tasks des Mikrocontrollers}
             Die Perioden der drei \ac{edf}-Tasks, siehe \autoref{table:fft_demo_task_parameter}, wurden an das Interval der \ac{gui} auf 10ms angepasst.
-            Jede der drei Task hat einen \ac{wcet} von 2ms, welche mit Hilfe des Debugmodus ermittelt wurden, somit ergibt sich eine \ac{cpu}-Auslastung von 60\%, wie auch in \autoref{fig:fft_demo_task_scheduling} dargestellt.
+            Jede der drei Task hat einen \ac{wcet} von 2ms, welche mithilfe des Debugmodus ermittelt wurden, somit ergibt sich eine \ac{cpu}-Auslastung von 60\%, wie auch in \autoref{fig:fft_demo_task_scheduling} dargestellt.
 
             \begin{table}[ht!]
                 \centering

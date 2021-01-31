@@ -2,7 +2,7 @@
 
 \begin{document}
 
-\ac{fft} berechnet die Fourier Transformierte aus und ist und ist ein Algorithmus der die gleichen Ergebnisse wie die \ac{dft} liefert, jedoch mit wesentlich weniger Rechenzeit.
+\ac{fft} berechnet die Fourier Transformierte aus und ist ein Algorithmus der die gleichen Ergebnisse, wie die \ac{dft} liefert, jedoch mit wesentlich weniger Rechenzeit.
 Dabei können beide Algorithmen ein zeitdiskretes Signal in dessen Frequenzteile (Spektrum), wie in \autoref{fig:aufspaltung_eines_Signals_in_dessen_Frequenzteile} dargestellt, aufspalten.
 Dies ist sehr nützlich für viele Bereiche der Signalverarbeitung z.B. für das Komprimieren von Musikaufnahmen, wo nicht hörbare Frequenzen entfernt werden.
 
@@ -11,8 +11,6 @@ Dies ist sehr nützlich für viele Bereiche der Signalverarbeitung z.B. für das
     \caption[Aufspaltung eines Signals in dessen Frequenzteile]{Aufspaltung eines Signals in dessen Frequenzteile (eigene Darstellung)}
     \label{fig:aufspaltung_eines_Signals_in_dessen_Frequenzteile}
 \end{figure}
-
-\clearpage
 
 Bei der Berechnung einer \ac{dft} steigt dessen Komplexität $O$ mit der Anzahl der Abtastpunkte $N$ quadratisch an, wie in der \autoref{form:berechnung_der_dft_komplexitaet} dargestellt.
 Dies führt bei hohen Samplegrößen zu einer extremen Rechenzeit, was nicht praktikabel ist \autocite{fft:002}.
@@ -30,6 +28,9 @@ Im Gegensatz zur \ac{dft} stellt die \ac{fft} ein Algorithmus dar, mit welcher d
 Aus diesem Grund wird häufig die \ac{fft} genutzt, welche nach dem 'Teile und Herrsche'-Verfahren funktioniert und nur noch eine Komplexität von $O(N) = (N \: log(N))$ besitzt \autocite{fft:002}.
 Durch diese enorme Zeit- und Rechenersparnis fand die \ac{fft} in vielen Bereichen, wie z.B. in Ingenieurswissenschaften, Musik, der Wissenschaft und der Mathematik Verwendung \autocite{wiki:010}.
 Für die Berechnung der \ac{fft} sind mehrere Algorithmen verfügbar, wobei in dieser Masterarbeit der Radix-2 Algorithmus von der \ac{cmsis}-\ac{dsp} Bibliothek verwendet wurde.
+
+\clearpage 
+
 Als Vorraussetzung des Algorithmus der \ac{fft} muss die Anzahl der Messwerte $N$, auch Samples genannt, einer Zweierpotenz entsprechen \autocite{fft:002}.
 
 \begin{equ}[ht!]
@@ -61,8 +62,6 @@ Wird die Rechenbedingung in \autoref{form:rechenbedingung_der_fft} erfüllt, kan
     \label{form:aufteilung_der_dft}
 \end{equ}
 
-\clearpage
-
 Anschließend wird eine Substitution wie in \autoref{form:substitution_der_dft} zu sehen, angewandt.
 
 \begin{table}[ht!]
@@ -78,7 +77,6 @@ Anschließend wird eine Substitution wie in \autoref{form:substitution_der_dft} 
 \end{table}
 
 Unter Berücksichtigung der Umformungen aus \autoref{form:umformung_dft} resultieren zwei Formeln mit der halben Länge, wie in \autoref{form:resultierende_gleichungen_nach_der_Aufspaltung_der_dft} dargestellt.
-
 \begin{equ}[ht!]
     \begin{equation}
         w_N^{2m \: k} = w_M^{m \: k} \qquad \text{und}\qquad w_N^{(2m + 1) \: k} = w_N^k \: w_M^{m \: k}
@@ -94,7 +92,6 @@ Unter Berücksichtigung der Umformungen aus \autoref{form:umformung_dft} resulti
     \caption[Resultierende Formeln nach Aufspaltung der \ac{dft}]{Resultierende Gleichungen nach Aufspaltung der \ac{dft} (\ac{iaa} \cite{fft:002})}
     \label{form:resultierende_gleichungen_nach_der_Aufspaltung_der_dft}
 \end{equ}
-
 Ist die resultierende Länge der \ac{dft} wieder eine Zweierpotenz, wird die Zerlegung solange fortgeführt, bis $N$ Vektoren der Länge $2^0$ erhält \autocite{fft:002}.
 Anschließend werden die Ergebnisse zusammengerechnet und die \ac{dft} wurde gelöst \autocite{fft:002}.
 \end{document}

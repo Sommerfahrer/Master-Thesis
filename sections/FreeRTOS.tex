@@ -23,11 +23,13 @@ Folgende Erweiterungen sind zum Stand dieser Arbeit verfügbar:
 Im Zuge dieser Masterarbeit wurde als einziges der Stack '\ac{freertos} + \acs{tcp}' für die Verbindung zwischen Computer und Mikrocontroller verwendet.
 Wobei die Integration von anderen Erweiterungen keinen Einfluss auf den in dieser Arbeit implementierten \ac{edf}-Scheduler hat.
 
+\clearpage
+
 \subsubsection{\ac{freertos} Scheduling Richtlinie} \label{section:freertos_scheduling_richtlinie}
 Der \ac{freertos}-Scheduler arbeitet prioritätsbasiert und beinhaltet standardmäßig zwei Eigenschaften:
 \begin{itemize}
-    \item \textbf{Time Slicing Scheduling Policy}: Tasks mit gleicher Priorität erhalten die gleiche Anteile an \ac{cpu}-Zeit, dieses Verfahren ist auch als 'Round-Robin Algorithmus' bekannt.
-    \item \textbf{Fixed Priority Preemptive Scheduling}: Es wird immer die Task  mit der höchsten Priorität ausgeführt.
+    \item \textbf{Time Slicing Scheduling Policy}: Tasks mit gleicher Priorität erhalten die gleichen Anteile an \ac{cpu}-Zeit, dieses Verfahren ist auch als 'Round-Robin Algorithmus' bekannt.
+    \item \textbf{Fixed Priority pre-emptive Scheduling}: Es wird immer die Task  mit der höchsten Priorität ausgeführt.
                                                          Das bedeutet eine niedriger priorisierte Task bekommt nur \ac{cpu}-Zeit, wenn die höher priorisierten Tasks nicht den 'ready'-Status besitzen.
                                                          Teilen sich zwei Tasks gleichzeitig die höchste Priorität, tritt die Time Slicing Scheduling Policy in Kraft.
 \end{itemize}
@@ -76,7 +78,7 @@ Dabei wird erläutert, mit welchen \ac{freertos}-Funktionen oder Events den Stat
 \subsubsection{Idle Task} \label{section:idle_task}
 Die \ac{freertos} Idle Task wird immer dann aufgerufen, wenn keine andere Task ausgeführt werden kann.
 Dabei wird die \ac{freertos} Idle Task automatisch beim Start des \ac{freertos}-Schedulers mit der niedrigsten verfügbaren Priorität erstellt, um keine Tasks im 'ready' Status zu blockieren.
-Das heißt die Idle Task wird nur ausgeführt, wenn es keine Task mit einer höheren Priorität gibt, oder keine Task mit einer höheren Priorität sich im 'ready' Status befindet.
+Das heißt die Idle Task wird nur ausgeführt, wenn es keine Tasks mit einer höheren Priorität gibt, oder keine Tasks mit einer höheren Priorität sich im 'ready' Status befindet.
 Sollte eine Task die gleiche Priorität mit der Idle Task teilen, wird die \ac{cpu}-Zeit, bei Standardkonfiguration, zwischen den zwei Tasks aufgeteilt.
 Des Weiteren wird die Idle Task in \ac{freertos} Standardkonfiguration mit der Priorität 0, also der niedrigsten Priorität gestartet.
 Beim Ausführen der \ac{freertos} Idle Task wird nicht mehr benötigter zugewiesener Speicher gelöscht und sollte somit regelmäßig \ac{cpu}-Zeit bekommen, da im schlimmsten Fall der Arbeitsspeicher überlaufen kann.
@@ -100,7 +102,7 @@ Der \ac{freertos} SysTick, auch System Tick genannt, ist fundemental für die Ta
 Dieser Interrupt wird standardmäßig jede Millisekunde aufgerufen.
 Dabei bietet der Wert eine gute Balance zwischen Taskgeschwindigkeit und Overhead von Taskwechsel.
 Bei jedem SysTick wird die \ac{freertos} Funktion 'vTaskSwitchContext()' aufgerufen.
-Die Funktion selbst überprüft ob eine höher priorisierte Task unblocked, also ausführbar (ready) geworden ist und falls dies zutrifft wird ein Taskwechsel auf die höher priorisierte Task durchgeführt \autocite{freertos_systick}.
+Die Funktion selbst überprüft, ob eine höher priorisierte Task unblocked, also ausführbar (ready) geworden ist und falls dies zutrifft, wird ein Taskwechsel auf die höher priorisierte Task durchgeführt \autocite{freertos_systick}.
 
 \subsubsection{\ac{freertos} Queues} \label{section:queues}
 Queues, zu Deutsch Warteschlangen, werden oft auch außerhalb von \ac{freertos} für die sichere Kommunikation zwischen verschiedenen Tasks und/oder Interrupts verwendet.

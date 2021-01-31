@@ -1,14 +1,14 @@
 \documentclass[../EDF Master Thesis.tex]{subfiles}
 
 \begin{document}
-    Für die Kommunikation zwischen Host-Computer und Mikrocontroller bei der \ac{fft}-Demo wurde \ac{udp} als Protokoll ausgewählt
-    Das Protokoll erfordert als Hardware-Interface eine Ethernet-Schnittstelle, welche weit verbreitet und daher auf auf vielen Mikrocontroller und Computer verbaut ist.
+    Für die Kommunikation zwischen Host-Computer und Mikrocontroller bei der \ac{fft}-Demo wurde \ac{udp} als Protokoll ausgewählt.
+    Das Protokoll erfordert als Hardware-Interface eine Ethernet-Schnittstelle, welche weit verbreitet und daher auf vielen Mikrocontroller und Computer verbaut ist.
     Viele Anwendungen wie z.B. \ac{ip}-Telefonie oder Livestreams benutzen \ac{udp} als Übertragungsprotokoll.
     Dadurch können Anwendungen gezielt Daten zu der gewünschten Gegenstelle versenden \parencite{elektronik_kompendium}.
     Das \ac{udp}-Protokoll selbst erfüllt für diese Arbeit folgende Eigenschaften:
     \begin{itemize}
         \item \textbf{Verfügbarkeit}: Ethernet-Schnittstellen sind in vielen Computern und Mikrocontroller verbaut, dadurch ist eine breite Verfügbarkeit dieses Verbindungsart gewährleistet.
-        \item \textbf{Latenzarm}: Die gesendeten \ac{udp}-Pakete werden vom Empfänger nicht bestätigt. Das heißt der Sender sendet Daten ohne deren Ankunft zu überprüfen.
+        \item \textbf{Latenzarm}: Die gesendeten \ac{udp}-Pakete werden vom Empfänger nicht bestätigt. Das heißt der Sender sendet Daten, ohne deren Ankunft zu überprüfen.
         \item \textbf{Wenig Overhead}: Das Empfangen und Senden sollte so wenig wie möglich die \ac{cpu} unterbrechen und somit blockieren.
         \item \textbf{Hohe Übertragungsrate}: Es sollten so viele Daten wie möglich, innerhalb einer bestimmten Zeit übertragen werden können.
     \end{itemize}

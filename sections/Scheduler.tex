@@ -22,8 +22,8 @@ In den nachfolgend vorgestellten Scheduler-Verfahren wird bei der Berechnung der
 
 \subsubsection{\acf{rms}} \label{section:rms}
     \ac{rms} ist ein präemptives Scheduling-Verfahren, welches die Prioritäten einzelner Prozesse nach deren Periodenlänge statisch anordnet.
-    Je niedriger die Periode eines Prozesses ist, je höher ist dessen Priorität.
-    Mit Hilfe von \autoref{form:rms_CPU_utilization} kann die maximale Menge an Prozessen, die mit \ac{rms} verarbeitet werden können, berechnet werden.
+    Je niedriger die Periode eines Prozesses ist, desto höher ist dessen Priorität.
+    Mithilfe von \autoref{form:rms_CPU_utilization} kann die maximale Menge an Prozessen, die mit \ac{rms} verarbeitet werden können, berechnet werden.
     Durch eine zunehmende Anzahl von Prozessen nähert sich die Grenze dem Wert von $ln(2) \approx 0.693$, welches eine maximale Auslastung von 69,3\% bedeutet.
     Die maximale Auslastung bezieht sich dabei auf die \ac{cpu}-Auslastung, alle anderen Ressourcen wie z.B. Arbeitsspeicher werden als unbegrenzt angesehen.
     Sofern die maximale Auslastung nicht übertreten wird, verpasst kein Prozess die dazugehörige Deadline \parencite{echtzeit-grundlagen}.
