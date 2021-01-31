@@ -5,7 +5,8 @@
     Vorteil dieses Scheduler Prinzips ist die weniger komplexe Implementierung im Kernel und der geringe Overhead.
     Die Unterstützung mehrerer Schedule-Verfahren im Kernel eines \ac{rtos} würde dessen Weiterentwicklung stark beeinflussen.
     Allerdings gibt es die Möglichkeit ein anderes Scheduling-Verfahren außerhalb des Kernels eines \ac{rtos} zu implementieren.
-    Bei einem Scheduling-Verfahren nach dem \ac{edf}-Prinzip kann die \ac{cpu} maximal ausgelastet werden, des Weiteren muss die Prozessstruktur und deren Prioritäten nicht vorher festgelegt werden.
+    Bei einem Scheduling-Verfahren nach dem \ac{edf}-Prinzip kann die \ac{cpu} maximal ausgelastet werden.
+    Außerdem muss die Prozessstruktur und deren Prioritäten nicht vorher festgelegt werden.
     Aus diesen Gründen besteht das Ziel dieser Arbeit darin, einen \ac{edf}-Scheduler im Anwendungsbereich von \ac{freertos} zu implementieren.
     Durch die Entwicklung zweier Demo-Applikationen soll die korrekte Funktion des Schedulers nachgewiesen werden.
     Dabei dient eine Demo als Vorführung des \ac{edf}-Schedulers, bei der alle Status innerhalb und außerhalb der Grenzen des \ac{edf}-Schedulers abgefragt werden.

@@ -2,22 +2,122 @@
 
 \begin{document}
 
-Der \ac{edf} Scheduler lässt sich mit einer einzelnen C-Datei, sowie einer Header-Datei in \ac{freertos} implementieren.
-Dies vereinfacht die Implementierung auf andere \ac{freertos} Versionen, sowie auch das Portieren auf andere Plattformen.
-Um die Portabilität weiter zu vereinfachen, wurde der \ac{freertos} SystemTick (SysTick) mit der standardmäßigen Genauigkeit von einer Millisekunde und nicht ein weiterer benutzerdefinierter Timer, wie es die Cortex-M Serie ermöglicht, benutzt.
-Aus diesen Entscheidungen resultiert auch die Genauigkeit des Schedulers von einer Millisekunde, wobei auftauchende Interrupts, wie die \ac{cpu}-Ausführzeit des SysTick, in dieser Arbeit vernachlässigt werden.
-Dieser Standardwert bietet für den \ac{edf}-Scheduler einen guten Kompromiss zwischen Applikationslaufzeit und Genauigkeit.
-Die Periode des SysTick lässt sich unter der Datei 'FreeRTOSConfig.h' konfigurieren, wie in \autoref{code:freertos_sys_tick_deklaration} dargestellt.
-Sollte dieser Wert angepasst werden, führt dies zu einer Änderung der Genauigkeit des \ac{edf}-Schedulers.
+In diesem Kapitel werden unter anderem die benötigten Datenstrukturen, die Umsetzung und die Verwendung des in dieser Arbeit erstellten \ac{edf}-Schedulers vorgestellt.
+Für die Implementierung des \ac{edf}-Schedulers selbst, wurde die Idee verfolgt, den \ac{freertos}-Scheduler weiterzuverwenden und am Ende jeder Task eine Neuanordnung der Prioritäten nachdem \ac{edf}-Prinzip auszulösen.
+Um den Scheduler in ein \ac{freertos}-Projekt zu integrieren, muss ein kleines Modul, bestehend aus einer C- und H-Datei in den Anwendungsbereich kopiert werden.
 
-\begin{lstlisting}[language=C, caption=FreeRTOS SysTick Deklaration, label=code:freertos_sys_tick_deklaration]
-    #define configTICK_RATE_HZ						( 1000 ) // 1ms SysTick
+\subsection{Datenstrukturen} \label{section:datenstruktur}
+Für die Implementierung eines \ac{edf}-Schedulers wurde als erstes zwei neue Datenstrukturen erstellt.
+Die erste Struktur mit der Bezeichnung 'edfTaskStruct', wie in \autoref{code:edfTaskStruct} zu sehen, beinhaltet ausschließlich alle Variablen und Parameter einer einzelnen Task die für den \ac{edf}-Scheduler notwendig sind.
+Unter anderem besteht die Struktur aus einem Pointer zum Taskcode, der Name der Task, sowie verschiedene \ac{edf}-Variablen.
+
+\begin{figure}[ht!]
+\begin{lstlisting}[language=C, caption=edfTaskStruct Struktur, label=code:edfTaskStruct]
+typedef struct
+{
+    TaskHandle_t taskHandle;                // task handle
+    const char* taskName;                   // task name
+    BaseType_t taskCreated;                 // task created flag
+    TickType_t wcet;                        // worst compution execution time
+    TickType_t period;                      // period of task
+    TickType_t lastStartTime;               // task relative deadline
+    TickType_t absoluteDeadline;            // task absolute deadline
+    TickType_t relativeDeadline;            // task relative deadline
+    uint32_t callCounter;                   // task execution counter
+}edfTaskStruct;
 \end{lstlisting}
+\end{figure}
+
+In der zweiten Struktur werden alle \ac{edf}-Tasks, bzw. deren 'edfTaskStruct', in einem Array , wie in \autoref{code:edfTasks} abgebildet, gespeichert.
+Außerdem beinhaltet diese Struktur noch verschiedene Flags, welche für die Initialisierung des \ac{edf}-Schedulers notwendig sind.
+
+\begin{figure}[ht!]
+\begin{lstlisting}[language=C, caption=edfTasks Struktur, label=code:edfTasks]
+typedef struct
+{
+    edfTaskStruct tasksArray[MAX_EDF_TASKS];            // tasks array
+    TaskHandle_t idleTask;                              // taskhandle idle task
+    BaseType_t idleTaskCreated;                         // idle task created?
+    unsigned int numberOfEDFTasks;                      // total number of tasks
+}edfTasks;
+\end{lstlisting}
+\end{figure}
+
+Wird eine \ac{edf}-Task erstellt, wird eine neue 'edfTaskStruct'-Struktur erstellt und \\der 'edfTasks'-Struktur hinzugefügt.
+
+\subsection{Erstellung einer \acf{edf}-Task} \label{section:erstellung_einer_edf_task}
+
+    Für die Erstellung einer \ac{edf}-Task muss die 'createEDFTask'-Funktion , mit allen Parametern die in \autoref{table:task_parameter_von_der_funktion_createEDFTask} aufgelistet sind, aufgerufen werden.
+    Bei dem Aufruf der Funktion wird eine \ac{edf}-Struktur mit allen erforderlichen Parametern für den \ac{edf} Scheduler hinzugefügt, anschließend wird die \ac{freertos}-Task erstellt.
+
+    \begin{table}[H]
+        \centering
+        \begin{tabular}{l|l|l}
+            Parameter & Datentyp & Beschreibung \\
+            \hline
+            taskCode & TaskFunction\_t & Funktionsname der Task \\
+            TaskName & const char\( ^* \) & Name der Task  \\
+            stackDepth & configSTACK\_DEPTH\_TYPE & Größe des Taskstacks \\
+            pvParameters & void\( ^* \) & Task Parameter \\
+            wcet & TickType\_t & maximale Ausführzeit \\ 
+            period & TickType\_t & Periode der Task \\
+            deadline & TickType\_t & Deadline der Task \\
+        \end{tabular}
+        \caption{Task Parameter von der Funktion 'createEDFTask'}
+        \label{table:task_parameter_von_der_funktion_createEDFTask}
+    \end{table}
+
+    Der Beispielaufruf der 'createEDFTask' ist in \autoref{code:create_edf_task_example} dargestellt.
+    Diese beinhaltet eine Test-Funktion, so wie auch der Aufruf der createEDFTask.
+
+\begin{figure}[ht!]
+\begin{lstlisting}[language=C, caption=createEDFTask Beispiel, label=code:create_edf_task_example]
+/* Task to be created. */
+void vTestFunction( void * pvParameters )
+{
+    for( ;; )
+    {
+        /* Task example code goes here. */
+        int i = 1 + 2
+
+        /* At the end of every EDF Task, the rescheduleEDF
+        Function must be called */
+        rescheduleEDF();
+    }
+}
+
+BaseType_t createEDFTask(    // Task Creation
+    vTestFunction,           // Pointer to task entry function
+    "Test Function",         // A descriptive name for the task
+    300,                     // The number of words to allocate
+    NULL,                    // Task parameters 
+    1,                       // WCET in ms
+    5,                       // Period of Task in ms
+    4 );                     // Deadline of Task in ms
+\end{lstlisting}
+\end{figure}
+
+\clearpage
+
+\subsection{Löschen einer \acf{edf}-Task} \label{section:löschen_einer_edf_task}
+
+    In manchen Applikationen wird das Löschen von \ac{edf} Tasks benötigt und wurde aus diesem Grund ebenfalls in dieser Arbeit implementiert.
+    Dabei muss die Funktion 'deleteEDFTask' und der Stringname der zu löschenden Task aufgerufen werden.
+    Bei dem Aufruf wird die zu löschende Task aus der \ac{edf}-Tasks Struktur entfernt, anschließend wird die Task in \ac{freertos} gelöscht.
+    Ein Beispielaufruf, angelehnt an das Beispiel aus \autoref{code:create_edf_task_example} ist in \autoref{code:deleteEDFTask_example} dargestellt.
+
+\begin{figure}[ht!]
+\begin{lstlisting}[language=C, caption=deleteEDFTask Beispiel, label=code:deleteEDFTask_example]
+    deleteEDFTask("Test Function")
+\end{lstlisting}
+\end{figure}
+
 
 \subsection{Implementierung} \label{section:implementierung}
-    Um eine einfache und zugleich sehr performante Implementierung eines \ac{edf}-Schedulers in \ac{freertos} zu gewährleisten, wurde in dieser Arbeit der \ac{freertos}-Scheduler weiterverwendet.
+    Für eine einfache und zugleich sehr performante Implementierung eines \ac{edf}-Schedulers in \ac{freertos} zu gewährleisten, wurde in dieser Arbeit der \ac{freertos}-Scheduler weiterverwendet.
     Der \ac{freertos}-Scheduler arbeitet, wie in \autoref{section:freertos_scheduling_richtlinie} bereits behandelt, prioritätsbasiert.
-    Mit dem Aufruf der Funktion 'rescheduleEDF' am Ende jeder \ac{edf}-Task, wird zwischen allen erstellten \ac{edf}-Tasks, die Priorität der nächsten Task nachdem \ac{edf}-Prinzip auf die höchste Priorität und die aktive Task auf eine niedere Priorität als die \ac{freertos} Idle Task gesetzt.
+    Die eigentliche Scheduler-Logik befindet sich in der 'rescheduleEDF'-Funktion, welche bei jeder \ac{edf}-Task am Ende des Taskcodes, wie in \autoref{code:create_edf_task_example} zu sehen, aufgerufen werden muss.
+    Mit dem Aufruf der Funktion 'rescheduleEDF' wird zwischen allen erstellten \ac{edf}-Tasks, die Priorität der nächsten Task nachdem \ac{edf}-Prinzip auf die höchste Priorität und die aktive Task auf eine niedere Priorität als die \ac{freertos} Idle Task gesetzt.
     Aus diesem Grund wurde die Standard-Priorität der \ac{freertos} Idle Task von dem Wert '0' auf den Wert '1' erhöht.
     Anschließend wird ein Context Switch ausgelöst und die nachdem \ac{edf}-Prinzip nächste Task wird von dem \ac{freertos}-Scheduler aufgerufen und ausgeführt.
     Falls alle \ac{edf}-Tasks bereits in ihrer Periode ausgeführt wurden und alle Deadlines der Tasks weiter als ihre Periode in der Zukunft liegen, wird die \ac{freertos} Idle Task aufgerufen.
@@ -141,83 +241,27 @@ Sollte dieser Wert angepasst werden, führt dies zu einer Änderung der Genauigk
     Anschließend wird Task 2 ausgeführt, welche die nächst kürzeste Deadline besitzt und als letztes wird Task 3 ausgeführt.
     Nachdem nun alle drei Tasks innerhalb ihrer Periode unter Einhaltung der Deadlines ausgeführt wurden, wird die Idle Task solange ausgeführt bis die nächste Periode einer Task beginnt.
 
-\clearpage
+\subsection{Genauigkeit} \label{section:genauigkeit}
 
-\subsection{Erstellung einer \acf{edf}-Task} \label{section:erstellung_einer_edf_task}
+Der in dieser Arbeit erstelle \ac{edf}-Scheduler verwendet die \ac{freertos}-\ac{api} und somit auch den \ac{freertos}-SysTick Timer, welcher standardmäßig jede Millisekunde einmal aufgerufen wird.
+Das bedeutete, der \ac{edf}-Scheduler kann maximal \ac{edf}-Tasks mit einer minimalen Ausführzeit von einer Millisekunde einplanen.
+Sollte eine Task eine kürzere Ausführzeit besitzen, wird dies von dem \ac{edf}-Scheduler nicht wahrgenommen.
+Die Periode des \ac{freertos}-SysTick und somit die Genauigkeit des \ac{edf}-Schedulers kann unter der Datei 'FreeRTOSConfig.h', wie in wie in \autoref{code:freertos_sys_tick_deklaration} dargestellt, konfiguriert werden.
+Eine kleinere Periode des \ac{freertos}-SysTick führt zu einem häufigeren Aufruf und somit zu einer größeren \ac{cpu}-Belegung, wobei auftauchende Interrupts, wie die \ac{cpu}-Ausführzeit des SysTick, in dieser Arbeit vernachlässigt werden.
+Dieser Standardwert bietet für den \ac{edf}-Scheduler einen guten Kompromiss zwischen Applikationslaufzeit und Genauigkeit.
 
-    Für die Erstellung einer \ac{edf}-Task muss die 'createEDFTask'-Funktion , mit allen Parametern die in \autoref{table:task_parameter_von_der_funktion_createEDFTask} aufgelistet sind, aufgerufen werden.
-    Bei dem Aufruf der Funktion wird eine \ac{edf}-Struktur mit allen erforderlichen Parametern für den \ac{edf} Scheduler hinzugefügt, anschließend wird die \ac{freertos}-Task erstellt.
-
-    \begin{table}[H]
-        \centering
-        \begin{tabular}{l|l|l}
-            Parameter & Datentyp & Beschreibung \\
-            \hline
-            taskCode & TaskFunction\_t & Funktionsname der Task \\
-            TaskName & const char\( ^* \) & Name der Task  \\
-            stackDepth & configSTACK\_DEPTH\_TYPE & Größe des Taskstacks \\
-            pvParameters & void\( ^* \) & Task Parameter \\
-            wcet & TickType\_t & maximale Ausführzeit \\ 
-            period & TickType\_t & Periode der Task \\
-            deadline & TickType\_t & Deadline der Task \\
-        \end{tabular}
-        \caption{Task Parameter von der Funktion 'createEDFTask'}
-        \label{table:task_parameter_von_der_funktion_createEDFTask}
-    \end{table}
-
-    Der Beispielaufruf der 'createEDFTask' ist in \autoref{code:create_edf_task_example} dargestellt.
-    Diese beinhaltet eine Test-Funktion, so wie auch der Aufruf der createEDFTask.
-
-\begin{figure}[ht!]
-\begin{lstlisting}[language=C, caption=createEDFTask Beispiel, label=code:create_edf_task_example]
-/* Task to be created. */
-void vTestFunction( void * pvParameters )
-{
-    for( ;; )
-    {
-        /* Task example code goes here. */
-        int i = 1 + 2
-
-        /* At the end of every EDF Task, the rescheduleED
-        Function must be called */
-        rescheduleEDF();
-    }
-}
-
-createEDFTask(              // Task Creation
-    vTestFunction,          // Pointer to task entry function
-    "Test Function",        // A descriptive name for the task
-    300,                    // The number of words to allocate
-    NULL,                   // Task parameters 
-    1,                      // WCET in ms
-    5,                      // Period of Task in ms
-    4 );                    // Deadline of Task in ms
+\begin{lstlisting}[language=C, caption=FreeRTOS SysTick Deklaration, label=code:freertos_sys_tick_deklaration]
+    #define configTICK_RATE_HZ						( 1000 ) // 1ms SysTick
 \end{lstlisting}
-\end{figure}
-
-\clearpage
-
-\subsection{Löschen einer \acf{edf}-Task} \label{section:löschen_einer_edf_task}
-
-    In manchen Applikationen wird das Löschen von \ac{edf} Tasks benötigt und wurde aus diesem Grund ebenfalls in dieser Arbeit implementiert.
-    Dabei muss die Funktion 'deleteEDFTask' und der Stringname der zu löschenden Task aufgerufen werden.
-    Bei dem Aufruf wird die zu löschende Task aus der \ac{edf} Array Struktur entfernt, anschließend wird die Task in \ac{freertos} gelöscht.
-    Ein Beispielaufruf, angelehnt an das Beispiel aus \autoref{code:create_edf_task_example} ist in \autoref{code:deleteEDFTask_example} dargestellt.
-
-\begin{figure}[ht!]
-\begin{lstlisting}[language=C, caption=deleteEDFTask Beispiel, label=code:deleteEDFTask_example]
-    deleteEDFTask("Test Function")
-\end{lstlisting}
-\end{figure}
 
 \subsection{Debugmodus} \label{section:debug_mode}
 
     Um das Entwickeln einer \ac{edf}-Applikation zu vereinfachen oder auch Bugs zu finden, wurde ein Debug-Flag integriert, welches folgende Features, sofern aktiviert, beinhaltet:
 
     \begin{itemize}
-        \item \textbf{\ac{usart}-Schnittstelle}: Über die \ac{usart} Schnittstelle wird die erfolgreiche Konfiguration der Hardware, der Start des \ac{freertos}-Schedulers, sowie auch der Start jeder \ac{edf}-Funktion mitgeteilt.
+        \item \textbf{\ac{uart}-Schnittstelle}: Über die \ac{uart} Schnittstelle wird die erfolgreiche Konfiguration der Hardware, der Start des \ac{freertos}-Schedulers, sowie auch der Start jeder \ac{edf}-Funktion mitgeteilt.
                                                  Des Weiteren werden nicht eingehaltene Deadlines und die Anzahl der Deadlinefehler, sofern vorhanden, mitgeteilt.
-        \item \textbf{Erweiterte \ac{edf} Array Struktur:} Die \ac{edf} Array Struktur wird um folgende fünf Parameter erweitert:
+        \item \textbf{Erweiterte 'edfTaskStruct'-Struktur:} Die 'edfTaskStruct'-Struktur wird um folgende fünf Parameter erweitert:
         \begin{itemize}
             \item \textbf{lastRunningTime}: Enthält die letzte Ausführzeit der Task in SysTicks
             \item \textbf{maxRunningTime}: Enthält die bisherige maximale Ausführzeit (\ac{wcet} der Task in SysTicks
@@ -225,13 +269,22 @@ createEDFTask(              // Task Creation
             \item \textbf{stopTime}: Enthält die letzte Stoppzeit der Task in SysTicks
             \item \textbf{deadlineErrorCounter}: Enthält die Anzahl der nicht eingehaltenen Deadlines
         \end{itemize}
+        \item \textbf{Erweiterte 'edfTasks'-Struktur:} Die 'edfTasks'-Struktur wird um folgende drei Parameter erweitert:
+        \begin{itemize}
+            \item \textbf{currentTick}: Enthält den aktuellen SysTick des \ac{edf}-Schedulers
+            \item \textbf{wcet}: Enthält die höchste \ac{wcet}
+            \item \textbf{cet}: Enthält die aktuelle Ausführzeit der ausführenden Task
+        \end{itemize}
     \end{itemize}
+
+    Dieses Flag sollte allerdings nicht im Produktivbetrieb benutzt werden, da dies zu unvorhersehbaren Verzögerungen der Tasks und im Scheduling führen kann.
 
 \clearpage
 
 \subsection{Fehlerbehandlung} \label{section:Fehlerbehandlung}
 
-    Falls eine Task ihre Deadline überschritten hat oder die Zeit für die Ausführung nicht mehr reicht, werden die \ac{edf}-Parameter angepasst.
+    Eine Überschreitung der Deadline kann beispielsweise durch eine Überbelegung der \ac{cpu}-Zeit oder durch fehlerhafte Parametrierung einer \ac{edf}-Task ausgelöst werden.
+    Falls eine Task ihre Deadline überschritten hat oder die Zeit für die Ausführung nicht mehr reicht, werden die \ac{edf}-Parameter der Task um eine Periode erhöht.
     Dadurch wird keine Task bei der Fehlerbehandlung bevorzugt oder benachteiligt, wobei natürlich die Task mit der kürzesten Deadline und der kleinsten Periode eine höhere Wahrscheinlichkeit besitzt, ausgeführt zu werden. 
 
     \begin{figure}[H]

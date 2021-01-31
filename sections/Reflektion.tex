@@ -1,15 +1,14 @@
 \documentclass[../EDF Master Thesis.tex]{subfiles}
 
 \begin{document}
-    Der in dieser Arbeit entwickelte \ac{edf}-Scheduler und auch die zwei Demo-Applikationen funktionieren, wie es in der Aufgabenstellung verlangt wurde.
-    Jedoch traten bei der Entwicklung einige Probleme auf:
+    Bei der Entwicklung des \ac{edf}-Schedulers traten folgende Probleme auf:
     \begin{itemize}
         \item \textbf{Natives \ac{freertos}}: Als \ac{ide} wurde in dieser Arbeit, aufgrund der einfachen Bereitstellung der Board-Treiber, die Software 'STM32CubeIDE' von ST verwendet.
             Bei der Konfiguration der Hardware und Software kann eine \ac{freertos} Installation mit ausgewählt werden.
             Leider stellte sich heraus, dass dabei ein Wrapping Layer automatisch mit konfiguriert und implementiert wird, um einen einfachen Wechsel zwischen den unterschiedlichen \ac{rtos} Betriebssystemen zu ermöglichen.
             Dieser Wrapping Layer verhindert aber eine einfache Portierung auf andere Mikrocontroller, speziell Mikrocontroller die nicht von dem Hersteller ST stammen.
             Resultierend aus diesen Erfahrungen wurde dann ein natives \ac{freertos} ohne Wrapping Layer in dieser Arbeit auf dem STM32F769I-Disc0 implementiert.
-        \item \textbf{\ac{freertos}+TCP}: Bei der Integration des \ac{freertos}+TCP Stack konnte lange nicht die Ethernetschnittstelle aktiviert werden.
+        \item \textbf{\ac{freertos}+TCP}: Bei der Integration des \ac{freertos}+TCP Stack konnte lange nicht die Ethernet-Schnittstelle aktiviert werden.
             Schließlich stellte sich heraus, dass bei der Konfiguration der Netzwerkschnittstelle in 'STM32CubeIDE' automatisch eine Initialisierungsfunktion integriert und diese in der Main-Funktion aufgerufen wird.
             Das Problem bestand darin, dass der \ac{freertos}+TCP Stack eine eigene Initialisierungsfunktion verlangt und die Schnittstelle daher blockiert wurde.
             Nachdem die 'Standard'-Initialisierungsfunktion entfernt wurde, konnte die Netzwerkschnittstelle aktiviert werden.

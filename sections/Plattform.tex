@@ -2,11 +2,23 @@
 
 \begin{document}
 
-Als Plattform für dieses Projekt dient ein STM32F769I-Disc0 Board der Firma ST.
+Als Plattform für dieses Projekt dient ein STM32F769I-Disc0 Board der Firma ST, welcher unter anderem folgende Hauptmerkmale besitzt:
+
+\begin{itemize}
+    \item Prozessor: ARM®Cortex®-M7
+    \item ROM: 2 Mbytes
+    \item RAM: 532 Kbytes
+    \item Schnittstellen:
+    \begin{itemize}
+        \item Ethernet-Schnittstelle
+        \item Zwei Push-Buttons
+        \item 7 One-Board \ac{led}s
+    \end{itemize}
+\end{itemize}
+
+
 Dieses ist mit einen ARM®Cortex®-M7 Prozessor ausgestattet und hat für die verwendete Arbeit und erarbeiteten Demo-Applikationen ausreichende Rechenleistung.
 Für die Kommunikation zwischen Host-Computer und Mikrocontroller wurde die integrierte Ethernet Schnittstelle verwendet.
-Des Weiteren wurde eine 'Debug-Flag' integriert, welche über den integrierten \ac{usart} Debug Informationen sendet.
-Dieses Flag sollte allerdings nicht im Produktivbetrieb benutzt werden, da dies zu unvorhersehbaren Verzögerungen der Tasks und im Scheduling führen kann.
 Für die 'Blinky-Demo' wurden außerdem die drei, auf dem Board integrierten, \ac{led}s verwendet.
 
 \begin{figure}[ht!]
