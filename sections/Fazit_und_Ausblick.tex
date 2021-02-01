@@ -1,0 +1,33 @@
+\documentclass[../EDF Master Thesis.tex]{subfiles}
+
+\begin{document}
+    Als Ergebnis dieser Thesis wurde ein \ac{edf}-Scheduler in \ac{freertos} implementiert.
+    Dabei wurde darauf geachtet, dass keine Funktionen oder Variablen der \ac{freertos} Installation modifiziert wurden, um eine einfache Portierbarkeit auf andere Mikrocontroller zu ermöglichen.
+    Die Entscheidung den \ac{freertos} SysTick zu verwenden, trägt weiter dazu bei.
+    Ebenfalls führt die Implementierung eines Debugmodus und deren Kommunikation mit dem \ac{uart} zu einer einfachen Fehlerbehebung während eines Entwicklungsprozesses.
+    Die Möglichkeit den Mikrocontroller in den Energiesparmodus zu setzen, solange die \ac{freertos} Idle Task ausgeführt wird, wurde bewusst nicht implementiert.
+    Diese Entscheidung beruht darauf, dass eine Implementierung des Energiesparmodus bei jeder \ac{cpu} anders ist und somit eine Einschränkung der Portierbarkeit darstellen würde.\\
+    Im weiteren Verlauf wurde eine 'Blinky-Demo' erstellt, welche die verschiedenen Status des \ac{edf}-Schedulers anhand von \ac{led}s darstellen kann.
+    Die blinkenden \ac{led}s zeigen dabei direkt den Status, in welche sich die Demo-Applikation befindet, an.
+    Sofern der Debugmodus aktiviert ist, können die einzelnen Status und wenn vorhanden, die nicht eingehalten Deadlines mit der Hilfe des \ac{uart} mit verfolgt werden.
+    Außerdem konnte mit der '\ac{fft}-Demo' auch ein wesentlich komplexerer Anwendungsfall für die Überprüfung des \ac{edf}-Schedulers implementiert werden.
+    Dabei wird die sichere Kommunikation der Tasks untereinander mit \ac{freertos} Queues gewährleistet und somit können sich die Tasks nicht gegenseitig blockieren.
+    Die einfache Konfiguration der \ac{fft}-Größe sowie die daraus resultierende \ac{udp}-Paketgröße trägt zu einer Vielzahl von Anwendungen bei, da somit verschiedenste Samplegrößen verarbeitet werden können.\\
+    Die erstellte \ac{gui} erleichtert dabei die Erzeugung verschiedenster Signale sowie auch das Darstellen des erzeugten Signals und der \ac{fft}-Ergebnisse.
+    Durch die freie Auswahl der Amplitudengröße sowie der Frequenz ist bei der Erzeugung eines Signals für die \ac{fft}-Berechnung keine Grenzen gesetzt.
+    Bei der Betrachtung der Plots können diese interaktiv vergrößert und verkleinert werden.
+    Das Anzeigen der erkannten Frequenzen hilft dabei schnell einen Überblick über das Spektrum zu erhalten.
+    Somit konnte die korrekte Funktion des \ac{edf}-Schedulers mit zwei Demo-Applikationen unter Beweis gestellt werden.\\
+    Abschließend ist zu sagen, dass mithilfe dieser Arbeit in \ac{freertos} unter den gesetzen Bedingungen nun ein Scheduler verwendet werden kann, der eine \ac{cpu}-Auslastung bis zu 100\% unterstützt.
+    Die Implementierung eines \ac{edf}-Schedulers in \ac{freertos} ermöglicht eine größere Auswahl des Scheduler-Betriebes, wodurch für jede Applikation die Möglichkeit steigt, den passenden Scheduler verwenden zu können.
+
+    \clearpage
+
+    In Zukunft könnte eine neue Flag implementiert werden, welche die 'rescheduleEDF'-Funktion erweitert, um den \ac{freertos} 'Blocked'-Status, unter dem Wissen einer längeren Laufzeit, zu berücksichtigen. 
+    Außerdem könnten noch weitere Scheduler-Arten implementiert werden, welche den Einsatzzweck der Arbeit noch erweitern würde und somit mehr Anreize für die Weiterentwicklung der Arbeit bieten.
+    Das zur Verfügung gestellte STM32F769I-Disc0 Board wird mit einem Display ausgeliefert, mit dem eine Anzeige aller Tasks und deren Status, unter Berücksichtigung der zusätzlichen \ac{cpu}-Zeit, möglich ist.
+    Des Weiteren wäre eine Implementierung eines parallelen Betriebes von \ac{edf}-Tasks und \ac{freertos}-Tasks möglich und in manchen Anwendungen von Vorteil. 
+    
+
+
+\end{document}

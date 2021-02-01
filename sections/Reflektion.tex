@@ -1,0 +1,26 @@
+\documentclass[../EDF Master Thesis.tex]{subfiles}
+
+\begin{document}
+    Bei der Entwicklung des \ac{edf}-Schedulers traten folgende Probleme auf:
+    \begin{itemize}
+        \item \textbf{Natives \ac{freertos}}: Als \ac{ide} wurde in dieser Arbeit aufgrund der einfachen Bereitstellung der Board-Treiber, die Software 'STM32CubeIDE' von ST verwendet.
+            Bei der Konfiguration der Hardware und Software kann eine \ac{freertos} Installation ebenfalls ausgewählt werden.
+            Leider stellte sich heraus, dass dabei ein Wrapping Layer automatisch mit konfiguriert und implementiert wird, um einen einfachen Wechsel zwischen den unterschiedlichen \ac{rtos} Betriebssystemen zu ermöglichen.
+            Dieser Wrapping Layer verhindert aber eine einfache Portierung auf andere Mikrocontroller, speziell Mikrocontroller die nicht von dem Hersteller ST stammen.
+            Resultierend aus diesen Erfahrungen wurde dann ein natives \ac{freertos} ohne Wrapping Layer in dieser Arbeit auf dem STM32F769I-Disc0 implementiert.
+        \item \textbf{\ac{freertos}+TCP}: Bei der Integration des \ac{freertos}+TCP Stack konnte lange nicht die Ethernet-Schnittstelle aktiviert werden.
+            Schließlich stellte sich heraus, dass bei der Konfiguration der Netzwerkschnittstelle in 'STM32CubeIDE' automatisch eine Initialisierungsfunktion integriert und diese in der Main-Funktion aufgerufen wird.
+            Das Problem bestand darin, dass der \ac{freertos}+TCP Stack eine eigene Initialisierungsfunktion verlangt und die Schnittstelle daher blockiert wurde.
+            Nachdem die 'Standard'-Initialisierungsfunktion entfernt wurde, konnte die Netzwerkschnittstelle aktiviert werden.
+        \item \textbf{Ethernetschnittstelle}: Für die Kommunikation zwischen Host-Computer und dem Mikrocontroller wurde das \ac{udp}-Protokoll und somit die Netzwerkschnittstelle des Mikrocontrollers ausgewählt.
+            Damit nicht zwischen dem Entwickeln und der Recherche im Internet die RJ45-Kabel am Host-Computer gewechselt werden musste, wurde anfangs der Mikrocontroller direkt an einem Switch im heimischen Netzwerk angesteckt.
+            Nachdem die Integration des \ac{freertos}+TCP Stacks abgeschlossen war, wurden mehrere Ping Tests durchgeführt, doch der Mikrocontroller blieb nicht erreichbar.
+            Nach der Überprüfung der Konfiguration wurde der Mikrocontroller direkt mit dem Host-Computer verbunden und antwortete sofort auf die Ping-Anfragen.
+            Wahrscheinlich wurden in dem vorhandenen Netzwerk für den Mikrocontroller zu viele Broadcastanfragen gesendet.
+        \item \textbf{\ac{fft}-Größe}: Je größer die \ac{fft} konfiguriert wird, desto länger braucht deren Berechnung.
+            Gleichzeitig sendet der Host-Computer weiterhin neue Pakte zum Mikrocontroller, was dazu führt, dass bei der Erhöhung der \ac{fft}-Größe auch die Stackgröße der udpReceivingTask vergrößert werden musste.
+            Ansonsten kommt es zu einem Buffer Overflow.
+            Das verwendete Board hat eine Arbeitsspeichergröße von 512kb und somit ausreichend Platz für größere Variablen.
+            Allerdings wurde es als nicht sinnvoll erachtet, den Hauptteil des Arbeitsspeichers mit Buffer Variablen zu belegen.
+    \end{itemize}
+\end{document}

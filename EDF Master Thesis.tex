@@ -19,21 +19,32 @@
 \usepackage{amssymb}
 \usepackage{subcaption}
 \usepackage{amsmath}
-\usepackage{tikz}
 \usepackage{float}
 \usepackage{scrhack}
 \usepackage{microtype}
 \usepackage{svg}
+\usepackage{pgfgantt}
+\usepackage{pgfplots}
+\usepackage{lmodern}
+\usepackage{tikz}
+\usepackage[acronym,nonumberlist]{glossaries}
+\usetikzlibrary{shapes,arrows,positioning, decorations.pathmorphing}
+\usetikzlibrary{calc}
 \usepackage[backend=biber,
 style=apa,
 ]{biblatex}
 \addbibresource{literatur.bib}
 
-\renewcaptionname{ngerman}{\tablename}{Table}
-\renewcaptionname{ngerman}{\figurename}{Figure}
-\renewcaptionname{ngerman}{\listtablename}{Tables}
-\renewcaptionname{ngerman}{\listfigurename}{Figures}
+\renewcaptionname{ngerman}{\tablename}{Tabelle}
+\renewcaptionname{ngerman}{\figurename}{Abbildung}
+\renewcaptionname{ngerman}{\listtablename}{Tabellenverzeichnis}
+\renewcaptionname{ngerman}{\listfigurename}{Abbildungsverzeichnis}
 \renewcommand{\lstlistingname}{Programmcode}
+\renewcommand{\lstlistlistingname}{Programmcode-Verzeichnis}
+\addto\extrasngerman{%
+\def\subsectionautorefname{Abschnitt}%
+\def\subsubsectionautorefname{Abschnitt}%
+}
 
 
 \DeclareCaptionType{equ}[Formel][Formelverzeichnis]
@@ -46,6 +57,7 @@ style=apa,
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
+% Codestyle
 \lstdefinestyle{mystyle}{
     backgroundcolor=\color{backcolour},   
     commentstyle=\color{codegreen},
@@ -65,7 +77,69 @@ style=apa,
     tabsize=2
 }
 
+
+% Define block styles
+\tikzset{
+	pap/.style={
+		draw,
+		align=flush center,
+		on grid
+	},
+	paprectangle/.style={
+		pap,
+		text width=3cm-2*\pgfkeysvalueof{/pgf/inner xsep},
+		inner sep=4pt
+	},
+	papStart/.style = {
+			paprectangle,
+			rounded corners=10pt,
+	},
+	papEnd/.style = {papStart},
+	papProcess/.style = {paprectangle},
+	papLine/.style = {
+			draw,
+			-{Stealth[length=9pt,width=6pt]},
+		},
+	papLabel/.style={
+		label distance=.5cm,
+		font=\footnotesize\itshape
+	},
+}
+\tikzset{line/.style={draw, -latex}}
 \lstset{style=mystyle}
+\tikzset{Shift/.style 2 args={shift={(+#1.5\pgflinewidth,+#2.5\pgflinewidth)}}}
+\newcommand*{\pgfkeysstylelet}[2]{\expandafter\let\csname pgfk@#1/.@cmd\expandafter\endcsname\csname pgfk@#2/.@cmd\endcsname}
+\ganttset{
+    /tikz/broken/.style={
+        decoration={
+            name=zigzag,
+            amplitude=+1pt,
+            segment length=+2pt}},
+    broken right/.code={
+        \pgfkeysstylelet{/pgfgantt/bar backup}{/pgfgantt/bar}
+        \pgfkeysalso{
+            /pgfgantt/bar left shift=-.5\pgflinewidth/\ganttvalueof{x unit},
+            /pgfgantt/bar right shift=(.5\pgflinewidth+.5\pgfdecorationsegmentamplitude)/\ganttvalueof{x unit},
+            /pgfgantt/bar/.append style={
+                draw=none,
+                path picture={
+                    \draw[/pgfgantt/bar backup, broken] ([Shift=+-] path picture bounding box.north west) |-
+                                                        ([Shift=-+, xshift=-\pgfdecorationsegmentamplitude-.6\pgflinewidth] path picture bounding box.south east)
+                                           decorate {-- ([Shift=--, xshift=-\pgfdecorationsegmentamplitude-.6\pgflinewidth] path picture bounding box.north east)}
+                                                     -- cycle;}}}},
+    broken left/.code={
+        \pgfkeysstylelet{/pgfgantt/bar backup}{/pgfgantt/bar}
+        \pgfkeysalso{
+            /pgfgantt/bar right shift=.5\pgflinewidth/\ganttvalueof{x unit},
+            /pgfgantt/bar left shift=(-.5\pgflinewidth-.5\pgfdecorationsegmentamplitude)/\ganttvalueof{x unit},
+            /pgfgantt/bar/.append style={
+                draw=none,
+                path picture={
+                    \draw[/pgfgantt/bar backup, broken] ([Shift=--] path picture bounding box.north east) |-
+                                                        ([Shift=++, xshift=\pgfdecorationsegmentamplitude+.6\pgflinewidth] path picture bounding box.south west)
+                                           decorate {-- ([Shift=+-, xshift=\pgfdecorationsegmentamplitude+.6\pgflinewidth] path picture bounding box.north west)}
+                                                     -- cycle;}}}}}
+
 
 
 \begin{document}
@@ -80,19 +154,24 @@ style=apa,
 	\section*{Aufgabenbeschreibung}
 		\subfile{sections/Aufgabenbeschreibung.tex}
 		\clearpage
-	\section*{Abstract}
-		\subfile{sections/Abstract.tex}
-		\clearpage
-	\tableofcontents
-		\clearpage
 	\pagenumbering{arabic}
+	\tableofcontents
+	\clearpage
+	\listoffigures
+	\listoftables
+	\listof{equ}{Formelverzeichnis}
+	\clearpage
+	\lstlistoflistings
+	\clearpage
 	\section*{Abkürzungen}
 		\subfile{sections/Abkuerzungen.tex}
 		\clearpage
-	\listof{equ}{Formelverzeichnis}
+	\section*{Abstract}
+		\subfile{sections/Abstract.tex}
 	\clearpage
-	\section{Grundlagen} \label{section:grundlagen}
-		\subfile{sections/Einfuehrung.tex}
+	\section{Grundlagen}
+		In diesem Kapitel werden die Grundlagen dieser Arbeit zum aktuellen Stand der Technik vorgestellt.
+		Dabei werden die verwendeten Systeme sowie auch benötigte Protokolle und Algorithmen erklärt.
 		\subsection{Echtzeitsysteme} \label{section:echtzeitsysteme}
 			\subfile{sections/Echtzeitsysteme.tex}
 		\subsection{Scheduler} \label{section:scheduler}
@@ -101,19 +180,31 @@ style=apa,
 			\subfile{sections/FreeRTOS.tex}
 		\subsection{Periodische Tasks} \label{section:periodische_tasks}
 			\subfile{sections/periodischeTasks.tex}
-		\subsection{\ac{udp}} \label{section:udp}
+			\clearpage
+		\subsection{\acf{udp}} \label{section:udp}
 			\subfile{sections/udp.tex}
-		\subsection{\ac{fft}} \label{section:fft}
+			\clearpage
+		\subsection{\acf{fft}} \label{section:fft}
 			\subfile{sections/fft.tex}
+		\clearpage
 		\subsection{Plattform} \label{section:plattform}
 			\subfile{sections/Plattform.tex}
 	\clearpage
-	\section{Der EDF Scheduler} \label{section:der_edf_scheduler}
+	\section{Umsetzung des EDF-Schedulers} \label{section:der_edf_scheduler}
 		\subfile{sections/Der_EDF_Scheduler.tex}
-		\clearpage
-	\listoffigures
-		\clearpage
-	\listoftables
-		\printbibliography{}
-		\clearpage
+	\clearpage
+	\section{Demo-Applikationen} \label{section:demo_applikationen}
+		\subfile{sections/Demo_Applikationen.tex}
+	\clearpage
+	\section{Reflektion} \label{section:aufgetretene_probleme}
+		\subfile{sections/Reflektion.tex}
+	\clearpage
+	\section{Fazit und Ausblick} \label{section:fazit_und_ausblick}
+		\subfile{sections/Fazit_und_Ausblick.tex}
+	\clearpage
+	\printbibliography{}
+	\clearpage
+	\section{Anlagen} \label{section:anlagen}
+		\subfile{sections/Anlagen.tex}
 \end{document}
+

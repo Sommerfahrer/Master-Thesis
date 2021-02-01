@@ -1,26 +1,26 @@
 \documentclass[../EDF Master Thesis.tex]{subfiles}
 
 \begin{document}
- Anwendungen auch Prozesse oder Tasks genannt, werden in Echtzeitsystemen oft periodisch, \ac{zb} das Abrufen eines Sensorwertes, ausgeführt.
+ Anwendungen werden in Echtzeitsystemen oft periodisch ausgeführt.
  Periodische Tasks setzen sich aus folgenden Parametern zusammen:
  \begin{equ}[ht!]
     \begin{equation}
-        T_i(\Phi_i, P_i, e_i, D_i)
+        T_i(t_{\phi,i}, t_{p,i}, t_{e,i}, t_{d,i})
     \end{equation}
     \begin{center}
         \begin{tabular}{lcr}
-            $T_i$ & Task Nummer \\
-            $\Phi_i$ & Phase \\
-            $e_i$ & Ausführzeit (\ac{wcet}) \\
-            $D_i$ & Deadline \\
+            $T$ & Task \\
+            $t_\phi$ & Phase \\
+            $t_e$ & Ausführungszeit (\ac{wcet}) \\
+            $t_d$ & (relative) Deadline \\
         \end{tabular}
     \end{center}
-    \caption{Parameter von periodischen Tasks}
+    \caption[Parameter von periodischen Tasks]{Parameter von periodischen Tasks (\ac{iaa} \cite{echtzeit_systeme)}}
     \label{form:parameter_of_periodic_tasks}
 \end{equ}
 
-Mit diesen vier Parameter jeder einzelnen periodischen Tasks können die verschiedenen Scheduler-Verfahren die Ausführung der einzelnen Tasks planen und umsetzen.
-Im Zuge der Aufgabenstellung bei dieser Masterarbeit wurden keine Tasks mit einer Phasenverschiebung verlangt, daher kann der Parameter $\Phi_i = 0$ angesehen werden.
+Mit den in der \autoref{form:parameter_of_periodic_tasks} genannten Parametern jeder einzelnen periodischen Task können die verschiedenen Scheduler-Verfahren die Ausführung der einzelnen Tasks planen und umsetzen.
+Im Zuge der Aufgabenstellung bei dieser Masterarbeit wurden keine Tasks mit einer Phasenverschiebung verlangt, daher kann der Parameter $t_\phi$ als Null angesehen werden \autocite{echtzeit_systeme}.
 \end{document}
 
 
