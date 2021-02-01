@@ -143,18 +143,18 @@ style=apa,
 
 
 \begin{document}
+\pagenumbering{Roman}
 	\begin{titlepage}
 		\subfile{sections/Titelseite.tex}
 	\end{titlepage}
 	\clearpage 
-	\pagenumbering{Roman}
-	\section*{Eidesstattliche Erklärung}
+	\setcounter{page}{1}
+	\section{Eidesstattliche Erklärung}
 		\subfile{sections/Eidesstattliche_Erklaerung.tex}
 		\clearpage
-	\section*{Aufgabenbeschreibung}
+	\section{Aufgabenbeschreibung}
 		\subfile{sections/Aufgabenbeschreibung.tex}
 		\clearpage
-	\pagenumbering{arabic}
 	\tableofcontents
 	\clearpage
 	\listoffigures
@@ -163,12 +163,14 @@ style=apa,
 	\clearpage
 	\lstlistoflistings
 	\clearpage
-	\section*{Abkürzungen}
+	\section{Abkürzungen}
 		\subfile{sections/Abkuerzungen.tex}
 		\clearpage
-	\section*{Abstract}
+	\section{Abstract}
 		\subfile{sections/Abstract.tex}
 	\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
 	\section{Grundlagen}
 		In diesem Kapitel werden die Grundlagen dieser Arbeit zum aktuellen Stand der Technik vorgestellt.
 		Dabei werden die verwendeten Systeme sowie auch benötigte Protokolle und Algorithmen erklärt.
@@ -201,8 +203,8 @@ style=apa,
 	\clearpage
 	\section{Fazit und Ausblick} \label{section:fazit_und_ausblick}
 		\subfile{sections/Fazit_und_Ausblick.tex}
-	\clearpage
-	\printbibliography{}
+	\newpage
+	\printbibliography[heading=bibnumbered, title=Literaturverzeichnis]
 	\clearpage
 	\section{Anlagen} \label{section:anlagen}
 		\subfile{sections/Anlagen.tex}

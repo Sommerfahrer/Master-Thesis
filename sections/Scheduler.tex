@@ -1,18 +1,18 @@
 \documentclass[../EDF Master Thesis.tex]{subfiles}
 
 \begin{document}
-Als Scheduler ( zu Deutsch: Steuerprogramm) wird eine Logik bezeichnet, welche die zeitliche Ausführung von mehreren Prozessen steuert.
+Als Scheduler (zu Deutsch: Steuerprogramm) wird eine Logik bezeichnet, welche die zeitliche Ausführung von mehreren Prozessen steuert.
 Diese Logik wird als präemptiver oder kooperativer Scheduler in Betriebssystemen eingesetzt.
 Der Scheduler ist für die zeitliche Anordnung der Prozesse verantwortlich.
 Für die Neuanordnung, welche Task \ac{cpu}-Zeit bekommen soll, löst der Scheduler einen Context Switch, auch Taskwechsel genannt, aus.
-Die \ac{cpu} ist für einen Scheduler die einzige Ressource von Relevanz, andere Hardware ist für einen Scheduler nicht relevant, wie z.B. \ac{rom} oder \ac{ram}.
+Die \ac{cpu} ist für einen Scheduler die einzige Ressource von Relevanz, andere Hardware, wie z.B. \ac{rom} oder \ac{ram}, ist für einen Scheduler nicht relevant.
 Bei einem kooperativen Scheduling werden einem Prozess die benötigten Ressourcen übergeben und der Scheduler wartet, bis der Prozess vollständig abgearbeitet wurde.
 Im Gegensatz zu einem kooperativen Scheduler kann ein präemptiver Scheduler einem Prozess die Ressourcen vor der Fertigstellung entziehen, um zwischenzeitlich diese anderen Prozessen zuzuweisen \parencite{mikrocontroller:001}.
 
 Allgemein lassen sich die unterschiedliche Scheduler-Systeme in drei Rubriken unterteilen \parencite{wiki:007}:
 \begin{itemize}
     \item \textbf{Stapelverarbeitungssysteme}: Zur Anfangszeit der Computer wurden Prozesse von Lochkarten eingelesen und nacheinander abgearbeitet und die Ergebnisse auf einem Magnetband abgespeichert oder ausgedruckt.
-                                               Dabei bestanden Stapelverarbeitungssysteme oftmals aus mehreren Computern mit unterschiedler Rechenleistung, wobei die preiswerteren Computer mit weniger Rechenleistung Aufgaben wie das Lesen und Speichern übernahmen und die rechenstärkeren Computer die Abarbeitung des Programms vornahmen \autocite{grundkurs_betriebssysteme}.
+                                               Dabei bestanden Stapelverarbeitungssysteme oftmals aus mehreren Computern mit unterschiedlicher Rechenleistung, wobei die preiswerteren Computer mit weniger Rechenleistung Aufgaben wie das Lesen und Speichern übernahmen und die rechenstärkeren Computer die Abarbeitung des Programms vornahmen \autocite{grundkurs_betriebssysteme}.
     \item \textbf{Interaktive Systeme}: Eingaben von Benutzern sollten schnellstmöglich abgearbeitet werden, weniger wichtige Aufgaben wie z.B. die Aktualisierung der Uhrzeit werden unterbrochen oder erst im Nachhinein abgearbeitet \autocite{mikrocontroller:002}.
     \item \textbf{Echtzeitsysteme}: Ein Echtzeitsystem muss die Fertigstellung des Prozesses innerhalb einer definierten Zeitspanne garantieren, sofern die \ac{cpu} Auslastung nicht über 100\% beträgt \autocite{mikrocontroller:002}.
 \end{itemize}

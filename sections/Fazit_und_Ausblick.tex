@@ -9,7 +9,7 @@
     Diese Entscheidung beruht darauf, dass eine Implementierung des Energiesparmodus bei jeder \ac{cpu} anders ist und somit eine Einschränkung der Portierbarkeit darstellen würde.\\
     Im weiteren Verlauf wurde eine 'Blinky-Demo' erstellt, welche die verschiedenen Status des \ac{edf}-Schedulers anhand von \ac{led}s darstellen kann.
     Die blinkenden \ac{led}s zeigen dabei direkt den Status, in welche sich die Demo-Applikation befindet, an.
-    Sofern der Debugmodus aktiviert ist, können die einzelnen Status und wenn vorhanden, die nicht eingehalten Deadlines mit der Hilfe des \ac{uart} mit verfolgt werden.
+    Sofern der Debugmodus aktiviert ist, können die einzelnen Status und wenn vorhanden, die nicht eingehalten Deadlines mit der Hilfe des \ac{uart} verfolgt werden.
     Außerdem konnte mit der '\ac{fft}-Demo' auch ein wesentlich komplexerer Anwendungsfall für die Überprüfung des \ac{edf}-Schedulers implementiert werden.
     Dabei wird die sichere Kommunikation der Tasks untereinander mit \ac{freertos} Queues gewährleistet und somit können sich die Tasks nicht gegenseitig blockieren.
     Die einfache Konfiguration der \ac{fft}-Größe sowie die daraus resultierende \ac{udp}-Paketgröße trägt zu einer Vielzahl von Anwendungen bei, da somit verschiedenste Samplegrößen verarbeitet werden können.\\

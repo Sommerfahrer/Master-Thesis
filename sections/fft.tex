@@ -17,16 +17,16 @@ Dies führt bei hohen Samplegrößen zu einer extremen Rechenzeit, was nicht pra
 
 \begin{equ}[ht!]
     \begin{equation}
-        O(N) = (N^2)
+        O(N) = N^2
     \end{equation}
     \caption[Berechnung der \ac{dft}-Komplexität]{Berechnung der \ac{dft}-Komplexität \autocite{fft:002}}
     \label{form:berechnung_der_dft_komplexitaet}
 \end{equ}
 
 
-Im Gegensatz zur \ac{dft} stellt die \ac{fft} ein Algorithmus dar, mit welcher der Rechenaufwand deutlich reduziert wird.
+Im Gegensatz zur \ac{dft} stellt die \ac{fft} ein Algorithmus dar, mit welchem der Rechenaufwand deutlich reduziert wird.
 Aus diesem Grund wird häufig die \ac{fft} genutzt, welche nach dem 'Teile und Herrsche'-Verfahren funktioniert und nur noch eine Komplexität von $O(N) = (N \: log(N))$ besitzt \autocite{fft:002}.
-Durch diese enorme Zeit- und Rechenersparnis fand die \ac{fft} in vielen Bereichen, wie z.B. in Ingenieurswissenschaften, Musik, der Wissenschaft und der Mathematik Verwendung \autocite{wiki:010}.
+Durch diese enorme Zeit- und Rechenersparnis findet die \ac{fft} in vielen Bereichen, wie z.B. in Ingenieurswissenschaften, Musik, der Wissenschaft und der Mathematik Verwendung \autocite{wiki:010}.
 Für die Berechnung der \ac{fft} sind mehrere Algorithmen verfügbar, wobei in dieser Masterarbeit der Radix-2 Algorithmus von der \ac{cmsis}-\ac{dsp} Bibliothek verwendet wurde.
 
 \clearpage 
@@ -40,7 +40,7 @@ Als Vorraussetzung des Algorithmus der \ac{fft} muss die Anzahl der Messwerte $N
     \begin{center}
         \begin{tabular}{lcr}
             $N$ & Anzahl von Samples \\
-            $\in$ & natürliche Zahlen\\
+            $\mathbb{N}$ & natürliche Zahlen\\
         \end{tabular}
     \end{center}
     \caption[Rechenbedingung der \ac{fft}]{Rechenbedingung der \ac{fft} \autocite{fft:002}}

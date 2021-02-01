@@ -2,15 +2,15 @@
 
 \begin{document}
 \ac{freertos} ist ein Echtzeitbetriebssystem für eingebettete Systeme, welches unter der freizügigen Open-Source Lizenz \href{https://de.wikipedia.org/wiki/MIT-Lizenz}{MIT} steht.
-Außerdem ist der Scheduler des Betriebsystems zwischen präemptiver und kooperativer Betrieb konfigurierbar um verschiedene Einsatzzwecke abzudecken \parencite{freertos_license}.
+Außerdem ist der Scheduler des Betriebsystems zwischen präemptiver und kooperativer Betrieb konfigurierbar, um verschiedene Einsatzzwecke abzudecken \parencite{freertos_license}.
 \ac{freertos} unterstützt über 40 Mikrocontroller-Architekturen, um eine größere Bandbreite zu erreichen \parencite{freertos}.
 Für nicht unterstütze Architekturen stellt \ac{freertos} eine Portierungs-Anleitung zur Verfügung, welche als Unterstützung bei der Portierung von \ac{freertos} auf andere \ac{cpu}s dient \autocite{freertos_port}.
 \ac{freertos} ist einfach zu implementieren und der Kernel unterstützt Multithreading, Warteschlangen, Semaphore, Software-Timer, Mutexes und Eventgruppen \parencite{freertos-features}.
 Des Weiteren stellt \ac{freertos} unter der Bezeichnung "FreeRTOS Plus" verschiedene Erweiterungen zur Verfügung, welche erweiterte Funktionen bereitstellen \parencite{freertos-extensions}.
 Folgende Erweiterungen sind zum Stand dieser Arbeit verfügbar:
 \begin{itemize}
-    \item \textbf{FreeRTOS + TCP}: Socketbasiertes \ac{tcp}/\\\ac{udp}/\ac{ip} Interface.
-    \item \textbf{Application Protocols}: \ac{mqtt} und \\\ac{http} Anwendungsprotokolle für \ac{iot}.
+    \item \textbf{FreeRTOS + TCP}: Socketbasiertes \ac{tcp}/\\\ac{udp}/\ac{ip} Interface
+    \item \textbf{Application Protocols}: \ac{mqtt} und \\\ac{http} Anwendungsprotokolle für \ac{iot}
     \item \textbf{coreJson}: Effizienter Parser für \ac{json}
     \item \textbf{corePKCS\#11}: Verschlüsselungs \ac{api}-Layer
     \item \textbf{FreeRTOS + IO}: Erweiterung für Peripheriegeräte
@@ -33,8 +33,8 @@ Der \ac{freertos}-Scheduler arbeitet prioritätsbasiert und beinhaltet standardm
                                                          Das bedeutet eine niedriger priorisierte Task bekommt nur \ac{cpu}-Zeit, wenn die höher priorisierten Tasks nicht den 'ready'-Status besitzen.
                                                          Teilen sich zwei Tasks gleichzeitig die höchste Priorität, tritt die Time Slicing Scheduling Policy in Kraft.
 \end{itemize}
-Um einen oder beide dieser Eigenschaften abzuschalten, kann dies unter der Datei \\'FreeRTOSConfig.h', wie in \autoref{code:freertos_scheduling_policies} dargestellt, abgeändert werden.
-Je nach gewünschter Anwendung könnten diese Optionen diese negativ oder positiv beeinflussen \parencite{freertos-scheduling-policy}.
+Um einen oder beide dieser Eigenschaften abzuschalten, kann dies unter der Datei \\'FreeRTOSConfig.h' abgeändert werden.
+Je nach gewünschter Anwendung könnten die Optionen aus \autoref{code:freertos_scheduling_policies} diese negativ oder positiv beeinflussen \parencite{freertos-scheduling-policy}.
 \begin{lstlisting}[language=C, caption=FreeRTOS Scheduling Policy Properties, label=code:freertos_scheduling_policies]
     #define configUSE_PREEMPTION                    ( 1 )
     #define configUSE_TIME_SLICING                  ( 1 )
@@ -42,9 +42,9 @@ Je nach gewünschter Anwendung könnten diese Optionen diese negativ oder positi
 
 
 \subsubsection{Overhead und Footprint} \label{section:overhead_und_footprint}
-Die Dauer eines Context Switches, auch Taskwechsel genannt, zwischen zwei Tasks ist abhängig von der Portierung, dem Compiler und der Konfiguration von FreeRTOS.
+Die Dauer eines Context Switches, auch Taskwechsel genannt, zwischen zwei Tasks ist abhängig von der Portierung, dem Compiler und der Konfiguration von FreeRTOS.\\
 FreeRTOS selbst gibt ein Beispiel anhand einer Cortex-M3 CPU eine Taskwechsel Zeit von 84 \ac{cpu} Zyklen an \parencite{freertos-overhead}.
-Typischerweise besitzt ein \ac{freertos} Kernel Binary Image eine Größe zwischen 6Byte und 12kByte \parencite{freertos-footprint}.
+Typischerweise besitzt ein \ac{freertos} Kernel Binary Image eine Größe zwischen 6 Kilobyte und 12 Kilobyte \parencite{freertos-footprint}.
 
 \clearpage
 
@@ -62,7 +62,7 @@ Diese Zustände ermöglichen komplexere Algorithmen zu implementieren und sehen 
     \parencite{freertos-task-states}
 \end{center}
 
-Die Möglichkeit eine Task in den 'Blocked'-Status zu setzen, ergeben sich viele neue Anwendungsbereiche.
+Durch die Möglichkeit eine Task in den 'Blocked'-Status zu setzen, ergeben sich viele neue Anwendungsbereiche.
 Ein Beispiel wäre das Warten der höher priorisierten Task auf Daten, welche von einer niederen priorisierten Task erzeugt werden.
 
 \begin{figure}[H]
@@ -73,16 +73,16 @@ Ein Beispiel wäre das Warten der höher priorisierten Task auf Daten, welche vo
 \end{figure}
 
 Ein Ablaufdiagramm der einzelnen Zustände und deren Wechsel mit Hilfe von \ac{freertos}-Funktionen wird in \autoref{fig:FreeRTOS_Task_States} dargestellt.
-Dabei wird erläutert, mit welchen \ac{freertos}-Funktionen oder Events den Statuswechsel auslösen \autocite{freertos-task-states}.
+Dabei wird erläutert, welche \ac{freertos}-Funktionen oder Events den Statuswechsel auslösen \autocite{freertos-task-states}.
 
 \subsubsection{Idle Task} \label{section:idle_task}
 Die \ac{freertos} Idle Task wird immer dann aufgerufen, wenn keine andere Task ausgeführt werden kann.
 Dabei wird die \ac{freertos} Idle Task automatisch beim Start des \ac{freertos}-Schedulers mit der niedrigsten verfügbaren Priorität erstellt, um keine Tasks im 'ready' Status zu blockieren.
-Das heißt die Idle Task wird nur ausgeführt, wenn es keine Tasks mit einer höheren Priorität gibt, oder keine Tasks mit einer höheren Priorität sich im 'ready' Status befindet.
+Das heißt die Idle Task wird nur ausgeführt, wenn es keine Tasks mit einer höheren Priorität gibt, oder keine Tasks mit einer höheren Priorität sich im 'ready' Status befinden.
 Sollte eine Task die gleiche Priorität mit der Idle Task teilen, wird die \ac{cpu}-Zeit bei Standardkonfiguration, zwischen den zwei Tasks aufgeteilt.
 Des Weiteren wird die Idle Task in \ac{freertos} Standardkonfiguration mit der Priorität 0, also der niedrigsten Priorität gestartet.
 Beim Ausführen der \ac{freertos} Idle Task wird nicht mehr benötigter zugewiesene Speicher gelöscht und sollte somit regelmäßig \ac{cpu}-Zeit bekommen, da im schlimmsten Fall der Arbeitsspeicher überlaufen kann.
-Des Weiteren kann mit der Flag, wie in \autoref{code:freertos_idle_task_hook_flag} zu sehen, der Idle Task Hook aktiviert werden.
+Außerdem kann mit der Flag, wie in \autoref{code:freertos_idle_task_hook_flag} zu sehen, der Idle Task Hook aktiviert werden.
 Der Idle Task Hook wird bei jedem Aufruf der Idle Task ausgeführt und ermöglicht dem Benutzer dabei einen zusätzlichen Code auszuführen.
 Dies kann für verschiedene Einsatzbereiche benutzt werden, wie beispielsweise um den Mikrocontroller in den Energiesparmodus zu setzen \autocite{freertos_idle_task}.
 
@@ -92,7 +92,7 @@ Dies kann für verschiedene Einsatzbereiche benutzt werden, wie beispielsweise u
 
 
 \subsubsection{Interrupts} \label{section:interrupts}
-Interrupts werden durch ein Ereignis ausgelöst, wie z.B. einem bestimmten Wert eines Timers ausgelöst und führen zur einer Unterbrechung der aktuellen Programmausführung, um einen in der Regel kurzen, zeitlich kritischen, Vorgang abzuarbeiten.
+Interrupts werden durch ein Ereignis ausgelöst, wie z.B. bei einem bestimmten Wert eines Timers und führen zur einer Unterbrechung der aktuellen Programmausführung, um einen in der Regel einen kurzen, zeitlich kritischen, Vorgang abzuarbeiten.
 Nach der Unterbrechungsanforderung (\ac{irq}) führt der Prozessor eine Unterbrechungsroutine (\ac{isr}) mit erweiterten Privilegien aus.
 Im Anschluss wird der vorherige Zustand des Prozessors wiederhergestellt und die vorherige Ausführung an der unterbrochenen Stelle fortgesetzt \parencite{grundkurs_betriebssysteme, wiki:008}.
 

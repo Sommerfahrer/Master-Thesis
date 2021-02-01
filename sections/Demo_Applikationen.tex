@@ -80,11 +80,11 @@
             Dies wird anhand der \ac{led}s sichtbar, da diese nun nur noch unregelmäßig blinken.
             Sofern der Debug Mode aktiviert ist, können die nicht eingehaltenen Deadlines der Tasks über die \ac{uart}-Schnittstelle sowie welche Task wie oft ihre Deadline verfehlt hat, ausgelesen werden.
         \item \textbf{Status 4}: Wird nun der Button ein weiteres Mal gedrückt, wird 'Task 1' gelöscht und die erste \ac{led} wird ausgeschaltet.
-            Nun teilen sich 'Task 2' und 'Task 3' die \ac{cpu}-Zeit und die \ac{cpu}-Auslastung beträgt wieder 100\%, aus diesem Grund wird die Idle Task auch nicht aufgerufen.
+            Nun teilen sich 'Task 2' und 'Task 3' die \ac{cpu}-Zeit und die \ac{cpu}-Auslastung beträgt wieder 100\%, aus diesem Grund wird die Idle Task nicht aufgerufen.
         \item \textbf{Status 5}: Ein weiteres Drücken des Buttons löscht 'Task 2', nun teilen sich 'Task 3' und die Idle Task jeweils die hälfte der \ac{cpu}-Zeit.
         \item \textbf{Status 6}: Drückt der Benutzer nun ein weiteres Mal den Button wird 'Task 3' gelöscht und alle drei \ac{led}s leuchten dauerhaft.
-            Die \ac{cpu}-Auslastung liegt nun bei 0\%, dadurch wird die Idle Task dauerhaft ausgeführt.
-            Das System befindet sich nun wieder am Anfang der Ausführung und kann erneut die einzelnen Status ausführen.
+            Die \ac{cpu}-Auslastung liegt nun bei 0\% und die Idle Task wird dauerhaft ausgeführt.
+            Das System befindet sich wieder am Anfang der Ausführung und kann erneut die einzelnen Status ausführen.
     \end{itemize}
 
     \clearpage
@@ -132,8 +132,8 @@
         Im unteren Plotfenster werden die Ergebnisse der \ac{fft}-Berechnung angezeigt, zusätzlich werden die erkannten Frequenzen in Textform unten eingeblendet.
 
         \subsubsection{Tasks des Mikrocontrollers}
-            Die Perioden der drei \ac{edf}-Tasks, siehe \autoref{table:fft_demo_task_parameter}, wurden an das Intervall der \ac{gui} auf 10ms angepasst.
-            Jede der drei Task hat einen \ac{wcet} von 2ms, welche mithilfe des Debugmodus ermittelt wurden, somit ergibt sich eine \ac{cpu}-Auslastung von 60\%, wie auch in \autoref{fig:fft_demo_task_scheduling} dargestellt.
+            Die Perioden der drei \ac{edf}-Tasks, siehe \autoref{table:fft_demo_task_parameter}, wurden an das Intervall der \ac{gui} auf 10 ms angepasst.
+            Jede der drei Tasks hat einen \ac{wcet} von 2 ms, welche mithilfe des Debugmodus ermittelt wurden, somit ergibt sich eine \ac{cpu}-Auslastung von 60\%, wie auch in \autoref{fig:fft_demo_task_scheduling} dargestellt.
 
             \begin{table}[ht!]
                 \centering
