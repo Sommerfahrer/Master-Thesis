@@ -9,7 +9,7 @@ Um den Scheduler in ein \ac{freertos}-Projekt zu integrieren, muss ein kleines M
 \subsection{Datenstrukturen} \label{section:datenstruktur}
 Für die Implementierung eines \ac{edf}-Schedulers wurde als Erstes zwei neue Datenstrukturen erstellt.
 Die erste Struktur mit der Bezeichnung 'edfTaskStruct', wie in \autoref{code:edfTaskStruct} zu sehen, beinhaltet ausschließlich alle Variablen und Parameter einer einzelnen Task die für den \ac{edf}-Scheduler notwendig sind.
-Unter anderem besteht die Struktur aus einem Pointer zum Taskcode, der Name der Task, sowie verschiedene \ac{edf}-Variablen.
+Unter anderem besteht die Struktur aus einem Pointer zum Taskcode, der Name der Task sowie verschiedene \ac{edf}-Variablen.
 
 \begin{figure}[H]
 \begin{lstlisting}[language=C, caption=edfTaskStruct Struktur, label=code:edfTaskStruct]
@@ -143,11 +143,11 @@ BaseType_t createEDFTask(    // Task Creation
     \end{table}
 
     Der \ac{edf}-Scheduler arbeitet mit vier unterschiedlichen Prioritäten, wie in \autoref{table:edf_prioritaeten_der_tasks} dargestellt und inkrementiert bei der Implementierung die Priorität der Idle Task von der niedrigsten Priorität '0' auf die zweitniedrigste Priorität '1' in der \ac{freertos} Umgebung.
-    Alle \ac{edf} Tasks die nicht ausgeführt werden sollen, erhalten die Priorität 0, was dazu führt, dass die Idle Task immer ausgeführt wird und verhindert die nicht gewollte Ausführung einer \ac{edf}-Task.
+    Alle \ac{edf} Tasks die nicht ausgeführt werden sollen, erhalten die Priorität 0, was dazu führt, dass die Idle Task immer ausgeführt wird und verhindert somit die nicht gewollte Ausführung einer \ac{edf}-Task.
     Um ein \ac{edf}-Scheduling in der Idle Task zu ermöglichen, wird die 'rescheduleEDF'-Funktion mithilfe des Idle Task Hook aufgerufen.
     Die Task, welche aktuell ausgeführt wurde und am Ende die 'rescheduleEDF'-Funktion ausführt, erhält während der Funktionsausführung die höchste \ac{edf}-Priorität mit dem Wert '3', um einen vorzeitigen Context Switch zur nächsten, nach dem \ac{edf}-Prinzip ausgewählte Task, zu unterbinden.
-    Nachdem alle \ac{edf}-Parameter von allen \ac{edf}-Tasks neu gesetzt wurden, gibt die aktuelle Task die höchste Priorität mit dem Wert '3' ab und erzwingt einen Context Switch zu der nächsten zu ausführenden \ac{edf}-Task mit der Priorität '2'.
-    Für einen reibungslosen Start des \ac{edf}-Schedulers, werden die Prioritäten aller \ac{edf}-Tasks, nachdem Erstellen automatisch auf die Priorität mit dem Wert '0' gesetzt, damit die Idle Task die allerste Ausführung übernimmt und somit zu Beginn die 'rescheduleEDF'-Funktion durch den Idle Task Hook ausgeführt wird.
+    Nachdem alle \ac{edf}-Parameter von allen \ac{edf}-Tasks neu gesetzt wurden, gibt die aktuelle Task die höchste Priorität mit dem Wert '3' ab und erzwingt einen Context Switch zu der nächsten auszuführende \ac{edf}-Task mit der Priorität '2'.
+    Für einen reibungslosen Start des \ac{edf}-Schedulers werden die Prioritäten aller \ac{edf}-Tasks, nachdem Erstellen automatisch auf die Priorität mit dem Wert '0' gesetzt, damit die Idle Task die allerste Ausführung übernimmt und somit zu Beginn die 'rescheduleEDF'-Funktion durch den Idle Task Hook ausgeführt wird.
     Falls alle \ac{edf}-Tasks bereits in ihrer Periode ausgeführt wurden und alle Deadlines der Tasks weiter als ihre Periode in der Zukunft liegen, wird die \ac{freertos} Idle Task aufgerufen.
     In \autoref{fig:edf_task_ausfuehrungsablauf} werden die verschiedenen Prioritäten je nach Status der Task innerhalb einer Periode angezeigt.
     
@@ -245,7 +245,7 @@ BaseType_t createEDFTask(    // Task Creation
     Bei der Darstellung in \autoref{fig:demonstrationsablauf_des_edf_schedulers} wurde die Anfangsphase, so wie der erste Aufruf der Idle Task vernachlässigt.
     Des Weiteren wurde als Vereinfachung der Darstellung der Starttick der ersten Task als Null angenommen.
     Als Erstes bekommt Task 1 \ac{cpu}-Zeit zugeteilt, da diese die kürzeste Deadline besitzt.
-    Anschließend wird Task 2 ausgeführt, welche die nächst kürzeste Deadline besitzt und als letztes wird Task 3 ausgeführt.
+    Anschließend wird Task 2 ausgeführt, welche die nächst kürzeste Deadline besitzt und zuletzt wird Task 3 ausgeführt.
     Nachdem nun alle drei Tasks innerhalb ihrer Periode unter Einhaltung der Deadlines ausgeführt wurden, wird die Idle Task solange ausgeführt bis die nächste Periode einer Task beginnt.
 
 \begin{lstlisting}[language=C, caption=FreeRTOS SysTick Deklaration, label=code:freertos_sys_tick_deklaration]
@@ -257,7 +257,7 @@ BaseType_t createEDFTask(    // Task Creation
     Um das Entwickeln einer \ac{edf}-Applikation zu vereinfachen oder auch Bugs zu finden, wurde ein Debug-Flag integriert, welches folgende Features, sofern aktiviert, beinhaltet:
 
     \begin{itemize}
-        \item \textbf{\ac{uart}-Schnittstelle}: Über die \ac{uart} Schnittstelle wird die erfolgreiche Konfiguration der Hardware, der Start des \ac{freertos}-Schedulers, sowie auch der Start jeder \ac{edf}-Funktion mitgeteilt.
+        \item \textbf{\ac{uart}-Schnittstelle}: Über die \ac{uart} Schnittstelle wird die erfolgreiche Konfiguration der Hardware, der Start des \ac{freertos}-Schedulers sowie auch der Start jeder \ac{edf}-Funktion mitgeteilt.
                                                  Des Weiteren werden nicht eingehaltene Deadlines und die Anzahl der Deadlinefehler, sofern vorhanden, mitgeteilt.
         \item \textbf{Erweiterte 'edfTaskStruct'-Struktur:} Die 'edfTaskStruct'-Struktur wird um folgende fünf Parameter erweitert:
         \begin{itemize}
@@ -358,12 +358,12 @@ BaseType_t createEDFTask(    // Task Creation
 \subsection{Limitationen} \label{section:limitationen}
 
     Eine \ac{freertos}-Task kann, wie in \autoref{section:task_states} beschrieben, in den 'Blocked' Status gehen und übergibt, trotz höhere Priorität, \ac{cpu}-Zeit an eine niedrigere Zeit.
-    Dieses Vorgehen macht Sinn, wenn z.B. eine höher priorisierte Task auf Daten warten muss oder in der Applikation die Funktion 'vTaskDelay' benutzt wurde.
+    Dieses Vorgehen ergibt Sinn, wenn z.B. eine höher priorisierte Task auf Daten warten muss oder in der Applikation die Funktion 'vTaskDelay' benutzt wurde.
     Aus der Überlegung, ob dies der \ac{edf}-Scheduler unterstützen sollte, wurde die Laufzeit der 'rescheduleEDF'-Funktion mit und ohne der 'Blocked'-Implementierung getestet.
     Die Laufzeit eines Taskhandlings vergrößerte sich zwar nur gering, jedoch muss die Summe aller Taskhandlings einer Anwendung betrachtet werden.
     Aus diesem Grund unterstützt der in dieser Arbeit entworfene \ac{edf}-Scheduler keine 'Blocked'-Status.
     Aus diesem Grund und der verringerten Laufzeit der 'rescheduleEDF' darf eine \ac{edf}-Task nicht in den 'Blocked' Status gesetzt werden.  
-    Sollte dies dennoch in einer Applikation nötig sein, muss beachtet werden, dass die betreffende Task erst innerhalb ihrer nächsten Periode, wie in \autoref{fig:blocked_status_in_edf_tasks} dargestellt, wieder aufgerufen wird.
+    Sollte dies dennoch in einer Applikation nötig sein, muss beachtsinet werden, dass die betreffende Task erst innerhalb ihrer nächsten Periode, wie in \autoref{fig:blocked_status_in_edf_tasks} dargestellt, wieder aufgerufen wird.
 
     \begin{figure}[H]
         \centering
@@ -451,7 +451,7 @@ BaseType_t createEDFTask(    // Task Creation
 
     Durch die Verwendung des originalen Schedulers können klassische \ac{freertos} Tasks parallel erstellt und abgearbeitet werden.
     Hierbei ist aber zu beachten, dass die Priorität der klassischen \ac{freertos} Task eine höhere Priorität als den Wert '3' besitzt, da es ansonsten zu Konflikten innerhalb des \ac{edf}-Schedulers kommen kann.
-    Auch sollte bei der Implementierung von klassischen \ac{freertos}-Task darauf geachtet werden, dass die \ac{edf}-Tasks genügend Zeit für Ihre Abarbeitung zur Verfügung gestellt bekommen.
+    Auch sollte bei der Implementierung von klassischen \ac{freertos}-Task darauf geachtet werden, dass die \ac{edf}-Tasks genügend Zeit für ihre Abarbeitung zur Verfügung gestellt bekommen.
     Außerdem sorgt die Verwendung der \ac{freertos}-\ac{api} für die gleiche Kompatibilität wie \ac{freertos} zu anderen Architekturen. 
 
 \end{document}

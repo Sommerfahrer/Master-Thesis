@@ -8,12 +8,12 @@
     Die Möglichkeit den Mikrocontroller in den Energiesparmodus zu setzen, solange die \ac{freertos} Idle Task ausgeführt wird, wurde bewusst nicht implementiert.
     Diese Entscheidung beruht darauf, dass eine Implementierung des Energiesparmodus bei jeder \ac{cpu} anders ist und somit eine Einschränkung der Portierbarkeit darstellen würde.\\
     Im weiteren Verlauf wurde eine 'Blinky-Demo' erstellt, welche die verschiedenen Status des \ac{edf}-Schedulers anhand von \ac{led}s darstellen kann.
-    Die blinkenden \ac{led}s zeigen dabei direkt den Status, in welcher sich die Demo-Applikation befindet, an.
+    Die blinkenden \ac{led}s zeigen dabei direkt den Status, in welche sich die Demo-Applikation befindet, an.
     Sofern der Debugmodus aktiviert ist, können die einzelnen Status und wenn vorhanden, die nicht eingehalten Deadlines mit der Hilfe des \ac{uart} mit verfolgt werden.
     Außerdem konnte mit der '\ac{fft}-Demo' auch ein wesentlich komplexerer Anwendungsfall für die Überprüfung des \ac{edf}-Schedulers implementiert werden.
     Dabei wird die sichere Kommunikation der Tasks untereinander mit \ac{freertos} Queues gewährleistet und somit können sich die Tasks nicht gegenseitig blockieren.
     Die einfache Konfiguration der \ac{fft}-Größe sowie die daraus resultierende \ac{udp}-Paketgröße trägt zu einer Vielzahl von Anwendungen bei, da somit verschiedenste Samplegrößen verarbeitet werden können.\\
-    Die erstellte \ac{gui} erleichtert dabei die Erzeugung verschiedenster Signale, sowie auch das Darstellen des erzeugten Signals und der \ac{fft}-Ergebnisse.
+    Die erstellte \ac{gui} erleichtert dabei die Erzeugung verschiedenster Signale sowie auch das Darstellen des erzeugten Signals und der \ac{fft}-Ergebnisse.
     Durch die freie Auswahl der Amplitudengröße sowie der Frequenz ist bei der Erzeugung eines Signals für die \ac{fft}-Berechnung keine Grenzen gesetzt.
     Bei der Betrachtung der Plots können diese interaktiv vergrößert und verkleinert werden.
     Das Anzeigen der erkannten Frequenzen hilft dabei schnell einen Überblick über das Spektrum zu erhalten.

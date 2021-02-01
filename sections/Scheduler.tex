@@ -14,11 +14,11 @@ Allgemein lassen sich die unterschiedliche Scheduler-Systeme in drei Rubriken un
     \item \textbf{Stapelverarbeitungssysteme}: Zur Anfangszeit der Computer wurden Prozesse von Lochkarten eingelesen und nacheinander abgearbeitet und die Ergebnisse auf einem Magnetband abgespeichert oder ausgedruckt.
                                                Dabei bestanden Stapelverarbeitungssysteme oftmals aus mehreren Computern mit unterschiedler Rechenleistung, wobei die preiswerteren Computer mit weniger Rechenleistung Aufgaben wie das Lesen und Speichern übernahmen und die rechenstärkeren Computer die Abarbeitung des Programms vornahmen \autocite{grundkurs_betriebssysteme}.
     \item \textbf{Interaktive Systeme}: Eingaben von Benutzern sollten schnellstmöglich abgearbeitet werden, weniger wichtige Aufgaben wie z.B. die Aktualisierung der Uhrzeit werden unterbrochen oder erst im Nachhinein abgearbeitet \autocite{mikrocontroller:002}.
-    \item \textbf{Echtzeitsysteme}: Das Echtzeitsystem muss die Fertigstellung des Prozesses innerhalb einer definierten Zeitspanne garantieren, sofern die \ac{cpu} Auslastung nicht über 100\% beträgt \autocite{mikrocontroller:002}.
+    \item \textbf{Echtzeitsysteme}: Ein Echtzeitsystem muss die Fertigstellung des Prozesses innerhalb einer definierten Zeitspanne garantieren, sofern die \ac{cpu} Auslastung nicht über 100\% beträgt \autocite{mikrocontroller:002}.
 \end{itemize}
 
 Für die Anordnung der Prozesse selbst, wann welcher Prozess ausgeführt wird, gibt es verschiedene Arten von Schedulern.
-In den nachfolgend vorgestellten Scheduler-Verfahren wird bei der Berechnung der Auslastung die Laufzeiten von Taskwechsel und Interrupts vernachlässigt.
+In den nachfolgend vorgestellten Scheduler-Verfahren werden bei der Berechnung der Auslastung die Laufzeiten von Taskwechsel und Interrupts vernachlässigt.
 
 \subsubsection{\acf{rms}} \label{section:rms}
     \ac{rms} ist ein präemptives Scheduling-Verfahren, welches die Prioritäten einzelner Prozesse nach deren Periodenlänge statisch anordnet.
