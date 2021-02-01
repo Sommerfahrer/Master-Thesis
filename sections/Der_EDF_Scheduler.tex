@@ -243,7 +243,7 @@ BaseType_t createEDFTask(    // Task Creation
     \end{figure}
 
     Bei der Darstellung in \autoref{fig:demonstrationsablauf_des_edf_schedulers} wurde die Anfangsphase, so wie der erste Aufruf der Idle Task vernachlässigt.
-    Des Weiteren wurde als Vereinfachung der Darstellung der Starttick der ersten Task als Null angenommen.
+    Des Weiteren wurde zur Vereinfachung der Darstellung der Starttick der ersten Task als Null angenommen.
     Als Erstes bekommt Task 1 \ac{cpu}-Zeit zugeteilt, da diese die kürzeste Deadline besitzt.
     Anschließend wird Task 2 ausgeführt, welche die nächst kürzeste Deadline besitzt und zuletzt wird Task 3 ausgeführt.
     Nachdem nun alle drei Tasks innerhalb ihrer Periode unter Einhaltung der Deadlines ausgeführt wurden, wird die Idle Task solange ausgeführt bis die nächste Periode einer Task beginnt.
@@ -254,7 +254,8 @@ BaseType_t createEDFTask(    // Task Creation
 
 \subsection{Debugmodus} \label{section:debug_mode}
 
-    Um das Entwickeln einer \ac{edf}-Applikation zu vereinfachen oder auch Bugs zu finden, wurde ein Debug-Flag integriert, welches folgende Features, sofern aktiviert, beinhaltet:
+    Um das Entwickeln einer \ac{edf}-Applikation zu vereinfachen oder auch Bugs zu finden, wurde ein Debug-Flag integriert.
+    Die Debug-Flag besitzt, sofern aktiviert, folgende Features:
 
     \begin{itemize}
         \item \textbf{\ac{uart}-Schnittstelle}: Über die \ac{uart} Schnittstelle wird die erfolgreiche Konfiguration der Hardware, der Start des \ac{freertos}-Schedulers sowie auch der Start jeder \ac{edf}-Funktion mitgeteilt.
@@ -348,7 +349,7 @@ BaseType_t createEDFTask(    // Task Creation
         \label{fig:beispiel_deadline_errors}
     \end{figure}
 
-    Wie in \autoref{fig:beispiel_deadline_errors} dargestellt, können aufgrund der Task Eigenschaften immer nur zwei Tasks in ihrer Periode, welche mit roten Linien eingezeichnet ist, ihre Deadline erfüllen.
+    Wie in \autoref{fig:beispiel_deadline_errors} dargestellt, können aufgrund der Task Eigenschaften immer nur zwei Tasks in einer Periode, welche mit roten Linien eingezeichnet sind, ihre Deadline erfüllen.
     Durch die implementierte Deadline-Fehlerbehandlung, wird bei gleicher Deadline zweier Tasks, immer die Task mit weniger Aufrufen ausgeführt.
     Dieses Vorgehen ermöglicht die gleichmäßige Ausführung aller Tasks, obwohl die Deadline nicht immer eingehalten werden kann.
     Eine andere Möglichkeit der Fehlerbehandlung wäre das unterbinden einer der drei Tasks, um den anderen zwei Tasks dauerhaft das Einhalten ihrer Deadlines zu ermöglichen.

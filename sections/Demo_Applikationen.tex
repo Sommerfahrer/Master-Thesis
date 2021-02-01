@@ -122,7 +122,7 @@
             \begin{figure}[H]
                 \centering
                 \includegraphics[width=0.92\textwidth]{./attachments/gui.png}
-                \caption{Grafische Benutzeroberfläche}
+                \caption{Grafische Benutzeroberfläche der \ac{fft}-Demo}
                 \label{fig:grafische_benutzeroberflaeche}
             \end{figure}
 
@@ -175,8 +175,8 @@
                 \ganttbar[bar/.append style={fill=blue!90}]{}{14}{15}\\
                 \ganttbar[inline=false, bar label font=\color{cyan!90!black}]{Idle Task}{6}{9}
                 \ganttbar[]{}{16}{19}\\
-                \ganttvrule[vrule/.append style={red}]{Interval}{9}
-                \ganttvrule[vrule/.append style={red}]{Interval}{19}
+                \ganttvrule[vrule/.append style={red}]{Periode}{9}
+                \ganttvrule[vrule/.append style={red}]{Periode}{19}
                 \gantttitlelist[title label node/.append style={alias=n\x,opacity=0}]{0,...,19}{1}
                 \end{ganttchart}
                 \draw [-latex] (n0.north west) -- ([xshift=7pt]n19.north east) node[right] {$t$};
