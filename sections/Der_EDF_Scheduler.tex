@@ -37,10 +37,10 @@ Außerdem beinhaltet diese Struktur noch verschiedene Flags, welche für die Ini
 \begin{lstlisting}[language=C, caption=edfTasks Struktur, label=code:edfTasks]
 typedef struct
 {
-    edfTaskStruct tasksArray[MAX_EDF_TASKS];            // tasks array
-    TaskHandle_t idleTask;                              // taskhandle idle task
-    BaseType_t idleTaskCreated;                         // idle task created?
-    unsigned int numberOfEDFTasks;                      // total number of tasks
+    edfTaskStruct tasksArray[MAX_EDF_TASKS]; // tasks array
+    TaskHandle_t idleTask;                   // taskhandle idle task
+    BaseType_t idleTaskCreated;              // idle task created?
+    unsigned int numberOfEDFTasks;           // total number of tasks
 }edfTasks;
 \end{lstlisting}
 \end{figure}
